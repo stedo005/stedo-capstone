@@ -1,4 +1,4 @@
-package com.example.demo.serverToServer;
+package com.example.demo.helloCash;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +12,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
-public class StSService {
+public class HelloCashService {
 
-    private final StSRepository stSRepository;
+    private final SoldItemRepository soldItemRepository;
 
     @Value("${hello-cash.username}") String username;
     @Value("${hello-cash.password}") String password;
@@ -24,19 +24,16 @@ public class StSService {
         String url = "https://api.hellocash.business/api/v1/invoices?limit=5&offset=1&search=&dateFrom=&dateTo=&mode=&showDetails=true";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(username, password);
-
-        HttpEntity<Object> request = new HttpEntity<>(headers);
-
+        headers.setBasicAuth(username, password);
+        HttpEntity request = new HttpEntity(headers);
         ResponseEntity<String> response = new RestTemplate().exchange(url, HttpMethod.GET, request, String.class);
-
         String json = response.getBody();
         HelloCashData helloCashData = new Gson().fromJson(json, HelloCashData.class);
 
-        StSModell model = new StSModell();
+        SoldItem model = new SoldItem();
         model.setInvoiceNumber(helloCashData.getInvoices().get(0).getInvoiceNumber());
 
-        stSRepository.save(model);
+        soldItemRepository.save(model);
 
     }
 

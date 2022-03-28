@@ -1,4 +1,4 @@
-package com.example.demo.serverToServer;
+package com.example.demo.helloCash;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.example.demo.serverToServer;
+package com.example.demo.helloCash;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/getData")
 @RequiredArgsConstructor
-public class StSController {
+public class HelloCashController {
 
-    private final StSService stSService;
+    private final HelloCashService stSService;
 
     @GetMapping
     public void getDataFromHelloCash() {

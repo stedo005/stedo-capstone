@@ -1,4 +1,4 @@
-package com.example.demo.serverToServer;
+package com.example.demo.helloCash;
 
 import lombok.Data;
 
