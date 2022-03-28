@@ -15,7 +15,7 @@ public class HelloCashController {
     @GetMapping
     public void getDataFromHelloCash() {
 
-        stSService.addSelledItem();
+        stSService.addSoldItem();
 
     }
 

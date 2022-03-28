@@ -1,5 +1,7 @@
 package com.example.demo.helloCash;
 
+import com.example.demo.helloCash.dataModel.HelloCashData;
+import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +21,7 @@ public class HelloCashService {
     @Value("${hello-cash.username}") String username;
     @Value("${hello-cash.password}") String password;
 
-    public void addSelledItem() {
+    public void addSoldItem() {
 
         String url = "https://api.hellocash.business/api/v1/invoices?limit=5&offset=1&search=&dateFrom=&dateTo=&mode=&showDetails=true";
 
@@ -30,10 +32,11 @@ public class HelloCashService {
         String json = response.getBody();
         HelloCashData helloCashData = new Gson().fromJson(json, HelloCashData.class);
 
-        SoldItem model = new SoldItem();
-        model.setInvoiceNumber(helloCashData.getInvoices().get(0).getInvoiceNumber());
-
-        soldItemRepository.save(model);
+        for (HelloCashInvoice invoice : helloCashData.getInvoices()) {
+            SoldItem soldItem = new SoldItem();
+            soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
+            soldItemRepository.save(soldItem);
+        }
 
     }
 

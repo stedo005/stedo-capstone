@@ -1,4 +1,4 @@
-package com.example.demo.helloCash;
+package com.example.demo.helloCash.dataModel;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
