@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class HelloCashController {
 
-    private final HelloCashService stSService;
+    private final HelloCashService helloCashService;
 
     @GetMapping
     public void getDataFromHelloCash() {
 
-        stSService.addSoldItem();
+        helloCashService.addSoldItem();
 
     }
 
