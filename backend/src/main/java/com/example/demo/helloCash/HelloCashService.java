@@ -3,6 +3,9 @@ package com.example.demo.helloCash;
 import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
+import com.example.demo.lastUpdate.LastUpdateRepository;
+import com.example.demo.soldItems.SoldItem;
+import com.example.demo.soldItems.SoldItemRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 public class HelloCashService {
 
     private final SoldItemRepository soldItemRepository;
+    private final LastUpdateRepository lastUpdateRepository;
 
     @Value("${hello-cash.username}") String username;
     @Value("${hello-cash.password}") String password;
@@ -28,7 +32,7 @@ public class HelloCashService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(username, password);
-        HttpEntity request = new HttpEntity(headers);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
         ResponseEntity<String> response = new RestTemplate().exchange(url, HttpMethod.GET, request, String.class);
         String json = response.getBody();
         HelloCashData helloCashData = new Gson().fromJson(json, HelloCashData.class);
