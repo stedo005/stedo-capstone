@@ -79,20 +79,7 @@ public class HelloCashService {
                                     request,
                                     String.class
                             );
-                    String jsonForDatabase = responseForDatabase.getBody();
-                    HelloCashData dataForDatabase = new Gson().fromJson(jsonForDatabase, HelloCashData.class);
-
-                    for (HelloCashInvoice invoice : dataForDatabase.getInvoices()) {
-                        for (HelloCashItem item : invoice.getItems()) {
-                            SoldItem soldItem = new SoldItem();
-                            soldItem.setItemName(item.getItemName());
-                            soldItem.setItemPrice(item.getItemPrice());
-                            soldItem.setItemQuantity(item.getItemQuantity());
-                            soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
-                            soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
-                            soldItemRepository.save(soldItem);
-                        }
-                    }
+                    makeSoldItems(responseForDatabase);
                 }
             } else {
                 ResponseEntity<String> responseForDatabase = new RestTemplate()
@@ -102,22 +89,26 @@ public class HelloCashService {
                                 request,
                                 String.class
                         );
-                String jsonForDatabase = responseForDatabase.getBody();
-                HelloCashData dataForDatabase = new Gson().fromJson(jsonForDatabase, HelloCashData.class);
-
-                for (HelloCashInvoice invoice : dataForDatabase.getInvoices()) {
-                    for (HelloCashItem item : invoice.getItems()) {
-                        SoldItem soldItem = new SoldItem();
-                        soldItem.setItemName(item.getItemName());
-                        soldItem.setItemPrice(item.getItemPrice());
-                        soldItem.setItemQuantity(item.getItemQuantity());
-                        soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
-                        soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
-                        soldItemRepository.save(soldItem);
-                    }
-                }
+                makeSoldItems(responseForDatabase);
             }
             return "Aktualisiert!";
+        }
+    }
+
+    private void makeSoldItems(ResponseEntity<String> responseForDatabase) {
+        String jsonForDatabase = responseForDatabase.getBody();
+        HelloCashData dataForDatabase = new Gson().fromJson(jsonForDatabase, HelloCashData.class);
+
+        for (HelloCashInvoice invoice : dataForDatabase.getInvoices()) {
+            for (HelloCashItem item : invoice.getItems()) {
+                SoldItem soldItem = new SoldItem();
+                soldItem.setItemName(item.getItemName());
+                soldItem.setItemPrice(item.getItemPrice());
+                soldItem.setItemQuantity(item.getItemQuantity());
+                soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
+                soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
+                soldItemRepository.save(soldItem);
+            }
         }
     }
 }
