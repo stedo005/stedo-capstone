@@ -32,12 +32,18 @@ public class HelloCashService {
 
     public void addSoldItem(String name) {
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDateTime now = LocalDateTime.now();
 
         LastUpdate lastUpdate = lastUpdateRepository.getLastUpdateByUsername(name);
         String dateFrom = lastUpdate.getTimestamp();
         String dateTo = dtf.format(now);
+        if(dateTo.equals(dateFrom)){
+            dateFrom = dtf.format(now.minusDays(1L));
+            dateTo = dtf.format(now.minusDays(1L));
+        }
+        lastUpdate.setTimestamp(dtf.format(now));
+        lastUpdateRepository.save(lastUpdate);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(username, password);
