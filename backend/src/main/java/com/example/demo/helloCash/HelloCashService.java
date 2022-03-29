@@ -103,31 +103,5 @@ public class HelloCashService {
                 }
             }
         }
-
-
-/*        for(HelloCashInvoice invoice : helloCashData.getInvoices()) {
-            for(HelloCashItem item : invoice.getItems()) {
-                SoldItem soldItem = new SoldItem();
-                soldItem.setItemName(item.getItemName());
-                soldItem.setItemPrice(item.getItemPrice());
-                soldItem.setItemQuantity(item.getItemQuantity());
-                soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
-                soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
-                soldItemRepository.save(soldItem);
-            }
-
-        }*/
-
-/*        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-
-        LastUpdate lastUpdate = lastUpdateRepository.getLastUpdateByUsername(name);
-        lastUpdate.setTimestamp(dtf.format(now));
-        lastUpdate.setCount(helloCashData.getCount());
-        lastUpdate.setLimit(helloCashData.getLimit());
-        lastUpdate.setOffset(helloCashData.getOffset());
-        lastUpdateRepository.save(lastUpdate);*/
-
     }
-
 }

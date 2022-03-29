@@ -14,8 +14,5 @@ public class LastUpdate {
     private String id;
     private String username;
     private String timestamp;
-    private String count;
-    private Integer limit;
-    private Integer offset;
 
 }
