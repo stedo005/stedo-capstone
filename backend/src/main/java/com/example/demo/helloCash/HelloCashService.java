@@ -3,6 +3,7 @@ package com.example.demo.helloCash;
 import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
+import com.example.demo.lastUpdate.LastUpdate;
 import com.example.demo.lastUpdate.LastUpdateRepository;
 import com.example.demo.soldItems.SoldItem;
 import com.example.demo.soldItems.SoldItemRepository;
@@ -15,6 +16,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +53,16 @@ public class HelloCashService {
             }
 
         }
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        LastUpdate lastUpdate = new LastUpdate();
+        lastUpdate.setTimestamp(dtf.format(now));
+        lastUpdate.setCount(helloCashData.getCount());
+        lastUpdate.setLimit(helloCashData.getLimit());
+        lastUpdate.setOffset(helloCashData.getOffset());
+        lastUpdateRepository.save(lastUpdate);
 
     }
 
