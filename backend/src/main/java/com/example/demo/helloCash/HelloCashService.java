@@ -30,7 +30,7 @@ public class HelloCashService {
     @Value("${hello-cash.username}") String username;
     @Value("${hello-cash.password}") String password;
 
-    public void addSoldItem() {
+    public void addSoldItem(String name) {
 
         String url = "https://api.hellocash.business/api/v1/invoices?limit=5&offset=1&search=&dateFrom=&dateTo=&mode=&showDetails=true";
 
@@ -40,6 +40,8 @@ public class HelloCashService {
         ResponseEntity<String> response = new RestTemplate().exchange(url, HttpMethod.GET, request, String.class);
         String json = response.getBody();
         HelloCashData helloCashData = new Gson().fromJson(json, HelloCashData.class);
+
+
 
         for(HelloCashInvoice invoice : helloCashData.getInvoices()) {
             for(HelloCashItem item : invoice.getItems()) {
@@ -57,7 +59,7 @@ public class HelloCashService {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
-        LastUpdate lastUpdate = new LastUpdate();
+        LastUpdate lastUpdate = lastUpdateRepository.getLastUpdateByUsername(name);
         lastUpdate.setTimestamp(dtf.format(now));
         lastUpdate.setCount(helloCashData.getCount());
         lastUpdate.setLimit(helloCashData.getLimit());

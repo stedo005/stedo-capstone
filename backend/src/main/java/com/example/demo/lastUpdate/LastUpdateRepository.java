@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LastUpdateRepository extends MongoRepository<LastUpdate, String> {
+    LastUpdate getLastUpdateByUsername(String username);
 }
