@@ -14,9 +14,9 @@ public class HelloCashController {
     private final HelloCashService helloCashService;
 
     @GetMapping("/{username}")
-    public void getDataFromHelloCash(@PathVariable String username) {
+    public String getDataFromHelloCash(@PathVariable String username) {
 
-        helloCashService.addSoldItem(username);
+        return helloCashService.addSoldItem(username);
 
     }
 

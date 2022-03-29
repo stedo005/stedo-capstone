@@ -27,49 +27,77 @@ public class HelloCashService {
     private final SoldItemRepository soldItemRepository;
     private final LastUpdateRepository lastUpdateRepository;
 
-    @Value("${hello-cash.username}") String username;
-    @Value("${hello-cash.password}") String password;
+    @Value("${hello-cash.username}")
+    String username;
+    @Value("${hello-cash.password}")
+    String password;
 
-    public void addSoldItem(String name) {
+    public String addSoldItem(String name) {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDateTime now = LocalDateTime.now();
 
         LastUpdate lastUpdate = lastUpdateRepository.getLastUpdateByUsername(name);
+
         String dateFrom = lastUpdate.getTimestamp();
         String dateTo = dtf.format(now);
 
-        if(dateFrom.equals(dateTo)){
-            dateFrom = dtf.format(now.minusDays(1L));
-            dateTo = dtf.format(now.minusDays(1L));
-        } else {
-            dateTo = dtf.format(now.minusDays(1L));
-        }
-        lastUpdate.setTimestamp(dtf.format(now));
+        lastUpdate.setTimestamp(dateTo);
         lastUpdateRepository.save(lastUpdate);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(username, password);
-        HttpEntity<Void> request = new HttpEntity<>(headers);
-        ResponseEntity<String> responseCheckCount = new RestTemplate()
-                .exchange(
-                        "https://api.hellocash.business/api/v1/invoices?limit=1&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
-                        HttpMethod.GET,
-                        request,
-                        String.class
-                );
-        String jsonCheckCount = responseCheckCount.getBody();
-        HelloCashData dataCheckCount = new Gson().fromJson(jsonCheckCount, HelloCashData.class);
+        if (dateFrom.equals(dateTo)) {
 
-        int count = Integer.parseInt(dataCheckCount.getCount());
+            return "Daten sind aktuell!";
 
-        if(count > 1000) {
-            int offset = (count/1000) + 1;
+        } else {
 
-            for (int i = offset; i >= 1 ; i--) {
+            dateTo = dtf.format(now.minusDays(1L));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBasicAuth(username, password);
+            HttpEntity<Void> request = new HttpEntity<>(headers);
+            ResponseEntity<String> responseCheckCount = new RestTemplate()
+                    .exchange(
+                            "https://api.hellocash.business/api/v1/invoices?limit=1&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
+                            HttpMethod.GET,
+                            request,
+                            String.class
+                    );
+            String jsonCheckCount = responseCheckCount.getBody();
+            HelloCashData dataCheckCount = new Gson().fromJson(jsonCheckCount, HelloCashData.class);
+
+            int count = Integer.parseInt(dataCheckCount.getCount());
+
+            if (count > 1000) {
+                int offset = (count / 1000) + 1;
+
+                for (int i = offset; i >= 1; i--) {
+                    ResponseEntity<String> responseForDatabase = new RestTemplate()
+                            .exchange(
+                                    "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=" + i + "&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
+                                    HttpMethod.GET,
+                                    request,
+                                    String.class
+                            );
+                    String jsonForDatabase = responseForDatabase.getBody();
+                    HelloCashData dataForDatabase = new Gson().fromJson(jsonForDatabase, HelloCashData.class);
+
+                    for (HelloCashInvoice invoice : dataForDatabase.getInvoices()) {
+                        for (HelloCashItem item : invoice.getItems()) {
+                            SoldItem soldItem = new SoldItem();
+                            soldItem.setItemName(item.getItemName());
+                            soldItem.setItemPrice(item.getItemPrice());
+                            soldItem.setItemQuantity(item.getItemQuantity());
+                            soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
+                            soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
+                            soldItemRepository.save(soldItem);
+                        }
+                    }
+                }
+            } else {
                 ResponseEntity<String> responseForDatabase = new RestTemplate()
                         .exchange(
-                                "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=" + i + "&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
+                                "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
                                 HttpMethod.GET,
                                 request,
                                 String.class
@@ -77,7 +105,7 @@ public class HelloCashService {
                 String jsonForDatabase = responseForDatabase.getBody();
                 HelloCashData dataForDatabase = new Gson().fromJson(jsonForDatabase, HelloCashData.class);
 
-                for(HelloCashInvoice invoice : dataForDatabase.getInvoices()) {
+                for (HelloCashInvoice invoice : dataForDatabase.getInvoices()) {
                     for (HelloCashItem item : invoice.getItems()) {
                         SoldItem soldItem = new SoldItem();
                         soldItem.setItemName(item.getItemName());
@@ -89,28 +117,7 @@ public class HelloCashService {
                     }
                 }
             }
-        } else {
-            ResponseEntity<String> responseForDatabase = new RestTemplate()
-                    .exchange(
-                            "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
-                            HttpMethod.GET,
-                            request,
-                            String.class
-                    );
-            String jsonForDatabase = responseForDatabase.getBody();
-            HelloCashData dataForDatabase = new Gson().fromJson(jsonForDatabase, HelloCashData.class);
-
-            for(HelloCashInvoice invoice : dataForDatabase.getInvoices()) {
-                for (HelloCashItem item : invoice.getItems()) {
-                    SoldItem soldItem = new SoldItem();
-                    soldItem.setItemName(item.getItemName());
-                    soldItem.setItemPrice(item.getItemPrice());
-                    soldItem.setItemQuantity(item.getItemQuantity());
-                    soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
-                    soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
-                    soldItemRepository.save(soldItem);
-                }
-            }
+            return "Aktualisiert!";
         }
     }
 }
