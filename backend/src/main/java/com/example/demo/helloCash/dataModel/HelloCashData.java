@@ -10,6 +10,7 @@ public class HelloCashData {
 
     private List<HelloCashInvoice> invoices = new ArrayList<>();
     private String count;
+    private Integer limit;
     private Integer offset;
 
 }

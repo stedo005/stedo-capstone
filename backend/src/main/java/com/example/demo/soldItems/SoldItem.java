@@ -1,4 +1,4 @@
-package com.example.demo.helloCash;
+package com.example.demo.soldItems;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
