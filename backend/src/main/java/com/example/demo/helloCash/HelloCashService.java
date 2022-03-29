@@ -38,8 +38,11 @@ public class HelloCashService {
         LastUpdate lastUpdate = lastUpdateRepository.getLastUpdateByUsername(name);
         String dateFrom = lastUpdate.getTimestamp();
         String dateTo = dtf.format(now);
-        if(dateTo.equals(dateFrom)){
+
+        if(dateFrom.equals(dateTo)){
             dateFrom = dtf.format(now.minusDays(1L));
+            dateTo = dtf.format(now.minusDays(1L));
+        } else {
             dateTo = dtf.format(now.minusDays(1L));
         }
         lastUpdate.setTimestamp(dtf.format(now));
