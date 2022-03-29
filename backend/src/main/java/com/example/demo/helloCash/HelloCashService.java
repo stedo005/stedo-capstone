@@ -60,7 +60,7 @@ public class HelloCashService {
             for (int i = offset; i >= 1 ; i--) {
                 ResponseEntity<String> responseForDatabase = new RestTemplate()
                         .exchange(
-                                "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=" + i + "&search=&dateFrom=&dateTo=&mode=&showDetails=true",
+                                "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=" + i + "&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
                                 HttpMethod.GET,
                                 request,
                                 String.class
@@ -83,7 +83,7 @@ public class HelloCashService {
         } else {
             ResponseEntity<String> responseForDatabase = new RestTemplate()
                     .exchange(
-                            "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=&search=&dateFrom=&dateTo=&mode=&showDetails=true",
+                            "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
                             HttpMethod.GET,
                             request,
                             String.class
