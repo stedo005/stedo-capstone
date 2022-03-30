@@ -91,7 +91,7 @@ public class HelloCashService {
                         );
                 makeSoldItems(responseForDatabase);
             }
-            return "Aktualisiert!";
+            return "Daten wurden aktualisiert!";
         }
     }
 
