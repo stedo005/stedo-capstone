@@ -3,8 +3,8 @@ package com.example.demo.helloCash;
 import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
-import com.example.demo.lastUpdate.LastUpdate;
-import com.example.demo.lastUpdate.LastUpdateRepository;
+import com.example.demo.user.UserData;
+import com.example.demo.user.UserRepository;
 import com.example.demo.soldItems.SoldItem;
 import com.example.demo.soldItems.SoldItemRepository;
 import com.google.gson.Gson;
@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 public class HelloCashService {
 
     private final SoldItemRepository soldItemRepository;
-    private final LastUpdateRepository lastUpdateRepository;
+    private final UserRepository userRepository;
 
     @Value("${hello-cash.username}")
     String username;
@@ -37,13 +37,13 @@ public class HelloCashService {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDateTime now = LocalDateTime.now();
 
-        LastUpdate lastUpdate = lastUpdateRepository.getLastUpdateByUsername(name);
+        UserData userData = userRepository.getLastUpdateByUsername(name);
 
-        String dateFrom = lastUpdate.getTimestamp();
+        String dateFrom = userData.getLastUpdate();
         String dateTo = dtf.format(now);
 
-        lastUpdate.setTimestamp(dateTo);
-        lastUpdateRepository.save(lastUpdate);
+        userData.setLastUpdate(dateTo);
+        userRepository.save(userData);
 
         if (dateFrom.equals(dateTo)) {
 
