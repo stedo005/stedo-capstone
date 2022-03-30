@@ -19,39 +19,22 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class HelloCashService {
 
-    private final SoldItemRepository soldItemRepository;
-    private final UserRepository userRepository;
 
     @Value("${hello-cash.username}")
     String username;
     @Value("${hello-cash.password}")
     String password;
 
-    public String addSoldItem(String name) {
+    public List<HelloCashData> getInvoicesfromHelloCashApi(String dateFrom, String dateTo) {
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
-        LocalDateTime now = LocalDateTime.now();
-
-        UserData userData = userRepository.getLastUpdateByUsername(name);
-
-        String dateFrom = userData.getLastUpdate();
-        String dateTo = dtf.format(now);
-
-        userData.setLastUpdate(dateTo);
-        userRepository.save(userData);
-
-        if (dateFrom.equals(dateTo)) {
-
-            return "Daten sind aktuell!";
-
-        } else {
-
-            dateTo = dtf.format(now.minusDays(1L));
+        List<HelloCashData> soldItems = new ArrayList<>();
 
             HttpHeaders headers = new HttpHeaders();
             headers.setBasicAuth(username, password);
@@ -79,7 +62,8 @@ public class HelloCashService {
                                     request,
                                     String.class
                             );
-                    makeSoldItems(responseForDatabase);
+                    HelloCashData helloCashData = new Gson().fromJson(jsonCheckCount, HelloCashData.class);
+                    soldItems.add(helloCashData);
                 }
             } else {
                 ResponseEntity<String> responseForDatabase = new RestTemplate()
@@ -89,26 +73,11 @@ public class HelloCashService {
                                 request,
                                 String.class
                         );
-                makeSoldItems(responseForDatabase);
+                HelloCashData helloCashData = new Gson().fromJson(jsonCheckCount, HelloCashData.class);
+                soldItems.add(helloCashData);
             }
-            return "Daten wurden aktualisiert!";
-        }
+            return soldItems;
+
     }
 
-    private void makeSoldItems(ResponseEntity<String> responseForDatabase) {
-        String jsonForDatabase = responseForDatabase.getBody();
-        HelloCashData dataForDatabase = new Gson().fromJson(jsonForDatabase, HelloCashData.class);
-
-        for (HelloCashInvoice invoice : dataForDatabase.getInvoices()) {
-            for (HelloCashItem item : invoice.getItems()) {
-                SoldItem soldItem = new SoldItem();
-                soldItem.setItemName(item.getItemName());
-                soldItem.setItemPrice(item.getItemPrice());
-                soldItem.setItemQuantity(item.getItemQuantity());
-                soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
-                soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
-                soldItemRepository.save(soldItem);
-            }
-        }
-    }
 }
