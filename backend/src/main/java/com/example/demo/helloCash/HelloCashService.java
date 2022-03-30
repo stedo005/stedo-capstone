@@ -3,7 +3,7 @@ package com.example.demo.helloCash;
 import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
-import com.example.demo.user.User;
+import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
 import com.example.demo.soldItems.SoldItem;
 import com.example.demo.soldItems.SoldItemRepository;
@@ -37,13 +37,13 @@ public class HelloCashService {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDateTime now = LocalDateTime.now();
 
-        User user = userRepository.getLastUpdateByUsername(name);
+        UserData userData = userRepository.getLastUpdateByUsername(name);
 
-        String dateFrom = user.getLastUpdate();
+        String dateFrom = userData.getLastUpdate();
         String dateTo = dtf.format(now);
 
-        user.setLastUpdate(dateTo);
-        userRepository.save(user);
+        userData.setLastUpdate(dateTo);
+        userRepository.save(userData);
 
         if (dateFrom.equals(dateTo)) {
 

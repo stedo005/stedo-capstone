@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "lastUpdate")
+@Document(collection = "users")
 @Data
 @NoArgsConstructor
-public class User {
+public class UserData {
 
     @Id
     private String id;

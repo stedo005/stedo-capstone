@@ -9,4 +9,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+
+    public void createUser(UserData userData) {
+        userRepository.save(userData);
+    }
 }
