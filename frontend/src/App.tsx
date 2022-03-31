@@ -1,12 +1,15 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import {Link, Outlet} from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 
 function App() {
+
+    const {t} = useTranslation()
 
     return (
         <div>
             <div>
-                Hallo
+                <Link to={"login"}><button>{t("zum Login")}</button></Link>
             </div>
             <Outlet />
         </div>
