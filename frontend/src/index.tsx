@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from './Login/Login';
 import Logout from './Login/Logout';
+import Overview from "./Main/Overview";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.render(
                     <Route path="/" element={<App />}>
                         <Route path={"/login"} element={<Login />}/>
                         <Route path={"/logout"} element={<Logout />}/>
+                        <Route path={"/overview"} element={<Overview />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
