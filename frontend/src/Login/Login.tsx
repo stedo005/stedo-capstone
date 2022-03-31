@@ -27,9 +27,12 @@ const Login = () => {
                 }
                 return response.text()
             })
-            .then(responseBody => localStorage.setItem("token", responseBody))
-            setUsername("")
-            setPassword("")
+            .then(responseBody => {
+                localStorage.setItem("token", responseBody)
+                localStorage.setItem("username", username)
+                setUsername("")
+                setPassword("")
+            })
 
     }
 
