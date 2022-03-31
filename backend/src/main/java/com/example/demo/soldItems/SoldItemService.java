@@ -6,6 +6,9 @@ import com.example.demo.helloCash.dataModel.HelloCashItem;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +23,7 @@ public class SoldItemService {
     private final HelloCashService helloCashService;
     private final UserRepository userRepository;
 
-    public void saveSoldItems(String name) {
+    public ResponseEntity<String> saveSoldItems(String name) {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDateTime now = LocalDateTime.now();
@@ -43,9 +46,10 @@ public class SoldItemService {
                     .flatMap(invoice -> invoice.getItems().stream().map(item -> makeSoldItem(item, invoice)))
                     .toList();
             soldItemRepository.saveAll(soldItems);
+            return ResponseEntity.status(201).body("Database refreshed");
 
         }
-
+        return ResponseEntity.status(304).body("nothing to refresh");
     }
 
     private SoldItem makeSoldItem(HelloCashItem item, HelloCashInvoice invoice) {
