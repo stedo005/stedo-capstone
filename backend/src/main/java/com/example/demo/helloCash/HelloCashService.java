@@ -18,9 +18,7 @@ public class HelloCashService {
 
     private final RestTemplate restTemplate;
 
-
     private final String username;
-
     private final String password;
 
     public HelloCashService(RestTemplate restTemplate, @Value("${hello-cash.username}") String username, @Value("${hello-cash.password}") String password) {
@@ -49,7 +47,7 @@ public class HelloCashService {
         int count = Integer.parseInt(dataCheckCount.getCount());
 
         if (count > 1000) {
-            int offset = (count / 1000) + 1;
+            int offset = ((count-1) / 1000) + 1;
 
             for (int i = offset; i >= 1; i--) {
                 ResponseEntity<String> responseForDatabase = restTemplate
