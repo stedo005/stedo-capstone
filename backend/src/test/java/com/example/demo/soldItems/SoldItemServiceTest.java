@@ -6,11 +6,16 @@ import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 class SoldItemServiceTest {
 
@@ -18,9 +23,9 @@ class SoldItemServiceTest {
     @DisplayName("should create item")
     void test1() {
 
-        SoldItemRepository soldItemRepository = Mockito.mock(SoldItemRepository.class);
-        HelloCashService helloCashService = Mockito.mock(HelloCashService.class);
-        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
+        HelloCashService helloCashService = mock(HelloCashService.class);
+        UserRepository userRepository = mock(UserRepository.class);
 
         HelloCashItem item1 = new HelloCashItem();
         HelloCashItem item2 = new HelloCashItem();
@@ -57,6 +62,8 @@ class SoldItemServiceTest {
         helloCashData2.setLimit(10);
         helloCashData2.setOffset(1);
 
+        List<HelloCashData> helloCashDataList = List.of(helloCashData1, helloCashData2);
+
         List<SoldItem> expectedItems = List.of(
                 new SoldItem(null, "22", "1", "blume", "1.0", "1.000"),
                 new SoldItem(null, "22", "1", "topf", "2.0", "2.000"),
@@ -68,18 +75,47 @@ class SoldItemServiceTest {
                 new SoldItem(null, "23", "2", "topf", "2.0", "2.000")
         );
 
-        List<HelloCashData> helloCashDataList = List.of(helloCashData1, helloCashData2);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        String dateTo = dtf.format(now);
 
-        Mockito.when(userRepository.getLastUpdateByUsername("Steve"))
+        UserData userDataToSave = new UserData("1", "Steve", "12345", dateTo);
+
+        when(userRepository.save(userDataToSave)).thenReturn(userDataToSave);
+
+        when(userRepository.getLastUpdateByUsername("Steve"))
                 .thenReturn(new UserData("1","Steve","12345","2022-03-03"));
 
-        Mockito.when(helloCashService.getInvoicesFromHelloCashApi(Mockito.eq("2022-03-03"), Mockito.any()))
+        when(helloCashService.getInvoicesFromHelloCashApi(eq("2022-03-03"), any()))
                 .thenReturn(helloCashDataList);
 
         SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository);
         soldItemService.saveSoldItems("Steve");
 
-        Mockito.verify(soldItemRepository).saveAll(expectedItems);
+        verify(userRepository).save(userDataToSave);
+        verify(soldItemRepository).saveAll(expectedItems);
+
+    }
+
+    @Test
+    @DisplayName("should not save Data to Database")
+    void test2 () {
+
+        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
+        HelloCashService helloCashService = mock(HelloCashService.class);
+        UserRepository userRepository = mock(UserRepository.class);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        String dateFrom = dtf.format(now);
+
+        when(userRepository.getLastUpdateByUsername("Steve"))
+                .thenReturn(new UserData("1","Steve","12345", dateFrom));
+
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository);
+        soldItemService.saveSoldItems("Steve");
+
+        verifyNoInteractions(soldItemRepository);
 
     }
 

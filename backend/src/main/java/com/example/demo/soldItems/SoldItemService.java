@@ -37,7 +37,8 @@ public class SoldItemService {
 
             dateTo = dtf.format(now.minusDays(1L));
 
-            List<SoldItem> soldItems = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo).stream()
+            List<SoldItem> soldItems = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo)
+                    .stream()
                     .flatMap(helloCashData -> helloCashData.getInvoices().stream())
                     .flatMap(invoice -> invoice.getItems().stream().map(item -> makeSoldItem(item, invoice)))
                     .toList();
@@ -57,7 +58,6 @@ public class SoldItemService {
                 soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
 
         return soldItem;
-
 
     }
 
