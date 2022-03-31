@@ -188,17 +188,17 @@ class HelloCashServiceTest {
                 "            \"invoice_currency\": \"EUR\",\n" +
                 "            \"invoice_cancellation\": \"0\",\n" +
                 "            \"company\": {\n" +
-                "                \"name\": \"Papillon Creative Floristik Inh. Steffi Kethler\",\n" +
-                "                \"street\": \"Brückentor\",\n" +
-                "                \"houseNumber\": \"8\",\n" +
-                "                \"postalCode\": \"99625\",\n" +
-                "                \"city\": \"Kölleda\",\n" +
-                "                \"email\": \"info@blumen-papillon.de\",\n" +
-                "                \"website\": \"www.blumen-papillon.de\",\n" +
-                "                \"phoneNumber\": \"03635 401703\",\n" +
-                "                \"companyRegister\": \"DE203291575\",\n" +
-                "                \"iban\": \"DE43820510000600024482\",\n" +
-                "                \"bic\": \"HELADEF1WEM\"\n" +
+                "                \"name\": \"P\",\n" +
+                "                \"street\": \"B\",\n" +
+                "                \"houseNumber\": \"3\",\n" +
+                "                \"postalCode\": \"9\",\n" +
+                "                \"city\": \"K\",\n" +
+                "                \"email\": \"i\",\n" +
+                "                \"website\": \"w\",\n" +
+                "                \"phoneNumber\": \"0\",\n" +
+                "                \"companyRegister\": \"D\",\n" +
+                "                \"iban\": \"D\",\n" +
+                "                \"bic\": \"H\"\n" +
                 "            },\n" +
                 "            \"items\": [\n" +
                 "                {\n" +
@@ -238,17 +238,17 @@ class HelloCashServiceTest {
                 "            \"invoice_currency\": \"EUR\",\n" +
                 "            \"invoice_cancellation\": \"0\",\n" +
                 "            \"company\": {\n" +
-                "                \"name\": \"Papillon Creative Floristik Inh. Steffi Kethler\",\n" +
-                "                \"street\": \"Brückentor\",\n" +
+                "                \"name\": \"P\",\n" +
+                "                \"street\": \"B\",\n" +
                 "                \"houseNumber\": \"8\",\n" +
-                "                \"postalCode\": \"99625\",\n" +
-                "                \"city\": \"Kölleda\",\n" +
-                "                \"email\": \"info@blumen-papillon.de\",\n" +
-                "                \"website\": \"www.blumen-papillon.de\",\n" +
-                "                \"phoneNumber\": \"03635 401703\",\n" +
-                "                \"companyRegister\": \"DE203291575\",\n" +
-                "                \"iban\": \"DE43820510000600024482\",\n" +
-                "                \"bic\": \"HELADEF1WEM\"\n" +
+                "                \"postalCode\": \"9\",\n" +
+                "                \"city\": \"K\",\n" +
+                "                \"email\": \"i\",\n" +
+                "                \"website\": \"w\",\n" +
+                "                \"phoneNumber\": \"0\",\n" +
+                "                \"companyRegister\": \"D\",\n" +
+                "                \"iban\": \"D\",\n" +
+                "                \"bic\": \"H\"\n" +
                 "            },\n" +
                 "            \"items\": [\n" +
                 "                {\n" +
