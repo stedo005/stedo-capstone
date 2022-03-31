@@ -2,7 +2,6 @@ package com.example.demo.helloCash;
 
 import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.google.gson.Gson;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,14 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class HelloCashService {
 
+    private final RestTemplate restTemplate;
 
-    @Value("${hello-cash.username}")
-    String username;
-    @Value("${hello-cash.password}")
-    String password;
+
+    private final String username;
+
+    private final String password;
+
+    public HelloCashService(RestTemplate restTemplate, @Value("${hello-cash.username}") String username, @Value("${hello-cash.password}") String password) {
+        this.restTemplate = restTemplate;
+        this.username = username;
+        this.password = password;
+    }
 
     public List<HelloCashData> getInvoicesFromHelloCashApi(String dateFrom, String dateTo) {
 
@@ -31,7 +36,7 @@ public class HelloCashService {
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(username, password);
         HttpEntity<Void> request = new HttpEntity<>(headers);
-        ResponseEntity<String> responseCheckCount = new RestTemplate()
+        ResponseEntity<String> responseCheckCount = restTemplate
                 .exchange(
                         "https://api.hellocash.business/api/v1/invoices?limit=1&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
                         HttpMethod.GET,
@@ -47,7 +52,7 @@ public class HelloCashService {
             int offset = (count / 1000) + 1;
 
             for (int i = offset; i >= 1; i--) {
-                ResponseEntity<String> responseForDatabase = new RestTemplate()
+                ResponseEntity<String> responseForDatabase = restTemplate
                         .exchange(
                                 "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=" + i + "&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
                                 HttpMethod.GET,
@@ -58,7 +63,7 @@ public class HelloCashService {
                 soldItems.add(helloCashData);
             }
         } else {
-            ResponseEntity<String> responseForDatabase = new RestTemplate()
+            ResponseEntity<String> responseForDatabase = restTemplate
                     .exchange(
                             "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
                             HttpMethod.GET,
