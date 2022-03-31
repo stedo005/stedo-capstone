@@ -6,10 +6,15 @@ function App() {
 
     const {t} = useTranslation()
 
+    const logout = () => {
+        localStorage.removeItem("token")
+    }
+
     return (
         <div>
             <div>
                 <Link to={"login"}><button>{t("zum Login")}</button></Link>
+                <Link to={"logout"}><button onClick={logout}>{t("Logout")}</button></Link>
             </div>
             <Outlet />
         </div>

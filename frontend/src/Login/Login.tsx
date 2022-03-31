@@ -1,7 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
 
-
 const Login = () => {
 
     const {t} = useTranslation()
@@ -29,6 +28,9 @@ const Login = () => {
                 return response.text()
             })
             .then(responseBody => localStorage.setItem("token", responseBody))
+            setUsername("")
+            setPassword("")
+
     }
 
     return (
