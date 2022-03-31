@@ -1,6 +1,7 @@
 package com.example.demo.helloCash.dataModel;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;

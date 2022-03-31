@@ -1,5 +1,6 @@
 package com.example.demo.helloCash;
 
+import com.example.demo.soldItems.SoldItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class HelloCashController {
 
-    private final HelloCashService helloCashService;
+    private final SoldItemService soldItemService;
 
     @GetMapping("/{username}")
-    public String getDataFromHelloCash(@PathVariable String username) {
+    public void getDataFromHelloCash(@PathVariable String username) {
 
-        return helloCashService.addSoldItem(username);
+        soldItemService.saveSoldItems(username);
 
     }
 
