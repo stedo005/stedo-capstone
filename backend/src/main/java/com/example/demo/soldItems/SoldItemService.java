@@ -50,7 +50,7 @@ public class SoldItemService {
         return ResponseEntity.status(304).body("nothing to refresh");
     }
 
-    public List<String> getAllNames() {
+    public List<String> getAllItemNames() {
         return soldItemRepository.findAll().stream()
                 .map(soldItem -> soldItem.getItemName())
                 .distinct()

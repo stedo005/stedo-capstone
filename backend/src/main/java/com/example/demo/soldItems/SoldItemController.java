@@ -15,9 +15,9 @@ public class SoldItemController {
     private final SoldItemService soldItemService;
 
     @GetMapping
-    public List<String> getNamesOfAllItems () {
+    public List<String> getAllItemNames () {
 
-        return soldItemService.getAllNames();
+        return soldItemService.getAllItemNames();
 
     }
 
