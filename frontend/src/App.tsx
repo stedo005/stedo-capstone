@@ -16,7 +16,9 @@ function App() {
             <div>
                 <Link to={"login"}><button>{t("zum Login")}</button></Link>
                 <Link to={"logout"}><button onClick={logout}>{t("Logout")}</button></Link>
-            </div><br/><br/>
+                <Link to={"overview"}><button>{t("Übersicht")}</button></Link>
+                <Link to={"categories"}><button>{t("Kategorien")}</button></Link>
+            </div><br/>
             <Outlet />
         </div>
     );
