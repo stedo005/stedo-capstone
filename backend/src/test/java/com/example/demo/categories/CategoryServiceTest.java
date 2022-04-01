@@ -25,7 +25,7 @@ class CategoryServiceTest {
         when(categoryRepository.save(categoryToCreate)).thenReturn(categoryCreated);
 
         CategoryService categoryService = new CategoryService(categoryRepository);
-        ResponseEntity<Void> actual = categoryService.createCategory(categoryToCreate);
+        ResponseEntity<Category> actual = categoryService.createCategory(categoryToCreate);
 
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.valueOf(201));
         verify(categoryRepository).save(categoryToCreate);
@@ -47,7 +47,7 @@ class CategoryServiceTest {
         when(categoryRepository.existsByCategoryName("test")).thenReturn(true);
 
         CategoryService categoryService = new CategoryService(categoryRepository);
-        ResponseEntity<Void> actual = categoryService.createCategory(categoryToCreate);
+        ResponseEntity<Category> actual = categoryService.createCategory(categoryToCreate);
 
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.valueOf(409));
 
