@@ -82,7 +82,7 @@ class SoldItemServiceTest {
         when(userRepository.save(userDataToSave)).thenReturn(userDataToSave);
 
         when(userRepository.getLastUpdateByUsername("Steve"))
-                .thenReturn(new UserData("1","Steve","12345","2022-03-03"));
+                .thenReturn(new UserData("1", "Steve", "12345", "2022-03-03"));
 
         when(helloCashService.getInvoicesFromHelloCashApi(eq("2022-03-03"), any()))
                 .thenReturn(helloCashDataList);
@@ -97,7 +97,7 @@ class SoldItemServiceTest {
 
     @Test
     @DisplayName("should not save Data to Database")
-    void test2 () {
+    void test2() {
 
         SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
         HelloCashService helloCashService = mock(HelloCashService.class);
@@ -108,12 +108,27 @@ class SoldItemServiceTest {
         String dateFrom = dtf.format(now);
 
         when(userRepository.getLastUpdateByUsername("Steve"))
-                .thenReturn(new UserData("1","Steve","12345", dateFrom));
+                .thenReturn(new UserData("1", "Steve", "12345", dateFrom));
 
         SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository);
         soldItemService.saveSoldItems("Steve");
 
         verifyNoInteractions(soldItemRepository);
+
+    }
+
+    @Test
+    @DisplayName("verify that soldItemRepository.findAll() is called")
+    void test3() {
+        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
+        HelloCashService helloCashService = mock(HelloCashService.class);
+        UserRepository userRepository = mock(UserRepository.class);
+
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository);
+
+        soldItemService.getAllItemNames();
+
+        verify(soldItemRepository).findAll();
 
     }
 

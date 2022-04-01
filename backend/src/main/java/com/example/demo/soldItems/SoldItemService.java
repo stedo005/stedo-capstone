@@ -50,6 +50,14 @@ public class SoldItemService {
         return ResponseEntity.status(304).body("nothing to refresh");
     }
 
+    public List<String> getAllItemNames() {
+        return soldItemRepository.findAll().stream()
+                .map(soldItem -> soldItem.getItemName())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
     private SoldItem makeSoldItem(HelloCashItem item, HelloCashInvoice invoice) {
 
                 SoldItem soldItem = new SoldItem();
