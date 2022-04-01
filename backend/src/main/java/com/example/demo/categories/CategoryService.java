@@ -9,9 +9,9 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public Category createCategory () {
+    public Category createCategory (Category category) {
 
-        return null;
+        return categoryRepository.save(category);
 
     }
 
