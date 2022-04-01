@@ -1,5 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
 
@@ -8,6 +9,7 @@ const Login = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [errMsg, setErrMsg] = useState("")
+    const navigate = useNavigate()
 
     const login = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/login`, {
@@ -27,9 +29,13 @@ const Login = () => {
                 }
                 return response.text()
             })
-            .then(responseBody => localStorage.setItem("token", responseBody))
-            setUsername("")
-            setPassword("")
+            .then(responseBody => {
+                localStorage.setItem("token", responseBody)
+                localStorage.setItem("username", username)
+                setUsername("")
+                setPassword("")
+                navigate("../overview")
+            })
 
     }
 

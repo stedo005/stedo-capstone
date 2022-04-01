@@ -8,6 +8,7 @@ function App() {
 
     const logout = () => {
         localStorage.removeItem("token")
+        localStorage.removeItem("username")
     }
 
     return (
@@ -15,7 +16,7 @@ function App() {
             <div>
                 <Link to={"login"}><button>{t("zum Login")}</button></Link>
                 <Link to={"logout"}><button onClick={logout}>{t("Logout")}</button></Link>
-            </div>
+            </div><br/><br/>
             <Outlet />
         </div>
     );
