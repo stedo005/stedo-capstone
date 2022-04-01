@@ -15,9 +15,9 @@ public class SoldItemController {
     private final SoldItemService soldItemService;
 
     @GetMapping
-    public List<> getNamesOfAllItems () {
+    public List<SoldItemDTO> getNamesOfAllItems () {
 
-
+        return null;
 
     }
 
