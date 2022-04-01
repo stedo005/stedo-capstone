@@ -32,9 +32,7 @@ const Overview = () => {
     return (
         <div>
             <button onClick={refreshDatabase}>{t("Datenbank aktualisieren")}</button><br/><br/>
-            <div>
-                {itemNames.map(n => <div key={n}><input id={n} type={"checkbox"} value={n}/><label htmlFor={n}> {n}</label></div>)}
-            </div>
+            {itemNames.map(n => <div key={n}><input id={n} type={"checkbox"} value={n}/><label htmlFor={n}> {n}</label></div>)}
         </div>
     )
 
