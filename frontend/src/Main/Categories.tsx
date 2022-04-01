@@ -1,11 +1,14 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
+import {Category} from "../Models/model";
 
 const Categories = () => {
 
     const {t} = useTranslation()
 
     const [categoryName, setCategoryName] = useState("")
+    const [categories, setCategories] = useState([] as Array<Category>)
+
     const [errMsg, setErrMsg] = useState("")
 
     useEffect(() => {
@@ -13,8 +16,19 @@ const Categories = () => {
         return () => clearTimeout(timeoutId);
     }, [errMsg]);
 
-    const createCategory = () => {
+    const fetchCategories = () => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(response => {return response.json()})
+            .then((responseBody: Array<Category>) => setCategories(responseBody))
+    }
 
+    const createCategory = () => {
 
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
             method: "POST",
@@ -34,10 +48,23 @@ const Categories = () => {
                 }
             })
             .then(() => setCategoryName(""))
+            .then(fetchCategories)
             .catch((e: Error) => {
                 setErrMsg(e.message)
             })
     }
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(response => {return response.json()})
+            .then((responseBody: Array<Category>) => setCategories(responseBody))
+    }, [])
 
     return (
 
@@ -45,7 +72,8 @@ const Categories = () => {
             <input type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
                    onChange={event => setCategoryName(event.target.value)}/>
             <button onClick={createCategory}>{t("neue Katergorie erstellen")}</button>
-            {errMsg}
+            {errMsg}<br/><br/>
+            <div>{categories.map(e => <div key={e.id}>{e.categoryName}</div>)}</div>
         </div>
 
     )
