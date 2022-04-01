@@ -1,10 +1,11 @@
-package com.example.demo.soldItems;
+package com.example.demo.categories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SoldItemRepository extends MongoRepository<SoldItem, String> {
+public interface CategoryRepository extends MongoRepository<Category, String> {
+
 
 
 }
