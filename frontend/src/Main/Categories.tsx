@@ -1,6 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {Category} from "../Models/model";
+import {Link} from "react-router-dom";
 
 const Categories = () => {
 
@@ -73,7 +74,7 @@ const Categories = () => {
                    onChange={event => setCategoryName(event.target.value)}/>
             <button onClick={createCategory}>{t("neue Katergorie erstellen")}</button>
             {errMsg}<br/><br/>
-            <div>{categories.map(e => <div key={e.id}>{e.categoryName}</div>)}</div>
+            <div>{categories.map(e => <div key={e.id}><Link to={e.id}>{e.categoryName}</Link></div>)}</div>
         </div>
 
     )
