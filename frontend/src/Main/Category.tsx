@@ -42,6 +42,7 @@ const Category = () => {
                     <input id={n} type={"checkbox"} value={n} onChange={e => test(e.target.value, e.target.checked)}/>
                     <label htmlFor={n}> {n}</label>
                 </div>)}
+                <button>{t("Speichern")}</button>
             </div>
         </div>
 
