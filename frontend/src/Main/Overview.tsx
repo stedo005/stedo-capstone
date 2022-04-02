@@ -1,11 +1,8 @@
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
 
 const Overview = () => {
 
     const {t} = useTranslation()
-
-    const [itemNames, setItemNames] = useState([] as Array<string>)
 
     const refreshDatabase = () => {
 
