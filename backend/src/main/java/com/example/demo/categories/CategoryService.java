@@ -26,6 +26,9 @@ public class CategoryService {
     }
 
     public List<Category> getCategories() {
-        return categoryRepository.findAll();
+
+        return categoryRepository.findAll().stream()
+                .sorted((c1, c2) -> c1.getCategoryName().compareTo(c2.getCategoryName()))
+                .toList();
     }
 }

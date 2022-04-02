@@ -39,10 +39,6 @@ class CategoryServiceTest {
         Category categoryToCreate = new Category();
         categoryToCreate.setCategoryName("test");
 
-        Category categoryCreated = new Category();
-        categoryCreated.setId("1");
-        categoryCreated.setCategoryName("test");
-
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
         when(categoryRepository.existsByCategoryName("test")).thenReturn(true);
 
