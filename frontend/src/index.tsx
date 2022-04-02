@@ -6,6 +6,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from './Login/Login';
 import Logout from './Login/Logout';
 import Overview from "./Main/Overview";
+import Categories from "./Main/Categories";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.render(
                         <Route path={"/login"} element={<Login />}/>
                         <Route path={"/logout"} element={<Logout />}/>
                         <Route path={"/overview"} element={<Overview />} />
+                        <Route path={"/categories"} element={<Categories />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
