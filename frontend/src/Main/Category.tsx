@@ -6,7 +6,7 @@ const Category = () => {
 
     const linkedId = useParams()
     const {t} = useTranslation()
-    const [itemNames, setItemNames] = useState([] as Array<string>)
+    const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const itemInCategory = [] as Array<string>
 
     useEffect(() => {
@@ -19,14 +19,14 @@ const Category = () => {
             .then(response => {
                 return response.json()
             })
-            .then((responseBody: Array<string>) => setItemNames(responseBody))
+            .then((responseBody: Array<string>) => setAllItemNames(responseBody))
     }, [])
 
     const test = (value: string, checked: boolean) => {
 
-        const i = itemNames.indexOf(value)
+        const i = allItemNames.indexOf(value)
         checked
-            ? itemInCategory.push(itemNames[i])
+            ? itemInCategory.push(allItemNames[i])
             : itemInCategory.splice(itemInCategory.indexOf(value),1)
 
         console.log(itemInCategory)
@@ -37,7 +37,7 @@ const Category = () => {
         <div>
             Category mit id: {linkedId.categoryId}<br/><br/>
             <div>
-                {itemNames.map(n =>
+                {allItemNames.map(n =>
                     <div key={n}>
                     <input id={n} type={"checkbox"} value={n} onChange={e => test(e.target.value, e.target.checked)}/>
                     <label htmlFor={n}> {n}</label>

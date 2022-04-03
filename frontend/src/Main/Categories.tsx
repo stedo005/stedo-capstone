@@ -9,6 +9,7 @@ const Categories = () => {
 
     const [categoryName, setCategoryName] = useState("")
     const [categories, setCategories] = useState([] as Array<Category>)
+    const itemsInCategory = [] as Array<string>
 
     const [errMsg, setErrMsg] = useState("")
 
@@ -34,7 +35,8 @@ const Categories = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
             method: "POST",
             body: JSON.stringify({
-                "categoryName": categoryName
+                "categoryName": categoryName,
+                "itemsInCategory": itemsInCategory
             }),
             headers: {
                 "Content-Type": "application/json",
