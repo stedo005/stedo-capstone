@@ -11,7 +11,7 @@ const Category = () => {
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
     const itemsInCategory = [] as Array<string>
-    const savedItems: ArrayLike<string> = category.itemsInCategory
+    const savedItems = category.itemsInCategory
     console.log(savedItems)
 
     useEffect(() => {
