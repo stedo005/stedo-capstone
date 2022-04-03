@@ -1,6 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
+import {ItemInCategory} from "../Models/model";
 
 const Category = () => {
 
@@ -22,11 +23,27 @@ const Category = () => {
             .then((responseBody: Array<string>) => setAllItemNames(responseBody))
     }, [])
 
+    useEffect(() => {
+        let it = [] as Array<ItemInCategory>
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(r => {
+                return r.json()
+            })
+            .then((rb: Array<ItemInCategory>) => it = rb)
+            .then(() => console.log(it))
+    }, [linkedId.categoryId])
+
     const addItemsToCategory = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
             method: "PUT",
             body: JSON.stringify({
                 "id": linkedId.categoryId,
+                "categoryName": "Test",
                 "itemsInCategory": itemsInCategory
             }),
             headers: {
@@ -53,7 +70,7 @@ const Category = () => {
             <div>
                 <button onClick={addItemsToCategory}>{t("Speichern")}</button>
                 {allItemNames.map(n =>
-                    <div key={n}>
+                <div key={n}>
                     <input id={n} type={"checkbox"} value={n} onChange={e => test(e.target.value, e.target.checked)}/>
                     <label htmlFor={n}> {n}</label>
                 </div>)}
