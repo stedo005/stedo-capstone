@@ -1,9 +1,6 @@
 export interface savedCategories {
     id: string
     categoryName: string
-    itemsInCategory: Array<ItemInCategory>
+    itemsInCategory: ArrayLike<string>
 }
 
-export interface ItemInCategory {
-    itemInCategory: string
-}

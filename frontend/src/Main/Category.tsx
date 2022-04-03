@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {ItemInCategory, savedCategories} from "../Models/model";
+import {savedCategories} from "../Models/model";
 
 const Category = () => {
 
@@ -11,7 +11,7 @@ const Category = () => {
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
     const itemsInCategory = [] as Array<string>
-    const savedItems: ArrayLike<ItemInCategory> = category.itemsInCategory
+    const savedItems: ArrayLike<string> = category.itemsInCategory
     console.log(savedItems)
 
     useEffect(() => {

@@ -17,6 +17,6 @@ public class Category {
     @Id
     private String id;
     private String categoryName;
-    private List<ItemInCategory> itemsInCategory;
+    private List<String> itemsInCategory;
 
 }
