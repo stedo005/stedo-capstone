@@ -1,13 +1,15 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {ItemInCategory} from "../Models/model";
+import {savedCategories} from "../Models/model";
 
 const Category = () => {
 
     const linkedId = useParams()
     const {t} = useTranslation()
+
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
+    const [category, setCategory] = useState({} as savedCategories)
     const itemsInCategory = [] as Array<string>
 
     useEffect(() => {
@@ -24,18 +26,16 @@ const Category = () => {
     }, [])
 
     useEffect(() => {
-        let it = [] as Array<ItemInCategory>
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(r => {
-                return r.json()
+            .then(response => {
+                return response.json()
             })
-            .then((rb: Array<ItemInCategory>) => it = rb)
-            .then(() => console.log(it))
+            .then((responseBody: savedCategories) => setCategory(responseBody))
     }, [linkedId.categoryId])
 
     const addItemsToCategory = () => {
@@ -43,7 +43,7 @@ const Category = () => {
             method: "PUT",
             body: JSON.stringify({
                 "id": linkedId.categoryId,
-                "categoryName": "Test",
+                "categoryName": category.categoryName,
                 "itemsInCategory": itemsInCategory
             }),
             headers: {
@@ -66,7 +66,7 @@ const Category = () => {
     return(
 
         <div>
-            Category mit id: {linkedId.categoryId}<br/><br/>
+            {t("Kategorie")} {category.categoryName} mit id: {linkedId.categoryId}<br/><br/>
             <div>
                 <button onClick={addItemsToCategory}>{t("Speichern")}</button>
                 {allItemNames.map(n =>

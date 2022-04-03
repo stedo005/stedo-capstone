@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
-import {Category} from "../Models/model";
+import {savedCategories} from "../Models/model";
 import {Link} from "react-router-dom";
 
 const Categories = () => {
@@ -8,7 +8,7 @@ const Categories = () => {
     const {t} = useTranslation()
 
     const [categoryName, setCategoryName] = useState("")
-    const [categories, setCategories] = useState([] as Array<Category>)
+    const [categories, setCategories] = useState([] as Array<savedCategories>)
     const itemsInCategory = [] as Array<string>
 
     const [errMsg, setErrMsg] = useState("")
@@ -27,7 +27,7 @@ const Categories = () => {
             }
         })
             .then(response => {return response.json()})
-            .then((responseBody: Array<Category>) => setCategories(responseBody))
+            .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
     }
 
     const createCategory = () => {
@@ -66,7 +66,7 @@ const Categories = () => {
             }
         })
             .then(response => {return response.json()})
-            .then((responseBody: Array<Category>) => setCategories(responseBody))
+            .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
     }, [])
 
     return (
