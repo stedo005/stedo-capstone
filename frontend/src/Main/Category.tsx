@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {savedCategories} from "../Models/model";
+import {ItemInCategory, savedCategories} from "../Models/model";
 
 const Category = () => {
 
@@ -11,6 +11,8 @@ const Category = () => {
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
     const itemsInCategory = [] as Array<string>
+    const savedItems: ArrayLike<ItemInCategory> = category.itemsInCategory
+    console.log(savedItems)
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
@@ -26,7 +28,7 @@ const Category = () => {
     }, [])
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
+            fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
