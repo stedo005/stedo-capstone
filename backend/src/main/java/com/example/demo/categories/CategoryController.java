@@ -28,4 +28,9 @@ public class CategoryController {
         return categoryService.getCategories();
     }
 
+    @GetMapping("/{id}")
+    public List<ItemInCategory> getItemsInCategory(@PathVariable String id) {
+        return categoryService.getItemsInCategory(id);
+    }
+
 }

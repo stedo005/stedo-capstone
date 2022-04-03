@@ -51,6 +51,7 @@ const Category = () => {
         <div>
             Category mit id: {linkedId.categoryId}<br/><br/>
             <div>
+                <button onClick={addItemsToCategory}>{t("Speichern")}</button>
                 {allItemNames.map(n =>
                     <div key={n}>
                     <input id={n} type={"checkbox"} value={n} onChange={e => test(e.target.value, e.target.checked)}/>

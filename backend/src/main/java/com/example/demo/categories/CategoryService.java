@@ -35,4 +35,11 @@ public class CategoryService {
     public void addItemsToCategory(Category category) {
         categoryRepository.save(category);
     }
+
+    public List<ItemInCategory> getItemsInCategory(String categoryId) {
+        if (categoryRepository.findById(categoryId).isPresent()) {
+            return categoryRepository.findById(categoryId).get().getItemsInCategory();
+        }
+        throw new RuntimeException();
+    }
 }
