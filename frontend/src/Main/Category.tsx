@@ -7,7 +7,7 @@ const Category = () => {
     const linkedId = useParams()
     const {t} = useTranslation()
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
-    const itemInCategory = [] as Array<string>
+    const itemsInCategory = [] as Array<string>
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
@@ -22,14 +22,28 @@ const Category = () => {
             .then((responseBody: Array<string>) => setAllItemNames(responseBody))
     }, [])
 
+    const addItemsToCategory = () => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
+            method: "PUT",
+            body: JSON.stringify({
+                "id": linkedId.categoryId,
+                "itemsInCategory": itemsInCategory
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+    }
+
     const test = (value: string, checked: boolean) => {
 
         const i = allItemNames.indexOf(value)
         checked
-            ? itemInCategory.push(allItemNames[i])
-            : itemInCategory.splice(itemInCategory.indexOf(value),1)
+            ? itemsInCategory.push(allItemNames[i])
+            : itemsInCategory.splice(itemsInCategory.indexOf(value),1)
 
-        console.log(itemInCategory)
+        console.log(itemsInCategory)
     }
 
     return(
@@ -42,7 +56,7 @@ const Category = () => {
                     <input id={n} type={"checkbox"} value={n} onChange={e => test(e.target.value, e.target.checked)}/>
                     <label htmlFor={n}> {n}</label>
                 </div>)}
-                <button>{t("Speichern")}</button>
+                <button onClick={addItemsToCategory}>{t("Speichern")}</button>
             </div>
         </div>
 

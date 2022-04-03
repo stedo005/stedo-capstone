@@ -15,9 +15,12 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-
         return categoryService.createCategory(category);
+    }
 
+    @PutMapping
+    public void addItemsToCategory (@RequestBody Category category) {
+        categoryService.addItemsToCategory(category);
     }
 
     @GetMapping

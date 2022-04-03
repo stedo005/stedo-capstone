@@ -31,4 +31,8 @@ public class CategoryService {
                 .sorted((c1, c2) -> c1.getCategoryName().compareTo(c2.getCategoryName()))
                 .toList();
     }
+
+    public void addItemsToCategory(Category category) {
+        categoryRepository.save(category);
+    }
 }
