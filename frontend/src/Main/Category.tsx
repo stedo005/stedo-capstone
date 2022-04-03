@@ -10,9 +10,8 @@ const Category = () => {
 
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
-    const itemsInCategory = [] as Array<string>
-    const savedItems = category.itemsInCategory
-    console.log(savedItems)
+    const [checked, setChecked] = useState(false)
+    const itemsInCategory = category.itemsInCategory
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
@@ -55,7 +54,19 @@ const Category = () => {
         })
     }
 
-    const test = (value: string, checked: boolean) => {
+    const setCheckedItems = () => {
+
+        for (let i = itemsInCategory.length; i > 0; i--) {
+
+            const itemToSetChecked = allItemNames.indexOf(itemsInCategory[i])
+            if (allItemNames[itemToSetChecked]) {
+                setChecked(true)
+            }
+
+        }
+    }
+
+    const setItemsToCategory = (value: string, checked: boolean) => {
 
         const i = allItemNames.indexOf(value)
         checked
@@ -73,7 +84,7 @@ const Category = () => {
                 <button onClick={addItemsToCategory}>{t("Speichern")}</button>
                 {allItemNames.map(n =>
                 <div key={n}>
-                    <input id={n} type={"checkbox"} value={n} onChange={e => test(e.target.value, e.target.checked)}/>
+                    <input id={n} type={"checkbox"} value={n} defaultChecked={checked} onLoad={e => e.currentTarget.checked=true} onChange={e => setItemsToCategory(e.target.value, e.target.checked)}/>
                     <label htmlFor={n}> {n}</label>
                 </div>)}
                 <button onClick={addItemsToCategory}>{t("Speichern")}</button>
