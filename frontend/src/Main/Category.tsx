@@ -10,7 +10,7 @@ const Category = () => {
 
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
-    const [checked, setChecked] = useState(true)
+    const [checked, setChecked] = useState(false)
     const [lengthItemsInCategory, setLengthItemsInCategory] = useState(0)
     const itemsInCategory = category.itemsInCategory
 
@@ -58,9 +58,9 @@ const Category = () => {
         })
     }
 
-    /*    useEffect(() => {
+/*        useEffect(() => {
 
-            for (let i = category.itemsInCategory.length; i > 0; i--) {
+            for (let i = lengthItemsInCategory; i > 0; i--) {
 
                 const itemToSetChecked = allItemNames.indexOf(itemsInCategory[i])
                 if (allItemNames[itemToSetChecked]) {
@@ -86,15 +86,18 @@ const Category = () => {
 
         <div>
             {t("Kategorie")} {category.categoryName} mit id: {linkedId.categoryId}<br/><br/>
+            <div>{t("Artikel in Kategorie: ")}{lengthItemsInCategory}</div><br/>
+            <div>{t("Artikel in Kategorie: ")}{itemsInCategory}</div><br/>
             <div>
-                <button onClick={() => alert(category.itemsInCategory.length)}>check</button>
                 <button onClick={addItemsToCategory}>{t("Speichern")}</button>
-                <div>{t("Artikel in Kategorie: ")}{lengthItemsInCategory}</div>
                 {
                     allItemNames.length > 0
                         ? allItemNames.map(n =>
                             <div key={n}>
-                                <input id={n} type={"checkbox"} value={n} defaultChecked={checked}
+                                <input id={n}
+                                       type={"checkbox"}
+                                       value={n}
+                                       defaultChecked={checked}
                                        onChange={e => setItemsToCategory(e.target.value, e.target.checked)}/>
                                 <label htmlFor={n}> {n}</label>
                             </div>)
