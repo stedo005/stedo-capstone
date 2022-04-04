@@ -42,4 +42,8 @@ public class CategoryService {
         }
         throw new RuntimeException();
     }
+
+    public void deleteCategory(String id) {
+        categoryRepository.deleteById(id);
+    }
 }

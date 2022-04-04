@@ -70,13 +70,14 @@ const Categories = () => {
     }, [])
 
     const deleteCategory = (id: string) => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/category${id}`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(fetchCategories)
     }
 
     return (
