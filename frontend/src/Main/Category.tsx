@@ -59,16 +59,15 @@ const Category = () => {
             .then(() => navigate("../categories"))
     }
 
-       const setCheckedDefault = (itemName: string) => {
+    const setCheckedDefault = (itemName: string) => {
 
-            for (let i = lengthItemsInCategory; i >= 0; i--) {
-                if(itemName === itemsInCategory[i]){
-                    return true
-                }
+        for (let i = lengthItemsInCategory; i >= 0; i--) {
+            if(itemName === itemsInCategory[i]){
+                return true
             }
-            return false
         }
-
+        return false
+    }
 
     const setItemsToCategory = (value: string, checked: boolean) => {
 
