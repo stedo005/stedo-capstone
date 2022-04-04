@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {savedCategories} from "../Models/model";
@@ -7,6 +7,7 @@ const Category = () => {
 
     const linkedId = useParams()
     const {t} = useTranslation()
+    const navigate = useNavigate()
 
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
@@ -55,6 +56,7 @@ const Category = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(() => navigate("../categories"))
     }
 
        const setCheckedDefault = (itemName: string) => {
