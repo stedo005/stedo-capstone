@@ -36,9 +36,9 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public Category getItemsInCategory(String categoryId) {
+    public ResponseEntity<Category> getItemsInCategory(String categoryId) {
         if (categoryRepository.findById(categoryId).isPresent()) {
-            return categoryRepository.findById(categoryId).get();
+            return ResponseEntity.status(200).body(categoryRepository.findById(categoryId).get());
         }
         throw new RuntimeException();
     }
