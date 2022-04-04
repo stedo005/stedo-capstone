@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -60,6 +64,25 @@ class CategoryServiceTest {
 
         verify(categoryRepository).deleteById("123");
         assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.valueOf(204));
+
+    }
+
+    @Test
+    @DisplayName("should get items from category")
+    void test4 () {
+
+        Category category = new Category();
+        category.setId("123");
+        category.setItemsInCategory(List.of("item1", "item2"));
+
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
+        when(categoryRepository.findById("123")).thenReturn(Optional.of(category));
+
+        CategoryService categoryService = new CategoryService(categoryRepository);
+        ResponseEntity<Category> actual = categoryService.getItemsInCategory("123");
+
+        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.valueOf(200));
+        assertThat(Objects.requireNonNull(actual.getBody()).getItemsInCategory()).hasSize(2);
 
     }
 
