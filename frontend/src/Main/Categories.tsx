@@ -9,6 +9,7 @@ const Categories = () => {
 
     const [categoryName, setCategoryName] = useState("")
     const [categories, setCategories] = useState([] as Array<savedCategories>)
+    const [currentId, setCurrentId] = useState("")
     const itemsInCategory = [] as Array<string>
 
     const [errMsg, setErrMsg] = useState("")
@@ -68,6 +69,16 @@ const Categories = () => {
             .then(response => {return response.json()})
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
     }, [])
+
+    const deleteCategory = () => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category${currentId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+    }
 
     return (
 
