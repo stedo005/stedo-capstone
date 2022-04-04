@@ -9,7 +9,6 @@ const Categories = () => {
 
     const [categoryName, setCategoryName] = useState("")
     const [categories, setCategories] = useState([] as Array<savedCategories>)
-    const [currentId, setCurrentId] = useState("")
     const itemsInCategory = [] as Array<string>
 
     const [errMsg, setErrMsg] = useState("")
@@ -70,8 +69,8 @@ const Categories = () => {
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
     }, [])
 
-    const deleteCategory = () => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/category${currentId}`, {
+    const deleteCategory = (id: string) => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -87,7 +86,7 @@ const Categories = () => {
                    onChange={event => setCategoryName(event.target.value)}/>
             <button onClick={createCategory}>{t("neue Katergorie erstellen")}</button>
             {errMsg}<br/><br/>
-            <div>{categories.map(e => <div key={e.id}><button>{t("löschen")}</button> <Link to={e.id}><button>{t("bearbeiten")}</button></Link> {e.categoryName}</div>)}</div>
+            <div>{categories.map(e => <div key={e.id}><button onClick={() => deleteCategory(e.id)}>{t("löschen")}</button> <Link to={e.id}><button>{t("bearbeiten")}</button></Link> {e.categoryName}</div>)}</div>
         </div>
 
     )
