@@ -49,6 +49,18 @@ class CategoryServiceTest {
 
     }
 
+    @Test
+    @DisplayName("should delete a category")
+    void test3 () {
 
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
+
+        CategoryService categoryService = new CategoryService(categoryRepository);
+        ResponseEntity<Void> actual = categoryService.deleteCategory("123");
+
+        verify(categoryRepository).deleteById("123");
+        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.valueOf(204));
+
+    }
 
 }

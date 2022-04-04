@@ -40,7 +40,7 @@ public class CategoryService {
         if (categoryRepository.findById(categoryId).isPresent()) {
             return ResponseEntity.status(200).body(categoryRepository.findById(categoryId).get());
         }
-        throw new RuntimeException();
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Void> deleteCategory(String id) {
