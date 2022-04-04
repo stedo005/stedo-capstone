@@ -10,7 +10,6 @@ const Category = () => {
 
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
-    const [checked, setChecked] = useState(false)
     const [lengthItemsInCategory, setLengthItemsInCategory] = useState(0)
     const itemsInCategory = category.itemsInCategory
 
@@ -58,18 +57,15 @@ const Category = () => {
         })
     }
 
-/*        useEffect(() => {
+    const setCheckedDefault = (itemName: string) => {
 
-            for (let i = lengthItemsInCategory; i > 0; i--) {
-
-                const itemToSetChecked = allItemNames.indexOf(itemsInCategory[i])
-                if (allItemNames[itemToSetChecked]) {
-                    setChecked(true)
-                }
-
+        for (let i = lengthItemsInCategory; i >= 0; i--) {
+            if(itemName === itemsInCategory[i]){
+                return true
             }
-        }, [])*/
-
+        }
+        return false
+    }
 
     const setItemsToCategory = (value: string, checked: boolean) => {
 
@@ -97,7 +93,7 @@ const Category = () => {
                                 <input id={n}
                                        type={"checkbox"}
                                        value={n}
-                                       defaultChecked={checked}
+                                       defaultChecked={setCheckedDefault(n)}
                                        onChange={e => setItemsToCategory(e.target.value, e.target.checked)}/>
                                 <label htmlFor={n}> {n}</label>
                             </div>)
