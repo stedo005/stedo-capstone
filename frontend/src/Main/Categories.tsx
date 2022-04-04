@@ -76,7 +76,7 @@ const Categories = () => {
                    onChange={event => setCategoryName(event.target.value)}/>
             <button onClick={createCategory}>{t("neue Katergorie erstellen")}</button>
             {errMsg}<br/><br/>
-            <div>{categories.map(e => <div key={e.id}><Link to={e.id}>{e.categoryName}</Link></div>)}</div>
+            <div>{categories.map(e => <div key={e.id}><button>{t("löschen")}</button> <Link to={e.id}><button>{t("bearbeiten")}</button></Link> {e.categoryName}</div>)}</div>
         </div>
 
     )
