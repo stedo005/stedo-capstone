@@ -1,8 +1,11 @@
 package com.example.demo.categories;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,4 +26,18 @@ public class CategoryService {
 
     }
 
+    public List<Category> getCategories() {
+        return categoryRepository.findAll(Sort.by("categoryName"));
+    }
+
+    public void addItemsToCategory(Category category) {
+        categoryRepository.save(category);
+    }
+
+    public Category getItemsInCategory(String categoryId) {
+        if (categoryRepository.findById(categoryId).isPresent()) {
+            return categoryRepository.findById(categoryId).get();
+        }
+        throw new RuntimeException();
+    }
 }

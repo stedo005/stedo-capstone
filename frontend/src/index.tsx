@@ -7,6 +7,7 @@ import Login from './Login/Login';
 import Logout from './Login/Logout';
 import Overview from "./Main/Overview";
 import Categories from "./Main/Categories";
+import Category from './Main/Category';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.render(
                         <Route path={"/logout"} element={<Logout />}/>
                         <Route path={"/overview"} element={<Overview />} />
                         <Route path={"/categories"} element={<Categories />} />
+                        <Route path={"/categories/:categoryId"} element={<Category />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
