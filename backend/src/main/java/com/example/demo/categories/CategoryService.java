@@ -1,6 +1,7 @@
 package com.example.demo.categories;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,7 @@ public class CategoryService {
     }
 
     public List<Category> getCategories() {
-
-        return categoryRepository.findAll().stream()
-                .sorted((c1, c2) -> c1.getCategoryName().compareTo(c2.getCategoryName()))
-                .toList();
+        return categoryRepository.findAll(Sort.by("categoryName"));
     }
 
     public void addItemsToCategory(Category category) {
