@@ -29,8 +29,13 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public Category getItemsInCategory(@PathVariable String id) {
+    public ResponseEntity<Category> getItemsInCategory(@PathVariable String id) {
         return categoryService.getItemsInCategory(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable String id) {
+        return categoryService.deleteCategory(id);
     }
 
 }

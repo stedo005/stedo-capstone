@@ -69,6 +69,17 @@ const Categories = () => {
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
     }, [])
 
+    const deleteCategory = (id: string) => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(fetchCategories)
+    }
+
     return (
 
         <div>
@@ -76,7 +87,7 @@ const Categories = () => {
                    onChange={event => setCategoryName(event.target.value)}/>
             <button onClick={createCategory}>{t("neue Katergorie erstellen")}</button>
             {errMsg}<br/><br/>
-            <div>{categories.map(e => <div key={e.id}><Link to={e.id}>{e.categoryName}</Link></div>)}</div>
+            <div>{categories.map(e => <div key={e.id}><button onClick={() => deleteCategory(e.id)}>{t("löschen")}</button> <Link to={e.id}><button>{t("bearbeiten")}</button></Link> {e.categoryName}</div>)}</div>
         </div>
 
     )
