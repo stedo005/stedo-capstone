@@ -43,7 +43,8 @@ public class CategoryService {
         throw new RuntimeException();
     }
 
-    public void deleteCategory(String id) {
+    public ResponseEntity<Void> deleteCategory(String id) {
         categoryRepository.deleteById(id);
+        return ResponseEntity.status(204).build();
     }
 }
