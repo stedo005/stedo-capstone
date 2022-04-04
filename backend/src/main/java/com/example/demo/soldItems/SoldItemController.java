@@ -1,9 +1,7 @@
 package com.example.demo.soldItems;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,9 +14,12 @@ public class SoldItemController {
 
     @GetMapping
     public List<String> getAllItemNames () {
-
         return soldItemService.getAllItemNames();
+    }
 
+    @PutMapping
+    public List<SoldItem> getItemsByDate (@RequestBody String dateFrom, String dateTo) {
+        return soldItemService.getItemByDate(dateFrom, dateTo);
     }
 
 }

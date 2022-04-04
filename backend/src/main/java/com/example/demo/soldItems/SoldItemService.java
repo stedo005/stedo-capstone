@@ -23,7 +23,6 @@ public class SoldItemService {
 
     public ResponseEntity<String> saveSoldItems(String name) {
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDateTime now = LocalDateTime.now();
 
         UserData userData = userRepository.getLastUpdateByUsername(name);
@@ -70,5 +69,14 @@ public class SoldItemService {
         return soldItem;
 
     }
+
+    public List<SoldItem> getItemByDate(String dateFrom, String dateTo) {
+
+        
+
+        return null;
+    }
+
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 
 }
