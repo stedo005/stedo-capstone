@@ -26,7 +26,9 @@ const Categories = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(response => {return response.json()})
+            .then(response => {
+                return response.json()
+            })
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
     }
 
@@ -46,7 +48,7 @@ const Categories = () => {
             .then(response => {
                 if (response.status === 409) {
                     throw new Error(t("Diese Kategorie gibt es schon!"))
-                } else if (response.status ===405) {
+                } else if (response.status === 405) {
                     throw new Error(t("Keine Eingabe erfolgt!"))
                 }
             })
@@ -65,7 +67,9 @@ const Categories = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(response => {return response.json()})
+            .then(response => {
+                return response.json()
+            })
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
     }, [])
 
@@ -87,7 +91,18 @@ const Categories = () => {
                    onChange={event => setCategoryName(event.target.value)}/>
             <button onClick={createCategory}>{t("neue Katergorie erstellen")}</button>
             {errMsg}<br/><br/>
-            <div>{categories.map(e => <div key={e.id}><button onClick={() => deleteCategory(e.id)}>{t("löschen")}</button> <Link to={e.id}><button>{t("bearbeiten")}</button></Link> {e.categoryName}</div>)}</div>
+            <div>{categories.map(
+                e => <div key={e.id}>
+                    <button onClick={() => deleteCategory(e.id)}>{t("löschen")}</button>
+                    <Link to={e.id}>
+                        <button>{t("bearbeiten")}</button>
+                    </Link>
+                    <Link to={`evaluate/${e.id}`}>
+                        <button>{t("auswerten")}</button>
+                    </Link>
+                    <p>{e.categoryName}</p>
+                </div>)}
+            </div>
         </div>
 
     )
