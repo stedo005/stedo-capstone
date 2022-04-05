@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -70,11 +71,13 @@ public class SoldItemService {
 
     }
 
-    public List<SoldItem> getItemByDate(String dateFrom, String dateTo) {
+    public void getItemByDate(String dateFrom, String dateTo) {
 
-        
+        LocalDate dateStart = LocalDate.parse(dateFrom);
+        LocalDate dateStop = LocalDate.parse(dateTo);
 
-        return null;
+        System.out.println(dateStart);
+
     }
 
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
