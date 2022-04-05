@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,7 +25,6 @@ public class SoldItemService {
 
     public ResponseEntity<String> saveSoldItems(String name) {
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDateTime now = LocalDateTime.now();
 
         UserData userData = userRepository.getLastUpdateByUsername(name);
@@ -60,15 +61,42 @@ public class SoldItemService {
 
     private SoldItem makeSoldItem(HelloCashItem item, HelloCashInvoice invoice) {
 
-                SoldItem soldItem = new SoldItem();
-                soldItem.setItemName(item.getItemName());
-                soldItem.setItemPrice(item.getItemPrice());
-                soldItem.setItemQuantity(item.getItemQuantity());
-                soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
-                soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
+        SoldItem soldItem = new SoldItem();
+        soldItem.setItemName(item.getItemName());
+        soldItem.setItemPrice(item.getItemPrice());
+        soldItem.setItemQuantity(item.getItemQuantity());
+        soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
+        soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
 
         return soldItem;
 
     }
+
+    public void getItemByDate(String dateFrom, String dateTo) {
+
+        LocalDate dateStart = LocalDate.parse(dateFrom);
+        LocalDate dateStop = LocalDate.parse(dateTo);
+
+        List<List<SoldItem>> itemsInRange = new ArrayList<>();
+        List<String> datesToGet = new ArrayList<>();
+
+        datesToGet.add(dateStart.toString());
+        while (!dateStart.equals(dateStop)) {
+            datesToGet.add(dateStart.plusDays(1L).toString());
+            dateStart = (dateStart.plusDays(1L));
+        }
+
+        for (int i = 0; i < datesToGet.size(); i++) {
+            itemsInRange.add(soldItemRepository.findAllByInvoiceTimestampContains(datesToGet.get(i)));
+        }
+
+        // for development //
+        for (int i = 0; i < itemsInRange.size(); i++) {
+            System.out.println((itemsInRange.get(i).get(1).getInvoiceTimestamp()));
+        }
+        //////////////////////
+    }
+
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 
 }
