@@ -1,5 +1,6 @@
 package com.example.demo.soldItems;
 
+import com.example.demo.categories.CategoryRepository;
 import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
@@ -22,8 +23,11 @@ public class SoldItemService {
     private final SoldItemRepository soldItemRepository;
     private final HelloCashService helloCashService;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
     public ResponseEntity<String> saveSoldItems(String name) {
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -72,7 +76,7 @@ public class SoldItemService {
 
     }
 
-    public void getItemByDate(String dateFrom, String dateTo) {
+    public void getItemByDate(String categoryId, String dateFrom, String dateTo) {
 
         LocalDate dateStart = LocalDate.parse(dateFrom);
         LocalDate dateStop = LocalDate.parse(dateTo);
@@ -92,11 +96,10 @@ public class SoldItemService {
 
         // for development //
         for (int i = 0; i < itemsInRange.size(); i++) {
-            System.out.println((itemsInRange.get(i).get(1).getInvoiceTimestamp()));
+            System.out.println((itemsInRange.get(i).get(0).getInvoiceTimestamp()));
         }
         //////////////////////
     }
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 
 }

@@ -19,7 +19,7 @@ public class SoldItemController {
 
     @PutMapping
     public void getItemsByDate (@RequestBody DataForQuery dates) {
-        soldItemService.getItemByDate(dates.getDateFrom(), dates.getDateTo());
+        soldItemService.getItemByDate(dates.getCategoryId(), dates.getDateFrom(), dates.getDateTo());
     }
 
 }
