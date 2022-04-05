@@ -1,6 +1,5 @@
 package com.example.demo.soldItems;
 
-import com.example.demo.categories.Category;
 import com.example.demo.categories.CategoryRepository;
 import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
@@ -11,13 +10,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -79,7 +76,7 @@ public class SoldItemService {
 
     }
 
-    public void getItemByDate(String categoryId, String dateFrom, String dateTo) {
+    public List<SoldItem> getItemByQueryData(String categoryId, String dateFrom, String dateTo) {
 
         List<String> itemsInCategory;
 
@@ -116,9 +113,7 @@ public class SoldItemService {
             }
         }
 
-        List<SoldItem> soldItems = allItems.stream().flatMap(e -> e.stream()).toList();
-
-        System.out.println(soldItems);
+        return allItems.stream().flatMap(e -> e.stream()).toList();
 
     }
 
