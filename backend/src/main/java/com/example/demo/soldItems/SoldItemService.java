@@ -1,5 +1,6 @@
 package com.example.demo.soldItems;
 
+import com.example.demo.categories.Category;
 import com.example.demo.categories.CategoryRepository;
 import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -78,6 +80,14 @@ public class SoldItemService {
 
     public void getItemByDate(String categoryId, String dateFrom, String dateTo) {
 
+        List<String> itemsInCategory;
+
+        if (categoryRepository.findById(categoryId).isPresent()) {
+            itemsInCategory = categoryRepository.findById(categoryId).get().getItemsInCategory();
+        } else {
+            throw new IllegalArgumentException("Kategorie existiert nicht!");
+        }
+
         LocalDate dateStart = LocalDate.parse(dateFrom);
         LocalDate dateStop = LocalDate.parse(dateTo);
 
@@ -91,7 +101,7 @@ public class SoldItemService {
         }
 
         for (int i = 0; i < datesToGet.size(); i++) {
-            itemsInRange.add(soldItemRepository.findAllByInvoiceTimestampContains(datesToGet.get(i)));
+            itemsInRange.add(soldItemRepository.findAllByInvoiceTimestampContainsAndItemName(datesToGet.get(i), itemsInCategory.get(0)));
         }
 
         // for development //
