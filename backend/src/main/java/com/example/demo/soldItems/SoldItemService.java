@@ -86,11 +86,11 @@ public class SoldItemService {
             dateStart = (dateStart.plusDays(1L));
         }
 
-        // for development //
         for (int i = 0; i < datesToGet.size(); i++) {
             itemsInRange.add(soldItemRepository.findAllByInvoiceTimestampContains(datesToGet.get(i)));
         }
 
+        // for development //
         for (int i = 0; i < itemsInRange.size(); i++) {
             System.out.println((itemsInRange.get(i).get(1).getInvoiceTimestamp()));
         }
