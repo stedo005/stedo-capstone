@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -91,24 +92,34 @@ public class SoldItemService {
         LocalDate dateStart = LocalDate.parse(dateFrom);
         LocalDate dateStop = LocalDate.parse(dateTo);
 
-        List<List<SoldItem>> itemsInRange = new ArrayList<>();
-        List<String> datesToGet = new ArrayList<>();
+        List<List<SoldItem>> listOfDatesWithItemsInDateRange = new ArrayList<>();
+        List<String> dateRangeToGet = new ArrayList<>();
 
-        datesToGet.add(dateStart.toString());
+        dateRangeToGet.add(dateStart.toString());
         while (!dateStart.equals(dateStop)) {
-            datesToGet.add(dateStart.plusDays(1L).toString());
+            dateRangeToGet.add(dateStart.plusDays(1L).toString());
             dateStart = (dateStart.plusDays(1L));
         }
 
-        for (int i = 0; i < datesToGet.size(); i++) {
-            itemsInRange.add(soldItemRepository.findAllByInvoiceTimestampContainsAndItemName(datesToGet.get(i), itemsInCategory.get(0)));
+        for (int i = 0; i < dateRangeToGet.size(); i++) {
+            listOfDatesWithItemsInDateRange.add(soldItemRepository.findAllByInvoiceTimestampContains(dateRangeToGet.get(i)));
         }
 
-        // for development //
-        for (int i = 0; i < itemsInRange.size(); i++) {
-            System.out.println((itemsInRange.get(i).get(0).getInvoiceTimestamp()));
+        List<List<SoldItem>> allItems = new ArrayList<>();
+
+        for (int i = 0; i < listOfDatesWithItemsInDateRange.size(); i++) {
+            List<SoldItem> listOfItemInCurrentDate = listOfDatesWithItemsInDateRange.get(i);
+            for (int j = 0; j <itemsInCategory.size(); j++) {
+                int finalJ = j;
+                allItems.add(listOfItemInCurrentDate.stream()
+                        .filter(e -> e.getItemName().equals(itemsInCategory.get(finalJ))).toList());
+            }
         }
-        //////////////////////
+
+        List<SoldItem> soldItems = allItems.stream().flatMap(e -> e.stream()).toList();
+
+        System.out.println(soldItems);
+
     }
 
 

@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface SoldItemRepository extends MongoRepository<SoldItem, String> {
-    List<SoldItem> findAllByInvoiceTimestampContainsAndItemName(String date, String itemName);
+    List<SoldItem> findAllByInvoiceTimestampContains(String date);
 }
