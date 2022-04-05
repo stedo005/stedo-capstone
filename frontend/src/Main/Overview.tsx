@@ -40,10 +40,8 @@ const Overview = () => {
             <button onClick={refreshDatabase}>{t("Datenbank aktualisieren")}</button>
             <br/><br/>
             von: <input type={"date"} value={dateFrom} onChange={e => setDateFrom(e.target.value)}/><br/>
-            bis: <input type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><br/>
+            bis: <input type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><br/><br/>
             <button onClick={sendDate}>senden</button>
-            {dateFrom}<br/>
-            {dateTo}
         </div>
     )
 

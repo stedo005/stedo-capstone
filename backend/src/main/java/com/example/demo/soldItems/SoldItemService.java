@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -76,7 +77,15 @@ public class SoldItemService {
         LocalDate dateStart = LocalDate.parse(dateFrom);
         LocalDate dateStop = LocalDate.parse(dateTo);
 
-        System.out.println(dateStart);
+        List<String> datesToGet = new ArrayList<>();
+
+        datesToGet.add(dateStart.toString());
+        while (!dateStart.equals(dateStop)){
+            datesToGet.add(dateStart.plusDays(1L).toString());
+            dateStart = (dateStart.plusDays(1L));
+        }
+
+        System.out.println(datesToGet);
 
     }
 
