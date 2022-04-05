@@ -61,12 +61,12 @@ public class SoldItemService {
 
     private SoldItem makeSoldItem(HelloCashItem item, HelloCashInvoice invoice) {
 
-                SoldItem soldItem = new SoldItem();
-                soldItem.setItemName(item.getItemName());
-                soldItem.setItemPrice(item.getItemPrice());
-                soldItem.setItemQuantity(item.getItemQuantity());
-                soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
-                soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
+        SoldItem soldItem = new SoldItem();
+        soldItem.setItemName(item.getItemName());
+        soldItem.setItemPrice(item.getItemPrice());
+        soldItem.setItemQuantity(item.getItemQuantity());
+        soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
+        soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
 
         return soldItem;
 
@@ -77,16 +77,24 @@ public class SoldItemService {
         LocalDate dateStart = LocalDate.parse(dateFrom);
         LocalDate dateStop = LocalDate.parse(dateTo);
 
+        List<List<SoldItem>> itemsInRange = new ArrayList<>();
         List<String> datesToGet = new ArrayList<>();
 
         datesToGet.add(dateStart.toString());
-        while (!dateStart.equals(dateStop)){
+        while (!dateStart.equals(dateStop)) {
             datesToGet.add(dateStart.plusDays(1L).toString());
             dateStart = (dateStart.plusDays(1L));
         }
 
-        System.out.println(datesToGet);
+        // for development //
+        for (int i = 0; i < datesToGet.size(); i++) {
+            itemsInRange.add(soldItemRepository.findAllByInvoiceTimestampContains(datesToGet.get(i)));
+        }
 
+        for (int i = 0; i < itemsInRange.size(); i++) {
+            System.out.println((itemsInRange.get(i).get(1).getInvoiceTimestamp()));
+        }
+        //////////////////////
     }
 
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
