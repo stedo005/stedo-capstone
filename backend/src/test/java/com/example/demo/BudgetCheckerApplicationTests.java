@@ -15,6 +15,7 @@ class BudgetCheckerApplicationTests {
     @Test
     void contextLoad() {
 
+
     }
 
 }
