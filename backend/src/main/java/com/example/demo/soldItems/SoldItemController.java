@@ -18,8 +18,8 @@ public class SoldItemController {
     }
 
     @PutMapping
-    public List<SoldItem> getItemsByQueryData(@RequestBody DataForQuery dates) {
-        return soldItemService.getItemByQueryData(dates.getCategoryId(), dates.getDateFrom(), dates.getDateTo());
+    public Results getResults(@RequestBody DataForQuery dates) {
+        return soldItemService.getResults(dates);
     }
 
 }

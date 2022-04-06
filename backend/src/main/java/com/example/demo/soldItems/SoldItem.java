@@ -21,7 +21,9 @@ public class SoldItem {
     private double itemQuantity;
 
     public double getTotalPrice () {
+
         return itemQuantity * itemPrice;
+
     }
 
 }
