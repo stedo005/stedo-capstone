@@ -76,14 +76,16 @@ public class SoldItemService {
 
     }
 
-    public Results getResults(DataForQuery dates) {
+    public Result getResults(DataForQuery dates) {
 
-        List<SoldItem> itemsToEvaluate = getItemByQueryData(dates);
-        return null;
+        Result result = new Result();
+        result.setSoldItems(getItemsByQueryData(dates));
+
+        return result;
 
     }
 
-    private List<SoldItem> getItemByQueryData(DataForQuery dates) {
+    private List<SoldItem> getItemsByQueryData(DataForQuery dates) {
 
         List<String> itemsInCategory = categoryRepository.findById(dates.getCategoryId())
                 .map(category -> category.getItemsInCategory())
