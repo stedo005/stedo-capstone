@@ -4,12 +4,18 @@ export interface savedCategories {
     itemsInCategory: Array<string>
 }
 
+export interface result {
+    sumOfAllItems: number
+    soldItems: soldItem[]
+}
+
 export interface soldItem {
     id: string
     invoiceNumber: string
     invoiceTimestamp: string
     itemName: string
-    itemPrice: string
-    itemQuantity: string
+    itemPrice: number
+    itemQuantity: number
+    totalPrice: number
 }
 

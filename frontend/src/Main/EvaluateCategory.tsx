@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
-import {soldItem} from "../Models/model";
+import {result, soldItem} from "../Models/model";
 
 
 const EvaluateCategory = () => {
@@ -11,7 +11,8 @@ const EvaluateCategory = () => {
 
     const [dateFrom, setDateFrom] = useState("")
     const [dateTo, setDateTo] = useState("")
-    const [listOfItems, setListOfItems] = useState([] as soldItem[])
+    const [result, setResult] = useState(0)
+    const [soldItems, setSoldItems] = useState([] as soldItem[])
 
     const sendDate = () => {
 
@@ -27,8 +28,13 @@ const EvaluateCategory = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(response => {return response.json()})
-            .then((responseBody: soldItem[]) => setListOfItems(responseBody))
+            .then(response => {
+                return response.json()
+            })
+            .then((responseBody: result) => {
+                setResult(responseBody.sumOfAllItems)
+                setSoldItems(responseBody.soldItems)
+            })
 
     }
 
@@ -39,9 +45,14 @@ const EvaluateCategory = () => {
             von: <input type={"date"} value={dateFrom} onChange={e => setDateFrom(e.target.value)}/><br/>
             bis: <input type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><br/><br/>
             <button onClick={sendDate}>senden</button>
-            <div>
-                {listOfItems.map(e => <div>{e.itemName}</div>)}
-            </div>
+            <div>{result}</div>
+            {
+                soldItems.length > 0
+                ?
+                    <div>{soldItems.map(e => <div>{e.itemName}</div>)}</div>
+                :
+                    <div>test</div>
+            }
 
         </div>
     )
