@@ -6,6 +6,7 @@ import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
