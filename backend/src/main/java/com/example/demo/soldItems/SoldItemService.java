@@ -85,7 +85,6 @@ public class SoldItemService {
         LocalDate dateStart = LocalDate.parse(dateFrom);
         LocalDate dateStop = LocalDate.parse(dateTo);
 
-        List<List<SoldItem>> listOfDatesWithItemsInDateRange = new ArrayList<>();
         List<String> dateRangeToGet = new ArrayList<>();
 
         dateRangeToGet.add(dateStart.toString());
