@@ -6,7 +6,6 @@ import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -68,8 +67,8 @@ public class SoldItemService {
 
         SoldItem soldItem = new SoldItem();
         soldItem.setItemName(item.getItemName());
-        soldItem.setItemPrice(item.getItemPrice());
-        soldItem.setItemQuantity(item.getItemQuantity());
+        soldItem.setItemPrice(Double.parseDouble(item.getItemPrice()));
+        soldItem.setItemQuantity(Double.parseDouble(item.getItemQuantity()));
         soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
         soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
 
@@ -95,22 +94,10 @@ public class SoldItemService {
             dateStart = (dateStart.plusDays(1L));
         }
 
-        for (int i = 0; i < dateRangeToGet.size(); i++) {
-            listOfDatesWithItemsInDateRange.add(soldItemRepository.findAllByInvoiceTimestampContains(dateRangeToGet.get(i)));
-        }
-
-        List<List<SoldItem>> allItems = new ArrayList<>();
-
-        for (int i = 0; i < listOfDatesWithItemsInDateRange.size(); i++) {
-            List<SoldItem> listOfItemInCurrentDate = listOfDatesWithItemsInDateRange.get(i);
-            for (int j = 0; j <itemsInCategory.size(); j++) {
-                int finalJ = j;
-                allItems.add(listOfItemInCurrentDate.stream()
-                        .filter(e -> e.getItemName().equals(itemsInCategory.get(finalJ))).toList());
-            }
-        }
-
-        return allItems.stream().flatMap(e -> e.stream()).toList();
+        return dateRangeToGet.stream()
+                .flatMap(date -> soldItemRepository.findAllByInvoiceTimestampContains(date).stream())
+                .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
+                .toList();
 
     }
 

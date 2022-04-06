@@ -65,14 +65,14 @@ class SoldItemServiceTest {
         List<HelloCashData> helloCashDataList = List.of(helloCashData1, helloCashData2);
 
         List<SoldItem> expectedItems = List.of(
-                new SoldItem(null, "22", "1", "blume", "1.0", "1.000"),
-                new SoldItem(null, "22", "1", "topf", "2.0", "2.000"),
-                new SoldItem(null, "23", "2", "blume", "1.0", "1.000"),
-                new SoldItem(null, "23", "2", "topf", "2.0", "2.000"),
-                new SoldItem(null, "22", "1", "blume", "1.0", "1.000"),
-                new SoldItem(null, "22", "1", "topf", "2.0", "2.000"),
-                new SoldItem(null, "23", "2", "blume", "1.0", "1.000"),
-                new SoldItem(null, "23", "2", "topf", "2.0", "2.000")
+                new SoldItem(null, "22", "1", "blume", 1.0, 1.000),
+                new SoldItem(null, "22", "1", "topf", 2.0, 2.000),
+                new SoldItem(null, "23", "2", "blume", 1.0, 1.000),
+                new SoldItem(null, "23", "2", "topf", 2.0, 2.000),
+                new SoldItem(null, "22", "1", "blume", 1.0, 1.000),
+                new SoldItem(null, "22", "1", "topf", 2.0, 2.000),
+                new SoldItem(null, "23", "2", "blume", 1.0, 1.000),
+                new SoldItem(null, "23", "2", "topf", 2.0, 2.000)
         );
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");

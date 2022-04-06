@@ -17,7 +17,11 @@ public class SoldItem {
     private String invoiceTimestamp;
     private String invoiceNumber;
     private String itemName;
-    private String itemPrice;
-    private String itemQuantity;
+    private double itemPrice;
+    private double itemQuantity;
+
+    public double getTotalPrice () {
+        return itemQuantity * itemPrice;
+    }
 
 }

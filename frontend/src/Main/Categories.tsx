@@ -48,7 +48,7 @@ const Categories = () => {
             .then(response => {
                 if (response.status === 409) {
                     throw new Error(t("Diese Kategorie gibt es schon!"))
-                } else if (response.status === 405) {
+                } else if (response.status === 400) {
                     throw new Error(t("Keine Eingabe erfolgt!"))
                 }
             })

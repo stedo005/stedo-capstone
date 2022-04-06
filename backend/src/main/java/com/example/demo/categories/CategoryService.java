@@ -16,7 +16,7 @@ public class CategoryService {
     public ResponseEntity<Category> createCategory(Category category) {
 
         if(category.getCategoryName().isBlank()){
-            return ResponseEntity.status(405).build();
+            return ResponseEntity.status(400).build();
         }else if ((categoryRepository.existsByCategoryName(category.getCategoryName()))) {
             return ResponseEntity.status(409).body(category);
         } else {
