@@ -1,5 +1,6 @@
 package com.example.demo.soldItems;
 
+import com.example.demo.categories.CategoryRepository;
 import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
@@ -24,6 +25,7 @@ class SoldItemServiceTest {
         SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
         HelloCashService helloCashService = mock(HelloCashService.class);
         UserRepository userRepository = mock(UserRepository.class);
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
         HelloCashItem item1 = new HelloCashItem();
         HelloCashItem item2 = new HelloCashItem();
@@ -63,14 +65,14 @@ class SoldItemServiceTest {
         List<HelloCashData> helloCashDataList = List.of(helloCashData1, helloCashData2);
 
         List<SoldItem> expectedItems = List.of(
-                new SoldItem(null, "22", "1", "blume", "1.0", "1.000"),
-                new SoldItem(null, "22", "1", "topf", "2.0", "2.000"),
-                new SoldItem(null, "23", "2", "blume", "1.0", "1.000"),
-                new SoldItem(null, "23", "2", "topf", "2.0", "2.000"),
-                new SoldItem(null, "22", "1", "blume", "1.0", "1.000"),
-                new SoldItem(null, "22", "1", "topf", "2.0", "2.000"),
-                new SoldItem(null, "23", "2", "blume", "1.0", "1.000"),
-                new SoldItem(null, "23", "2", "topf", "2.0", "2.000")
+                new SoldItem(null, "22", "1", "blume", 1.0, 1.000),
+                new SoldItem(null, "22", "1", "topf", 2.0, 2.000),
+                new SoldItem(null, "23", "2", "blume", 1.0, 1.000),
+                new SoldItem(null, "23", "2", "topf", 2.0, 2.000),
+                new SoldItem(null, "22", "1", "blume", 1.0, 1.000),
+                new SoldItem(null, "22", "1", "topf", 2.0, 2.000),
+                new SoldItem(null, "23", "2", "blume", 1.0, 1.000),
+                new SoldItem(null, "23", "2", "topf", 2.0, 2.000)
         );
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
@@ -87,7 +89,7 @@ class SoldItemServiceTest {
         when(helloCashService.getInvoicesFromHelloCashApi(eq("2022-03-03"), any()))
                 .thenReturn(helloCashDataList);
 
-        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository);
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
         soldItemService.saveSoldItems("Steve");
 
         verify(userRepository).save(userDataToSave);
@@ -102,6 +104,7 @@ class SoldItemServiceTest {
         SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
         HelloCashService helloCashService = mock(HelloCashService.class);
         UserRepository userRepository = mock(UserRepository.class);
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
         LocalDateTime now = LocalDateTime.now();
@@ -110,7 +113,7 @@ class SoldItemServiceTest {
         when(userRepository.getLastUpdateByUsername("Steve"))
                 .thenReturn(new UserData("1", "Steve", "12345", dateFrom));
 
-        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository);
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
         soldItemService.saveSoldItems("Steve");
 
         verifyNoInteractions(soldItemRepository);
@@ -123,8 +126,9 @@ class SoldItemServiceTest {
         SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
         HelloCashService helloCashService = mock(HelloCashService.class);
         UserRepository userRepository = mock(UserRepository.class);
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
-        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository);
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
 
         soldItemService.getAllItemNames();
 

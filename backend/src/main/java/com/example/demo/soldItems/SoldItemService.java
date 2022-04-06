@@ -1,5 +1,6 @@
 package com.example.demo.soldItems;
 
+import com.example.demo.categories.CategoryRepository;
 import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
@@ -22,8 +23,11 @@ public class SoldItemService {
     private final SoldItemRepository soldItemRepository;
     private final HelloCashService helloCashService;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
     public ResponseEntity<String> saveSoldItems(String name) {
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -63,8 +67,8 @@ public class SoldItemService {
 
         SoldItem soldItem = new SoldItem();
         soldItem.setItemName(item.getItemName());
-        soldItem.setItemPrice(item.getItemPrice());
-        soldItem.setItemQuantity(item.getItemQuantity());
+        soldItem.setItemPrice(Double.parseDouble(item.getItemPrice()));
+        soldItem.setItemQuantity(Double.parseDouble(item.getItemQuantity()));
         soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
         soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
 
@@ -72,31 +76,29 @@ public class SoldItemService {
 
     }
 
-    public void getItemByDate(String dateFrom, String dateTo) {
+    public List<SoldItem> getItemByQueryData(String categoryId, String dateFrom, String dateTo) {
+
+        List<String> itemsInCategory = categoryRepository.findById(categoryId)
+                .map(category -> category.getItemsInCategory())
+                .orElseThrow(() -> new IllegalArgumentException("Kategorie existiert nicht!"));
 
         LocalDate dateStart = LocalDate.parse(dateFrom);
         LocalDate dateStop = LocalDate.parse(dateTo);
 
-        List<List<SoldItem>> itemsInRange = new ArrayList<>();
-        List<String> datesToGet = new ArrayList<>();
+        List<String> dateRangeToGet = new ArrayList<>();
 
-        datesToGet.add(dateStart.toString());
+        dateRangeToGet.add(dateStart.toString());
         while (!dateStart.equals(dateStop)) {
-            datesToGet.add(dateStart.plusDays(1L).toString());
+            dateRangeToGet.add(dateStart.plusDays(1L).toString());
             dateStart = (dateStart.plusDays(1L));
         }
 
-        for (int i = 0; i < datesToGet.size(); i++) {
-            itemsInRange.add(soldItemRepository.findAllByInvoiceTimestampContains(datesToGet.get(i)));
-        }
+        return dateRangeToGet.stream()
+                .flatMap(date -> soldItemRepository.findAllByInvoiceTimestampContains(date).stream())
+                .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
+                .toList();
 
-        // for development //
-        for (int i = 0; i < itemsInRange.size(); i++) {
-            System.out.println((itemsInRange.get(i).get(1).getInvoiceTimestamp()));
-        }
-        //////////////////////
     }
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
 
 }

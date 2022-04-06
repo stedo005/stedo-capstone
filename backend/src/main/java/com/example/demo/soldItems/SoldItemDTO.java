@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class SoldItemDTO {
 
     private String itemName;
-    private String itemPrice;
-    private String itemQuantity;
+    private double itemPrice;
+    private double itemQuantity;
 
     public static SoldItemDTO of(SoldItem soldItem) {
         return new SoldItemDTO(soldItem.getItemName(), soldItem.getItemPrice(), soldItem.getItemQuantity());
