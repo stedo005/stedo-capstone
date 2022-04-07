@@ -14,7 +14,7 @@ const EvaluateCategory = () => {
     const [result, setResult] = useState(0)
     const [soldItems, setSoldItems] = useState([] as soldItem[])
     const [hide, setHide] = useState(true)
-    const [calculationFactor, setCalculationFactor] = useState(2)
+    const [calculationFactor, setCalculationFactor] = useState(2.5)
     let budget = 1 / calculationFactor * result
     let profit = result - budget
 
@@ -49,7 +49,7 @@ const EvaluateCategory = () => {
             von: <input type={"date"} value={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><br/><br/>
             <button onClick={sendDate}>senden</button><br/><br/>
             <div>
-                {t("Umsatz: ")}{result} €
+                {t("Umsatz: ")}{result.toFixed(2)} €
             </div>
             <div>
                 <label htmlFor={"faktor"}>{t("Kalkulationsfaktor: ")}</label>
@@ -61,10 +61,10 @@ const EvaluateCategory = () => {
                 />
             </div>
             <div>
-                {t("Budget: ")}{budget}
+                {t("Budget: ")}{budget.toFixed(2)}
             </div>
             <div>
-                {t("Gewinn: ")}{profit}
+                {t("Gewinn: ")}{profit.toFixed(2)}
             </div>
             <br/>
             <button onClick={() =>hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}</button><br/><br/>
