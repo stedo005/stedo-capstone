@@ -1,5 +1,6 @@
 package com.example.demo.soldItems;
 
+import com.example.demo.categories.Category;
 import com.example.demo.categories.CategoryRepository;
 import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashData;
@@ -7,13 +8,16 @@ import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class SoldItemServiceTest {
@@ -133,6 +137,49 @@ class SoldItemServiceTest {
         soldItemService.getAllItemNames();
 
         verify(soldItemRepository).findAll();
+
+    }
+
+    @Test
+    @DisplayName("should return a valid result")
+    void test4() {
+        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
+        HelloCashService helloCashService = mock(HelloCashService.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
+
+        DataForQuery dataForQuery = new DataForQuery();
+        dataForQuery.setCategoryId("1");
+        dataForQuery.setDateFrom("2022-01-01");
+        dataForQuery.setDateTo("2022-01-02");
+
+        List<String> artikelList = List.of("artikel1", "artikel2");
+
+        Category category = new Category();
+        category.setId("1");
+        category.setItemsInCategory(artikelList);
+
+        SoldItem item1 = new SoldItem();
+        SoldItem item2 = new SoldItem();
+
+        item1.setItemName("artikel1");
+        item1.setItemPrice(10);
+        item1.setItemQuantity(1);
+        item2.setItemName("artikel2");
+        item2.setItemPrice(15);
+        item2.setItemQuantity(1);
+
+        when(categoryRepository.findById(dataForQuery.getCategoryId())).thenReturn(Optional.of(category));
+
+        when(soldItemRepository.findAllByInvoiceTimestampContains("2022-01-01")).thenReturn(List.of(item1));
+        when(soldItemRepository.findAllByInvoiceTimestampContains("2022-01-02")).thenReturn(List.of(item2));
+
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository,helloCashService,userRepository,categoryRepository);
+        Result actual = soldItemService.getResults(dataForQuery);
+
+        assertThat(actual.getSumOfAllItems()).isEqualTo(25);
+        assertThat(actual.getSoldItems().size()).isEqualTo(2);
+        assertThat(actual.getSoldItems().get(0).getItemPrice()).isEqualTo(10);
 
     }
 
