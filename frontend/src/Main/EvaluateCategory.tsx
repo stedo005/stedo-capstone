@@ -46,8 +46,10 @@ const EvaluateCategory = () => {
         <div>
 
             {t("Kategorie")} mit id: {linkedId.categoryId}<br/><br/>
-            von: <input type={"date"} value={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><br/><br/>
-            <button onClick={sendDate}>senden</button><br/><br/>
+            von: <input type={"date"} value={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input
+            type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><br/><br/>
+            <button onClick={sendDate}>{t("Budget anzeigen")}</button>
+            <br/><br/>
             <div>
                 {t("Umsatz: ")}{result.toFixed(2)} €
             </div>
@@ -61,20 +63,23 @@ const EvaluateCategory = () => {
                 />
             </div>
             <div>
-                {t("Budget: ")}{budget.toFixed(2)}
+                {t("Budget: ")}{budget.toFixed(2)} €
             </div>
             <div>
-                {t("Gewinn: ")}{profit.toFixed(2)}
+                {t("Rohertrag: ")}{profit.toFixed(2)} €
             </div>
             <br/>
-            <button onClick={() =>hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}</button><br/><br/>
-            {
-                soldItems.length > 0
-                ?
-                    <div hidden={hide}>{soldItems.map(e => <div>{e.itemName}</div>)}</div>
-                :
-                    <div></div>
-            }
+            <button onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}</button>
+            <br/><br/>
+            <div hidden={hide}>
+                {
+                    soldItems.length > 0
+                        ?
+                        <div>{soldItems.map(e => <div>{e.itemName}</div>)}</div>
+                        :
+                        <div>{t("Noch nichts zum anzeigen da.")}</div>
+                }
+            </div>
 
         </div>
     )
