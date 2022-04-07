@@ -76,14 +76,23 @@ public class SoldItemService {
 
     }
 
-    public List<SoldItem> getItemByQueryData(String categoryId, String dateFrom, String dateTo) {
+    public Result getResults(DataForQuery dates) {
 
-        List<String> itemsInCategory = categoryRepository.findById(categoryId)
+        Result result = new Result();
+        result.setSoldItems(getItemsByQueryData(dates));
+
+        return result;
+
+    }
+
+    private List<SoldItem> getItemsByQueryData(DataForQuery dates) {
+
+        List<String> itemsInCategory = categoryRepository.findById(dates.getCategoryId())
                 .map(category -> category.getItemsInCategory())
                 .orElseThrow(() -> new IllegalArgumentException("Kategorie existiert nicht!"));
 
-        LocalDate dateStart = LocalDate.parse(dateFrom);
-        LocalDate dateStop = LocalDate.parse(dateTo);
+        LocalDate dateStart = LocalDate.parse(dates.getDateFrom());
+        LocalDate dateStop = LocalDate.parse(dates.getDateTo());
 
         List<String> dateRangeToGet = new ArrayList<>();
 
