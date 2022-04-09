@@ -12,7 +12,7 @@ const Category = () => {
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
     const [lengthItemsInCategory, setLengthItemsInCategory] = useState(0)
-    const itemsInCategory = category.itemsInCategory
+    let itemsInCategory = category.itemsInCategory
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -60,43 +60,49 @@ const Category = () => {
     }
 
     const setCheckedDefault = (itemName: string) => {
-
         for (let i = lengthItemsInCategory; i >= 0; i--) {
-            if(itemName === itemsInCategory[i]){
+            if (itemName === itemsInCategory[i]) {
                 return true
             }
         }
         return false
     }
 
-    const setItemsToCategory = (value: string, checked: boolean) => {
+    const setItemsToCategory = (id: string, checked: boolean) => {
+        const i = allItemNames.indexOf(id)
 
-        const i = allItemNames.indexOf(value)
         checked
             ? itemsInCategory.push(allItemNames[i])
-            : itemsInCategory.splice(itemsInCategory.indexOf(value), 1)
-
+            : itemsInCategory.splice(itemsInCategory.indexOf(id), 1)
         setLengthItemsInCategory(category.itemsInCategory.length)
-        console.log(itemsInCategory)
+        console.log(itemsInCategory.length)
     }
+
+    //const [check, setCheck] = useState(false)
 
     return (
 
         <div>
-            {t("Kategorie")} {category.categoryName} mit id: {linkedId.categoryId}<br/><br/>
-            <div>{t("Artikel in Kategorie: ")}{lengthItemsInCategory}</div><br/>
-            <div>{t("Artikel in Kategorie: ")}{itemsInCategory}</div><br/>
+            {t("Kategorie: ")}{category.categoryName}<br/><br/>
+            <div>{t("Artikel in Kategorie: ")}{lengthItemsInCategory}</div>
+            <br/>
             <div>
                 <button onClick={addItemsToCategory}>{t("Speichern")}</button>
+                <input type={"checkbox"} id={"allChecked"} onChange={e => setItemsToCategory(e.target.id, e.target.checked)}/>
+                <label htmlFor={"allChecked"}>alle</label>
                 {
                     allItemNames.length > 0
                         ? allItemNames.map(n =>
                             <div key={n}>
-                                <input id={n}
-                                       type={"checkbox"}
-                                       value={n}
-                                       defaultChecked={setCheckedDefault(n)}
-                                       onChange={e => setItemsToCategory(e.target.value, e.target.checked)}/>
+                                <input
+                                    className={"checkbox-item"}
+                                    id={n}
+                                    type={"checkbox"}
+                                    value={n}
+                                    //checked={check}
+                                    defaultChecked={setCheckedDefault(n)}
+                                    onChange={e => setItemsToCategory(e.target.id, e.target.checked)}
+                                />
                                 <label htmlFor={n}> {n}</label>
                             </div>)
                         : <p>{t("Artikel werden geladen!")}</p>
