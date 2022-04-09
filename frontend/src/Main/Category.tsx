@@ -45,7 +45,7 @@ const Category = () => {
             .then((responseBody: Array<string>) => setAllItemNames(responseBody))
     }
 
-    const addItemsToCategory = () => {
+    const saveItemsToCategory = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
             method: "PUT",
             body: JSON.stringify({
@@ -61,6 +61,36 @@ const Category = () => {
             .then(() => navigate("../categories"))
     }
 
+    const saveAllItemsToCategory = () => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
+            method: "PUT",
+            body: JSON.stringify({
+                "id": linkedId.categoryId,
+                "categoryName": category.categoryName,
+                "itemsInCategory": allItemNames
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+    }
+
+    const removeAllItemsFromCategory = () => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
+            method: "PUT",
+            body: JSON.stringify({
+                "id": linkedId.categoryId,
+                "categoryName": category.categoryName,
+                "itemsInCategory": []
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+    }
+
     const setCheckedDefault = (itemName: string) => {
         for (let i = lengthItemsInCategory; i >= 0; i--) {
             if (itemName === arrItemsInCategory[i]) {
@@ -72,18 +102,16 @@ const Category = () => {
 
     const setItemsToCategory = (id: string, checked: boolean) => {
 
-        if (id === "checkAll") {
-            setArrItemsInCategory(allItemNames)
-            console.log("checkAll")
-        } else {
-            const i = allItemNames.indexOf(id)
-            checked
-                ? arrItemsInCategory.push(allItemNames[i])
-                : arrItemsInCategory.splice(arrItemsInCategory.indexOf(id), 1)
-        }
-        console.log("a: "+ arrItemsInCategory.length)
+        const i = allItemNames.indexOf(id)
+        checked
+            ? arrItemsInCategory.push(allItemNames[i])
+            : arrItemsInCategory.splice(arrItemsInCategory.indexOf(id), 1)
+
+        console.log("a: " + arrItemsInCategory.length)
 
     }
+
+
 
     return (
 
@@ -92,12 +120,12 @@ const Category = () => {
             <div>{t("Artikel in Kategorie: ")}{lengthItemsInCategory}</div>
             <br/>
             <div>
-                <button onClick={addItemsToCategory}>{t("Speichern")}</button>
+                <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
                 <input type={"checkbox"} id={"allChecked"}
-                       onChange={e => setItemsToCategory(e.target.id, e.target.checked)}/>
+                       onChange={e => e.target.checked ? saveAllItemsToCategory() : removeAllItemsFromCategory()}/>
                 <label htmlFor={"allChecked"}>alle</label>
                 <button onClick={() => {
-                    setArrItemsInCategory(allItemNames)
+                    saveAllItemsToCategory()
                     console.log(arrItemsInCategory.length)
                 }
                 }>alle auswählen
@@ -120,7 +148,7 @@ const Category = () => {
                             </div>)
                         : <p>{t("Artikel werden geladen!")}</p>
                 }
-                <button onClick={addItemsToCategory}>{t("Speichern")}</button>
+                <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
             </div>
         </div>
 
