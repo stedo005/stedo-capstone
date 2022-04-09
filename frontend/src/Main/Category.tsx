@@ -97,9 +97,10 @@ const Category = () => {
                        onChange={e => setItemsToCategory(e.target.id, e.target.checked)}/>
                 <label htmlFor={"allChecked"}>alle</label>
                 <button onClick={() => {
-                    setItemsToCategory("checkAll", false)
+                    setArrItemsInCategory(allItemNames)
                     console.log(arrItemsInCategory.length)
-                }}>alle auswählen
+                }
+                }>alle auswählen
                 </button>
                 {
                     allItemNames.length > 0
