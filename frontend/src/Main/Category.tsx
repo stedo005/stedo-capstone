@@ -12,7 +12,7 @@ const Category = () => {
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
     const [lengthItemsInCategory, setLengthItemsInCategory] = useState(0)
-    let itemsInCategory = category.itemsInCategory
+    const [arrItemsInCategory, setArrItemsInCategory] = useState([] as Array<string>)
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -26,6 +26,7 @@ const Category = () => {
             })
             .then((responseBody: savedCategories) => {
                 setCategory(responseBody)
+                setArrItemsInCategory(responseBody.itemsInCategory)
                 setLengthItemsInCategory(responseBody.itemsInCategory.length)
             })
     }, [linkedId.categoryId])
@@ -49,7 +50,7 @@ const Category = () => {
             body: JSON.stringify({
                 "id": linkedId.categoryId,
                 "categoryName": category.categoryName,
-                "itemsInCategory": itemsInCategory
+                "itemsInCategory": arrItemsInCategory
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -61,7 +62,7 @@ const Category = () => {
 
     const setCheckedDefault = (itemName: string) => {
         for (let i = lengthItemsInCategory; i >= 0; i--) {
-            if (itemName === itemsInCategory[i]) {
+            if (itemName === arrItemsInCategory[i]) {
                 return true
             }
         }
@@ -69,16 +70,23 @@ const Category = () => {
     }
 
     const setItemsToCategory = (id: string, checked: boolean) => {
-        const i = allItemNames.indexOf(id)
-
-        checked
-            ? itemsInCategory.push(allItemNames[i])
-            : itemsInCategory.splice(itemsInCategory.indexOf(id), 1)
-        setLengthItemsInCategory(category.itemsInCategory.length)
-        console.log(itemsInCategory.length)
+        if (id === "checkAll") {
+            alert(arrItemsInCategory.length)
+            alert(allItemNames.length)
+            for (let i = 0; i < allItemNames.length; i++) {
+                arrItemsInCategory.push(allItemNames[i])
+            }
+            alert(arrItemsInCategory)
+            console.log(arrItemsInCategory.length)
+        } else {
+            const i = allItemNames.indexOf(id)
+            checked
+                ? arrItemsInCategory.push(allItemNames[i])
+                : arrItemsInCategory.splice(arrItemsInCategory.indexOf(id), 1)
+            //setLengthItemsInCategory(category.arrItemsInCategory.length)
+            console.log(arrItemsInCategory.length)
+        }
     }
-
-    //const [check, setCheck] = useState(false)
 
     return (
 
@@ -88,8 +96,14 @@ const Category = () => {
             <br/>
             <div>
                 <button onClick={addItemsToCategory}>{t("Speichern")}</button>
-                <input type={"checkbox"} id={"allChecked"} onChange={e => setItemsToCategory(e.target.id, e.target.checked)}/>
+                <input type={"checkbox"} id={"allChecked"}
+                       onChange={e => setItemsToCategory(e.target.id, e.target.checked)}/>
                 <label htmlFor={"allChecked"}>alle</label>
+                <button onClick={() => {
+                    setItemsToCategory("checkAll", false)
+                    console.log(arrItemsInCategory.length)
+                }}>alle auswählen
+                </button>
                 {
                     allItemNames.length > 0
                         ? allItemNames.map(n =>
@@ -99,9 +113,11 @@ const Category = () => {
                                     id={n}
                                     type={"checkbox"}
                                     value={n}
-                                    //checked={check}
+                                    //checked={setCheckedDefault(n)}
                                     defaultChecked={setCheckedDefault(n)}
-                                    onChange={e => setItemsToCategory(e.target.id, e.target.checked)}
+                                    onChange={e => {
+                                        setItemsToCategory(e.target.id, e.target.checked)
+                                    }}
                                 />
                                 <label htmlFor={n}> {n}</label>
                             </div>)
