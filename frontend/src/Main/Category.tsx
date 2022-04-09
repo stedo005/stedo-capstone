@@ -29,9 +29,10 @@ const Category = () => {
                 setArrItemsInCategory(responseBody.itemsInCategory)
                 setLengthItemsInCategory(responseBody.itemsInCategory.length)
             })
+            .then(getAllItemNames)
     }, [linkedId.categoryId])
 
-    useEffect(() => {
+    const getAllItemNames = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
             method: "GET",
             headers: {
@@ -42,7 +43,7 @@ const Category = () => {
                 return response.json()
             })
             .then((responseBody: Array<string>) => setAllItemNames(responseBody))
-    }, [])
+    }
 
     const addItemsToCategory = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
@@ -70,22 +71,18 @@ const Category = () => {
     }
 
     const setItemsToCategory = (id: string, checked: boolean) => {
+
         if (id === "checkAll") {
-            alert(arrItemsInCategory.length)
-            alert(allItemNames.length)
-            for (let i = 0; i < allItemNames.length; i++) {
-                arrItemsInCategory.push(allItemNames[i])
-            }
-            alert(arrItemsInCategory)
-            console.log(arrItemsInCategory.length)
+            setArrItemsInCategory(allItemNames)
+            console.log("checkAll")
         } else {
             const i = allItemNames.indexOf(id)
             checked
                 ? arrItemsInCategory.push(allItemNames[i])
                 : arrItemsInCategory.splice(arrItemsInCategory.indexOf(id), 1)
-            //setLengthItemsInCategory(category.arrItemsInCategory.length)
-            console.log(arrItemsInCategory.length)
         }
+        console.log("a: "+ arrItemsInCategory.length)
+
     }
 
     return (
@@ -113,7 +110,6 @@ const Category = () => {
                                     id={n}
                                     type={"checkbox"}
                                     value={n}
-                                    //checked={setCheckedDefault(n)}
                                     defaultChecked={setCheckedDefault(n)}
                                     onChange={e => {
                                         setItemsToCategory(e.target.id, e.target.checked)
