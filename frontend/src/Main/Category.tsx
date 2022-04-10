@@ -122,21 +122,8 @@ const Category = () => {
             <br/>
             <div>
                 <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
-                {
-                    allItemNames.length > 0
-                        ?
-                        <>
-                            <input type={"checkbox"} id={"allChecked"}
-                                   defaultChecked={allItemNames.length === arrItemsInCategory.length}
-                                   onChange={e => {
-                                       e.target.checked ? saveAllItemsToCategory() : removeAllItemsFromCategory();
-                                   }}/>
-                            <label htmlFor={"allChecked"}>{t("alle auswählen")}</label>
-                        </>
-                        :
-                        <>
-                        </>
-                }
+                <button onClick={saveAllItemsToCategory}>{t("alle Artikel")}</button>
+                <button onClick={removeAllItemsFromCategory}>{t("keinen Artikel")}</button>
                 {
                     allItemNames.length > 0
                         ?
