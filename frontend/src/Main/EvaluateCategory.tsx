@@ -91,7 +91,7 @@ const EvaluateCategory = () => {
                 {
                     soldItems.length > 0
                         ?
-                        <div>{currentCategory.itemsInCategory.map(e => <div>{e} {getSumOfItems(e)}</div>)}</div>
+                        <div>{currentCategory.itemsInCategory.map(e => <div key={e}>{e} {getSumOfItems(e)}</div>)}</div>
                         :
                         <div>{t("Noch nichts zum anzeigen da.")}</div>
                 }
