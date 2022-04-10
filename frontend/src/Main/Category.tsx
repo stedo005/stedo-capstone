@@ -127,10 +127,11 @@ const Category = () => {
                         ?
                         <>
                             <input type={"checkbox"} id={"allChecked"}
-                                   defaultChecked={allItemNames.length === lengthItemsInCategory}
+                                   defaultChecked={allItemNames.length === arrItemsInCategory.length}
                                    onChange={e => {
                                        e.target.checked ? saveAllItemsToCategory() : removeAllItemsFromCategory();
-                                   }}/><label htmlFor={"allChecked"}>{t("alle auswählen")}</label>
+                                   }}/>
+                            <label htmlFor={"allChecked"}>{t("alle auswählen")}</label>
                         </>
                         :
                         <>
