@@ -74,6 +74,7 @@ const Category = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(() => navigate(`../categories/${linkedId.categoryId}`))
     }
 
     const removeAllItemsFromCategory = () => {
@@ -89,6 +90,7 @@ const Category = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(() => navigate(`../categories/${linkedId.categoryId}`))
     }
 
     const setCheckedDefault = (itemName: string) => {
@@ -112,7 +114,6 @@ const Category = () => {
     }
 
 
-
     return (
 
         <div>
@@ -121,18 +122,24 @@ const Category = () => {
             <br/>
             <div>
                 <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
-                <input type={"checkbox"} id={"allChecked"}
-                       onChange={e => e.target.checked ? saveAllItemsToCategory() : removeAllItemsFromCategory()}/>
-                <label htmlFor={"allChecked"}>alle</label>
-                <button onClick={() => {
-                    saveAllItemsToCategory()
-                    console.log(arrItemsInCategory.length)
-                }
-                }>alle auswählen
-                </button>
                 {
                     allItemNames.length > 0
-                        ? allItemNames.map(n =>
+                        ?
+                        <>
+                            <input type={"checkbox"} id={"allChecked"}
+                                   defaultChecked={allItemNames.length === lengthItemsInCategory}
+                                   onChange={e => {
+                                       e.target.checked ? saveAllItemsToCategory() : removeAllItemsFromCategory();
+                                   }}/><label htmlFor={"allChecked"}>{t("alle auswählen")}</label>
+                        </>
+                        :
+                        <>
+                        </>
+                }
+                {
+                    allItemNames.length > 0
+                        ?
+                        allItemNames.map(n =>
                             <div key={n}>
                                 <input
                                     className={"checkbox-item"}
