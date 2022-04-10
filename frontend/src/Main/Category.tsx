@@ -74,7 +74,7 @@ const Category = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(() => navigate(`../categories/${linkedId.categoryId}`))
+            .then(() => window.location.reload())
     }
 
     const removeAllItemsFromCategory = () => {
@@ -90,7 +90,7 @@ const Category = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(() => navigate(`../categories/${linkedId.categoryId}`))
+            .then(() => window.location.reload())
     }
 
     const setCheckedDefault = (itemName: string) => {
