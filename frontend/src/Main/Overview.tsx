@@ -16,17 +16,26 @@ const Overview = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(getLastUpdate)
     }
 
-    useEffect(() => {
+    const getLastUpdate = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/users/${localStorage.getItem("username")}`, {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(response => {return response.json()})
-            .then((responseBody: user) => {setLastUpdate(responseBody.lastUpdate)})
+            .then(response => {
+                return response.json()
+            })
+            .then((responseBody: user) => {
+                setLastUpdate(responseBody.lastUpdate)
+            })
+    }
+
+    useEffect(() => {
+        getLastUpdate()
     }, [])
 
 
