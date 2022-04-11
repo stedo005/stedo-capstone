@@ -50,11 +50,7 @@ public class SoldItemService {
                                 .toList();
                         soldItemRepository.saveAll(soldItems);
                     });
-/*            List<SoldItem> soldItems = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo)
-                    .flatMap(helloCashData -> helloCashData.getInvoices().stream())
-                    .flatMap(invoice -> invoice.getItems().stream().map(item -> makeSoldItem(item, invoice)))
-                    .toList();
-            soldItemRepository.saveAll(soldItems);*/
+
             return ResponseEntity.status(201).body("Database refreshed");
 
         }
