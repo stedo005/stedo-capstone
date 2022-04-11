@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {savedCategories} from "../Models/model";
 
@@ -14,7 +14,7 @@ const Category = () => {
     const [lengthItemsInCategory, setLengthItemsInCategory] = useState(0)
     const [arrItemsInCategory, setArrItemsInCategory] = useState([] as Array<string>)
 
-    useEffect(() => {
+    const fetchAll = useCallback(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
             method: "GET",
             headers: {
@@ -31,6 +31,11 @@ const Category = () => {
             })
             .then(getAllItemNames)
     }, [linkedId.categoryId])
+
+    useEffect(() => {
+        fetchAll()
+    }, [fetchAll])
+
 
     const getAllItemNames = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
@@ -74,7 +79,7 @@ const Category = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(() => window.location.reload())
+            .then(fetchAll)
     }
 
     const removeAllItemsFromCategory = () => {
@@ -90,29 +95,23 @@ const Category = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(() => window.location.reload())
+            .then(fetchAll)
     }
 
     const setCheckedDefault = (itemName: string) => {
-        for (let i = lengthItemsInCategory; i >= 0; i--) {
-            if (itemName === arrItemsInCategory[i]) {
-                return true
-            }
-        }
-        return false
+        return arrItemsInCategory.includes(itemName)
     }
 
     const setItemsToCategory = (id: string, checked: boolean) => {
 
         const i = allItemNames.indexOf(id)
         checked
-            ? arrItemsInCategory.push(allItemNames[i])
-            : arrItemsInCategory.splice(arrItemsInCategory.indexOf(id), 1)
+            ? setArrItemsInCategory([...arrItemsInCategory, allItemNames[i]])
+            : setArrItemsInCategory([...arrItemsInCategory.slice(0, arrItemsInCategory.indexOf(id)), ...arrItemsInCategory.slice(arrItemsInCategory.indexOf(id)+1)])
 
         console.log("a: " + arrItemsInCategory.length)
 
     }
-
 
     return (
 
@@ -134,7 +133,7 @@ const Category = () => {
                                     id={n}
                                     type={"checkbox"}
                                     value={n}
-                                    defaultChecked={setCheckedDefault(n)}
+                                    checked={setCheckedDefault(n)}
                                     onChange={e => {
                                         setItemsToCategory(e.target.id, e.target.checked)
                                     }}
