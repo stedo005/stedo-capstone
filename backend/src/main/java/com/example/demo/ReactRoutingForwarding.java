@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ReactRoutingForwarding {
     @RequestMapping(value = "/**/{[path:[^\\.]*}")
     public String forwardToRoutUrl() {
-        return "forward:/";
+        return "forward:/overview";
     }
 }
