@@ -12,7 +12,7 @@ const Category = () => {
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
     const [lengthItemsInCategory, setLengthItemsInCategory] = useState(0)
-    const itemsInCategory = category.itemsInCategory
+    const [arrItemsInCategory, setArrItemsInCategory] = useState([] as Array<string>)
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -26,11 +26,13 @@ const Category = () => {
             })
             .then((responseBody: savedCategories) => {
                 setCategory(responseBody)
+                setArrItemsInCategory(responseBody.itemsInCategory)
                 setLengthItemsInCategory(responseBody.itemsInCategory.length)
             })
+            .then(getAllItemNames)
     }, [linkedId.categoryId])
 
-    useEffect(() => {
+    const getAllItemNames = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
             method: "GET",
             headers: {
@@ -41,15 +43,15 @@ const Category = () => {
                 return response.json()
             })
             .then((responseBody: Array<string>) => setAllItemNames(responseBody))
-    }, [])
+    }
 
-    const addItemsToCategory = () => {
+    const saveItemsToCategory = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
             method: "PUT",
             body: JSON.stringify({
                 "id": linkedId.categoryId,
                 "categoryName": category.categoryName,
-                "itemsInCategory": itemsInCategory
+                "itemsInCategory": arrItemsInCategory
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -59,49 +61,89 @@ const Category = () => {
             .then(() => navigate("../categories"))
     }
 
-    const setCheckedDefault = (itemName: string) => {
+    const saveAllItemsToCategory = () => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
+            method: "PUT",
+            body: JSON.stringify({
+                "id": linkedId.categoryId,
+                "categoryName": category.categoryName,
+                "itemsInCategory": allItemNames
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(() => window.location.reload())
+    }
 
+    const removeAllItemsFromCategory = () => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
+            method: "PUT",
+            body: JSON.stringify({
+                "id": linkedId.categoryId,
+                "categoryName": category.categoryName,
+                "itemsInCategory": []
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(() => window.location.reload())
+    }
+
+    const setCheckedDefault = (itemName: string) => {
         for (let i = lengthItemsInCategory; i >= 0; i--) {
-            if(itemName === itemsInCategory[i]){
+            if (itemName === arrItemsInCategory[i]) {
                 return true
             }
         }
         return false
     }
 
-    const setItemsToCategory = (value: string, checked: boolean) => {
+    const setItemsToCategory = (id: string, checked: boolean) => {
 
-        const i = allItemNames.indexOf(value)
+        const i = allItemNames.indexOf(id)
         checked
-            ? itemsInCategory.push(allItemNames[i])
-            : itemsInCategory.splice(itemsInCategory.indexOf(value), 1)
+            ? arrItemsInCategory.push(allItemNames[i])
+            : arrItemsInCategory.splice(arrItemsInCategory.indexOf(id), 1)
 
-        setLengthItemsInCategory(category.itemsInCategory.length)
-        console.log(itemsInCategory)
+        console.log("a: " + arrItemsInCategory.length)
+
     }
+
 
     return (
 
         <div>
-            {t("Kategorie")} {category.categoryName} mit id: {linkedId.categoryId}<br/><br/>
-            <div>{t("Artikel in Kategorie: ")}{lengthItemsInCategory}</div><br/>
-            <div>{t("Artikel in Kategorie: ")}{itemsInCategory}</div><br/>
+            {t("Kategorie: ")}{category.categoryName}<br/><br/>
+            <div>{t("Artikel in Kategorie: ")}{lengthItemsInCategory}</div>
+            <br/>
             <div>
-                <button onClick={addItemsToCategory}>{t("Speichern")}</button>
+                <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
+                <button onClick={saveAllItemsToCategory}>{t("alle Artikel")}</button>
+                <button onClick={removeAllItemsFromCategory}>{t("keinen Artikel")}</button>
                 {
                     allItemNames.length > 0
-                        ? allItemNames.map(n =>
+                        ?
+                        allItemNames.map(n =>
                             <div key={n}>
-                                <input id={n}
-                                       type={"checkbox"}
-                                       value={n}
-                                       defaultChecked={setCheckedDefault(n)}
-                                       onChange={e => setItemsToCategory(e.target.value, e.target.checked)}/>
+                                <input
+                                    className={"checkbox-item"}
+                                    id={n}
+                                    type={"checkbox"}
+                                    value={n}
+                                    defaultChecked={setCheckedDefault(n)}
+                                    onChange={e => {
+                                        setItemsToCategory(e.target.id, e.target.checked)
+                                    }}
+                                />
                                 <label htmlFor={n}> {n}</label>
                             </div>)
                         : <p>{t("Artikel werden geladen!")}</p>
                 }
-                <button onClick={addItemsToCategory}>{t("Speichern")}</button>
+                <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
             </div>
         </div>
 

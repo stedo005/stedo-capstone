@@ -10,7 +10,7 @@ const EvaluateCategory = () => {
     const {t} = useTranslation()
 
     const [dateFrom, setDateFrom] = useState("2022-01-01")
-    const [dateTo, setDateTo] = useState("2022-02-01")
+    const [dateTo, setDateTo] = useState("2022-01-10")
     const [currentCategory, setCurrentCategory] = useState({} as savedCategories)
     const [result, setResult] = useState(0)
     const [soldItems, setSoldItems] = useState([] as soldItem[])
@@ -52,7 +52,10 @@ const EvaluateCategory = () => {
                 setResult(responseBody.sumOfAllItems)
                 setSoldItems(responseBody.soldItems)
             })
+    }
 
+    const getSumOfItems = (termToSearch: string) => {
+        return soldItems.filter(e => e.itemName === termToSearch).length
     }
 
     return (
@@ -88,13 +91,13 @@ const EvaluateCategory = () => {
                 {
                     soldItems.length > 0
                         ?
-                        <div>{soldItems.map(e => <div>{e.itemName}</div>)}</div>
+                        <div>{currentCategory.itemsInCategory.map(e => <div key={e}>{e} {getSumOfItems(e)}</div>)}</div>
                         :
                         <div>{t("Noch nichts zum anzeigen da.")}</div>
                 }
             </div>
-
         </div>
     )
 }
+
 export default EvaluateCategory
