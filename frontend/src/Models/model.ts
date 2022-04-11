@@ -19,3 +19,8 @@ export interface soldItem {
     totalPrice: number
 }
 
+export interface user {
+    username: string
+    lastUpdate: string
+}
+

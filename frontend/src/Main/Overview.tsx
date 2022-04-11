@@ -1,9 +1,12 @@
 import {useTranslation} from "react-i18next";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {user} from "../Models/model";
 
 const Overview = () => {
 
     const {t} = useTranslation()
+
+    const [lastUpdate, setLastUpdate] = useState("")
 
     const refreshDatabase = () => {
 
@@ -22,12 +25,14 @@ const Overview = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(response => {return response.json()})
+            .then((responseBody: user) => {setLastUpdate(responseBody.lastUpdate)})
     }, [])
 
 
     return (
         <div>
-            <p>letzte</p>
+            <p>letzte: {lastUpdate}</p>
             <button onClick={refreshDatabase}>{t("Datenbank aktualisieren")}</button>
             <br/><br/>
         </div>
