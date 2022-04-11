@@ -11,8 +11,7 @@ const Category = () => {
 
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
-    const [lengthItemsInCategory, setLengthItemsInCategory] = useState(0)
-    const [arrItemsInCategory, setArrItemsInCategory] = useState([] as Array<string>)
+    const [itemsInCategory, setItemsInCategory] = useState([] as Array<string>)
 
     const fetchAll = useCallback(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -26,8 +25,7 @@ const Category = () => {
             })
             .then((responseBody: savedCategories) => {
                 setCategory(responseBody)
-                setArrItemsInCategory(responseBody.itemsInCategory)
-                setLengthItemsInCategory(responseBody.itemsInCategory.length)
+                setItemsInCategory(responseBody.itemsInCategory)
             })
             .then(getAllItemNames)
     }, [linkedId.categoryId])
@@ -56,7 +54,7 @@ const Category = () => {
             body: JSON.stringify({
                 "id": linkedId.categoryId,
                 "categoryName": category.categoryName,
-                "itemsInCategory": arrItemsInCategory
+                "itemsInCategory": itemsInCategory
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -67,49 +65,23 @@ const Category = () => {
     }
 
     const saveAllItemsToCategory = () => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
-            method: "PUT",
-            body: JSON.stringify({
-                "id": linkedId.categoryId,
-                "categoryName": category.categoryName,
-                "itemsInCategory": allItemNames
-            }),
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        })
-            .then(fetchAll)
+        setItemsInCategory([...allItemNames])
     }
 
     const removeAllItemsFromCategory = () => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
-            method: "PUT",
-            body: JSON.stringify({
-                "id": linkedId.categoryId,
-                "categoryName": category.categoryName,
-                "itemsInCategory": []
-            }),
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        })
-            .then(fetchAll)
+        setItemsInCategory([])
     }
 
     const setCheckedDefault = (itemName: string) => {
-        return arrItemsInCategory.includes(itemName)
+        return itemsInCategory.includes(itemName)
     }
 
     const setItemsToCategory = (id: string, checked: boolean) => {
 
         const i = allItemNames.indexOf(id)
         checked
-            ? setArrItemsInCategory([...arrItemsInCategory, allItemNames[i]])
-            : setArrItemsInCategory([...arrItemsInCategory.slice(0, arrItemsInCategory.indexOf(id)), ...arrItemsInCategory.slice(arrItemsInCategory.indexOf(id)+1)])
-
-        console.log("a: " + arrItemsInCategory.length)
+            ? setItemsInCategory([...itemsInCategory, allItemNames[i]])
+            : setItemsInCategory([...itemsInCategory.slice(0, itemsInCategory.indexOf(id)), ...itemsInCategory.slice(itemsInCategory.indexOf(id) + 1)])
 
     }
 
@@ -117,12 +89,29 @@ const Category = () => {
 
         <div>
             {t("Kategorie: ")}{category.categoryName}<br/><br/>
-            <div>{t("Artikel in Kategorie: ")}{lengthItemsInCategory}</div>
+            <div>{t("Artikel in Kategorie: ")}{itemsInCategory.length}</div>
             <br/>
             <div>
                 <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
-                <button onClick={saveAllItemsToCategory}>{t("alle Artikel")}</button>
-                <button onClick={removeAllItemsFromCategory}>{t("keinen Artikel")}</button>
+                {
+                    allItemNames.length > 0
+                        ?
+                        <>
+                            <input type={"checkbox"}
+                                   id={"allChecked"}
+                                   onChange={() =>
+                                       allItemNames.length === itemsInCategory.length
+                                           ? removeAllItemsFromCategory()
+                                           : saveAllItemsToCategory()
+                                   }
+                                   checked={allItemNames.length === itemsInCategory.length}
+                            />
+                            <label htmlFor={"allChecked"}>{t(" alle auswählen")}</label>
+                        </>
+
+                        : <></>
+                }
+
                 {
                     allItemNames.length > 0
                         ?
