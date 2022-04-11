@@ -12,8 +12,9 @@ const Category = () => {
     const [allItemNames, setAllItemNames] = useState([] as Array<string>)
     const [category, setCategory] = useState({} as savedCategories)
     const [itemsInCategory, setItemsInCategory] = useState([] as Array<string>)
+    const [searchTherm, setSearchTherm] = useState("")
 
-    useEffect (() => {
+    useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
             method: "GET",
             headers: {
@@ -87,6 +88,12 @@ const Category = () => {
             <div>{t("Artikel in Kategorie: ")}{itemsInCategory.length}</div>
             <br/>
             <div>
+                <input
+                    type={"text"}
+                    placeholder={t("Artikelsuche")}
+                    value={searchTherm}
+                    onChange={e => setSearchTherm(e.target.value)}
+                /><br/><br/>
                 <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
                 {
                     allItemNames.length > 0
@@ -110,20 +117,21 @@ const Category = () => {
                 {
                     allItemNames.length > 0
                         ?
-                        allItemNames.map(n =>
-                            <div key={n}>
-                                <input
-                                    className={"checkbox-item"}
-                                    id={n}
-                                    type={"checkbox"}
-                                    value={n}
-                                    checked={setCheckedDefault(n)}
-                                    onChange={e => {
-                                        setItemsToCategory(e.target.id, e.target.checked)
-                                    }}
-                                />
-                                <label htmlFor={n}> {n}</label>
-                            </div>)
+                        allItemNames.filter(e => e.toLowerCase().includes(searchTherm.toLowerCase()))
+                            .map(n =>
+                                <div key={n}>
+                                    <input
+                                        className={"checkbox-item"}
+                                        id={n}
+                                        type={"checkbox"}
+                                        value={n}
+                                        checked={setCheckedDefault(n)}
+                                        onChange={e => {
+                                            setItemsToCategory(e.target.id, e.target.checked)
+                                        }}
+                                    />
+                                    <label htmlFor={n}> {n}</label>
+                                </div>)
                         : <p>{t("Artikel werden geladen!")}</p>
                 }
                 <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
