@@ -11,6 +11,7 @@ import com.example.demo.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -72,10 +73,6 @@ class SoldItemServiceTest {
                 new SoldItem(null, "22", "1", "blume", 1.0, 1.000),
                 new SoldItem(null, "22", "1", "topf", 2.0, 2.000),
                 new SoldItem(null, "23", "2", "blume", 1.0, 1.000),
-                new SoldItem(null, "23", "2", "topf", 2.0, 2.000),
-                new SoldItem(null, "22", "1", "blume", 1.0, 1.000),
-                new SoldItem(null, "22", "1", "topf", 2.0, 2.000),
-                new SoldItem(null, "23", "2", "blume", 1.0, 1.000),
                 new SoldItem(null, "23", "2", "topf", 2.0, 2.000)
         );
 
@@ -91,13 +88,13 @@ class SoldItemServiceTest {
                 .thenReturn(new UserData("1", "Steve", "12345", "2022-03-03"));
 
         when(helloCashService.getInvoicesFromHelloCashApi(eq("2022-03-03"), any()))
-                .thenReturn(helloCashDataList);
+                .thenReturn(helloCashDataList.stream());
 
         SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
         soldItemService.saveSoldItems("Steve");
 
         verify(userRepository).save(userDataToSave);
-        verify(soldItemRepository).saveAll(expectedItems);
+        verify(soldItemRepository, Mockito.times(2)).saveAll(expectedItems);
 
     }
 

@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class HelloCashService {
@@ -27,9 +30,7 @@ public class HelloCashService {
         this.password = password;
     }
 
-    public List<HelloCashData> getInvoicesFromHelloCashApi(String dateFrom, String dateTo) {
-
-        List<HelloCashData> soldItems = new ArrayList<>();
+    public Stream<HelloCashData> getInvoicesFromHelloCashApi(String dateFrom, String dateTo) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(username, password);
@@ -47,19 +48,20 @@ public class HelloCashService {
         int count = Integer.parseInt(dataCheckCount.getCount());
 
         if (count > 1000) {
-            int offset = ((count-1) / 1000) + 1;
+            int offset = ((count - 1) / 1000) + 1;
 
-            for (int i = offset; i >= 1; i--) {
-                ResponseEntity<String> responseForDatabase = restTemplate
-                        .exchange(
-                                "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=" + i + "&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
-                                HttpMethod.GET,
-                                request,
-                                String.class
-                        );
-                HelloCashData helloCashData = new Gson().fromJson(responseForDatabase.getBody(), HelloCashData.class);
-                soldItems.add(helloCashData);
-            }
+            return IntStream.rangeClosed(1, offset)
+                    .mapToObj(i -> {
+                        ResponseEntity<String> responseForDatabase = restTemplate
+                                .exchange(
+                                        "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=" + i + "&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
+                                        HttpMethod.GET,
+                                        request,
+                                        String.class
+                                );
+                        return new Gson().fromJson(responseForDatabase.getBody(), HelloCashData.class);
+                    });
+
         } else {
             ResponseEntity<String> responseForDatabase = restTemplate
                     .exchange(
@@ -69,9 +71,8 @@ public class HelloCashService {
                             String.class
                     );
             HelloCashData helloCashData = new Gson().fromJson(responseForDatabase.getBody(), HelloCashData.class);
-            soldItems.add(helloCashData);
+            return Stream.of(helloCashData);
         }
-        return soldItems;
 
     }
 
