@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {savedCategories} from "../Models/model";
 
@@ -13,7 +13,7 @@ const Category = () => {
     const [category, setCategory] = useState({} as savedCategories)
     const [itemsInCategory, setItemsInCategory] = useState([] as Array<string>)
 
-    const fetchAll = useCallback(() => {
+    useEffect (() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
             method: "GET",
             headers: {
@@ -29,11 +29,6 @@ const Category = () => {
             })
             .then(getAllItemNames)
     }, [linkedId.categoryId])
-
-    useEffect(() => {
-        fetchAll()
-    }, [fetchAll])
-
 
     const getAllItemNames = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
