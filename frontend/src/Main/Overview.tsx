@@ -41,7 +41,7 @@ const Overview = () => {
 
     return (
         <div>
-            <p>letzte: {lastUpdate}</p>
+            <p>{t("letztes Update: ")}{new Date(lastUpdate).toLocaleDateString()}</p>
             <button onClick={refreshDatabase}>{t("Datenbank aktualisieren")}</button>
             <br/><br/>
         </div>
