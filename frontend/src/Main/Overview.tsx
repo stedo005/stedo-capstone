@@ -1,4 +1,5 @@
 import {useTranslation} from "react-i18next";
+import {useEffect} from "react";
 
 const Overview = () => {
 
@@ -12,11 +13,21 @@ const Overview = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-
     }
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/users/${localStorage.getItem("username")}`, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+    }, [])
+
 
     return (
         <div>
+            <p>letzte</p>
             <button onClick={refreshDatabase}>{t("Datenbank aktualisieren")}</button>
             <br/><br/>
         </div>

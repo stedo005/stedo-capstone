@@ -2,10 +2,7 @@ package com.example.demo.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,6 +17,14 @@ public class UserController {
         userData.setPassword(passwordEncoder.encode(userData.getPassword()));
         userData.setLastUpdate("2000-01-01");
         userService.createUser(userData);
+    }
+
+    @GetMapping("/{username}")
+    public UserData getUser(@PathVariable String username){
+        if(userService.findByUsername(username).isPresent()){
+            return userService.findByUsername(username).get();
+        }
+        throw new IllegalArgumentException("User doesnt exist");
     }
 
 }
