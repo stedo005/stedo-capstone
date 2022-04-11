@@ -149,6 +149,7 @@ class SoldItemServiceTest {
         dataForQuery.setDateFrom("2022-01-01");
         dataForQuery.setDateTo("2022-01-02");
 
+        List<String> dates = List.of("2022-01-01", "2022-01-02");
         List<String> artikelList = List.of("artikel1", "artikel2");
 
         Category category = new Category();
@@ -167,8 +168,7 @@ class SoldItemServiceTest {
 
         when(categoryRepository.findById(dataForQuery.getCategoryId())).thenReturn(Optional.of(category));
 
-        when(soldItemRepository.findAllByInvoiceDateContains("2022-01-01")).thenReturn(List.of(item1));
-        when(soldItemRepository.findAllByInvoiceDateContains("2022-01-02")).thenReturn(List.of(item2));
+        when(soldItemRepository.findAllByInvoiceDateIn(dates)).thenReturn(List.of(item1, item2));
 
         SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
         Result actual = soldItemService.getResults(dataForQuery);
