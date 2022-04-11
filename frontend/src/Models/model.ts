@@ -12,7 +12,7 @@ export interface result {
 export interface soldItem {
     id: string
     invoiceNumber: string
-    invoiceTimestamp: string
+    invoiceDate: string
     itemName: string
     itemPrice: number
     itemQuantity: number

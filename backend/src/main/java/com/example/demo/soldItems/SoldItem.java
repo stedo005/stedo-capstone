@@ -14,7 +14,8 @@ public class SoldItem {
 
     @Id
     private String id;
-    private String invoiceTimestamp;
+    private String invoiceDate;
+    private String invoiceTime;
     private String invoiceNumber;
     private String itemName;
     private double itemPrice;

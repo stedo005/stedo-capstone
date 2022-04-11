@@ -75,7 +75,8 @@ public class SoldItemService {
         soldItem.setItemName(item.getItemName());
         soldItem.setItemPrice(Double.parseDouble(item.getItemPrice()));
         soldItem.setItemQuantity(Double.parseDouble(item.getItemQuantity()));
-        soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
+        soldItem.setInvoiceDate(invoice.getInvoiceTimestamp().split(" ")[0]);
+        soldItem.setInvoiceTime(invoice.getInvoiceTimestamp().split(" ")[1]);
         soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
 
         return soldItem;
@@ -108,8 +109,7 @@ public class SoldItemService {
             dateStart = (dateStart.plusDays(1L));
         }
 
-        return dateRangeToGet.stream()
-                .flatMap(date -> soldItemRepository.findAllByInvoiceTimestampContains(date).stream())
+        return soldItemRepository.findAllByInvoiceDateIn(dateRangeToGet).stream()
                 .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
                 .toList();
 
