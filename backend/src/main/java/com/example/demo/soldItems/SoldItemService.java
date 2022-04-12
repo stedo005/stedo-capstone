@@ -43,12 +43,14 @@ public class SoldItemService {
 
             dateTo = dtf.format(now.minusDays(1L));
 
-            List<SoldItem> soldItems = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo)
-                    .stream()
-                    .flatMap(helloCashData -> helloCashData.getInvoices().stream())
-                    .flatMap(invoice -> invoice.getItems().stream().map(item -> makeSoldItem(item, invoice)))
-                    .toList();
-            soldItemRepository.saveAll(soldItems);
+            helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo)
+                    .forEach(helloCashData -> {
+                        List<SoldItem> soldItems = helloCashData.getInvoices().stream()
+                                .flatMap(invoice -> invoice.getItems().stream().map(item -> makeSoldItem(item, invoice)))
+                                .toList();
+                        soldItemRepository.saveAll(soldItems);
+                    });
+
             return ResponseEntity.status(201).body("Database refreshed");
 
         }
@@ -69,7 +71,8 @@ public class SoldItemService {
         soldItem.setItemName(item.getItemName());
         soldItem.setItemPrice(Double.parseDouble(item.getItemPrice()));
         soldItem.setItemQuantity(Double.parseDouble(item.getItemQuantity()));
-        soldItem.setInvoiceTimestamp(invoice.getInvoiceTimestamp());
+        soldItem.setInvoiceDate(invoice.getInvoiceTimestamp().split(" ")[0]);
+        soldItem.setInvoiceTime(invoice.getInvoiceTimestamp().split(" ")[1]);
         soldItem.setInvoiceNumber(invoice.getInvoiceNumber());
 
         return soldItem;
@@ -102,8 +105,7 @@ public class SoldItemService {
             dateStart = (dateStart.plusDays(1L));
         }
 
-        return dateRangeToGet.stream()
-                .flatMap(date -> soldItemRepository.findAllByInvoiceTimestampContains(date).stream())
+        return soldItemRepository.findAllByInvoiceDateIn(dateRangeToGet).stream()
                 .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
                 .toList();
 

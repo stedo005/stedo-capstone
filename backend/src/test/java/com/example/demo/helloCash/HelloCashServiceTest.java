@@ -153,7 +153,7 @@ class HelloCashServiceTest {
 
         HelloCashService helloCashService = new HelloCashService(restTemplate, "username", "password");
 
-        List<HelloCashData> actual = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo);
+        List<HelloCashData> actual = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo).toList();
 
         assertThat(actual).hasSize(1);
         assertThat(actual.get(0).getInvoices()).hasSize(2);
@@ -334,7 +334,7 @@ class HelloCashServiceTest {
 
         HelloCashService helloCashService = new HelloCashService(restTemplate, "username", "password");
 
-        List<HelloCashData> actual = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo);
+        List<HelloCashData> actual = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo).toList();
 
         assertThat(actual).hasSize(3);
         assertThat(actual.get(0).getInvoices()).hasSize(2);

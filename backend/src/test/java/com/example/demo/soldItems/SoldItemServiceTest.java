@@ -8,9 +8,9 @@ import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -47,11 +47,11 @@ class SoldItemServiceTest {
 
         invoice1.setItems(itemList1);
         invoice1.setInvoiceNumber("1");
-        invoice1.setInvoiceTimestamp("22");
+        invoice1.setInvoiceTimestamp("22 33");
 
         invoice2.setItems(itemList2);
         invoice2.setInvoiceNumber("2");
-        invoice2.setInvoiceTimestamp("23");
+        invoice2.setInvoiceTimestamp("23 34");
 
         List<HelloCashInvoice> invoiceList1 = List.of(invoice1, invoice2);
         List<HelloCashInvoice> invoiceList2 = List.of(invoice1, invoice2);
@@ -69,14 +69,10 @@ class SoldItemServiceTest {
         List<HelloCashData> helloCashDataList = List.of(helloCashData1, helloCashData2);
 
         List<SoldItem> expectedItems = List.of(
-                new SoldItem(null, "22", "1", "blume", 1.0, 1.000),
-                new SoldItem(null, "22", "1", "topf", 2.0, 2.000),
-                new SoldItem(null, "23", "2", "blume", 1.0, 1.000),
-                new SoldItem(null, "23", "2", "topf", 2.0, 2.000),
-                new SoldItem(null, "22", "1", "blume", 1.0, 1.000),
-                new SoldItem(null, "22", "1", "topf", 2.0, 2.000),
-                new SoldItem(null, "23", "2", "blume", 1.0, 1.000),
-                new SoldItem(null, "23", "2", "topf", 2.0, 2.000)
+                new SoldItem(null, "22", "33", "1", "blume", 1.0, 1.000),
+                new SoldItem(null, "22", "33", "1", "topf", 2.0, 2.000),
+                new SoldItem(null, "23", "34", "2", "blume", 1.0, 1.000),
+                new SoldItem(null, "23", "34", "2", "topf", 2.0, 2.000)
         );
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
@@ -91,13 +87,13 @@ class SoldItemServiceTest {
                 .thenReturn(new UserData("1", "Steve", "12345", "2022-03-03"));
 
         when(helloCashService.getInvoicesFromHelloCashApi(eq("2022-03-03"), any()))
-                .thenReturn(helloCashDataList);
+                .thenReturn(helloCashDataList.stream());
 
         SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
         soldItemService.saveSoldItems("Steve");
 
         verify(userRepository).save(userDataToSave);
-        verify(soldItemRepository).saveAll(expectedItems);
+        verify(soldItemRepository, Mockito.times(2)).saveAll(expectedItems);
 
     }
 
@@ -153,6 +149,7 @@ class SoldItemServiceTest {
         dataForQuery.setDateFrom("2022-01-01");
         dataForQuery.setDateTo("2022-01-02");
 
+        List<String> dates = List.of("2022-01-01", "2022-01-02");
         List<String> artikelList = List.of("artikel1", "artikel2");
 
         Category category = new Category();
@@ -171,10 +168,9 @@ class SoldItemServiceTest {
 
         when(categoryRepository.findById(dataForQuery.getCategoryId())).thenReturn(Optional.of(category));
 
-        when(soldItemRepository.findAllByInvoiceTimestampContains("2022-01-01")).thenReturn(List.of(item1));
-        when(soldItemRepository.findAllByInvoiceTimestampContains("2022-01-02")).thenReturn(List.of(item2));
+        when(soldItemRepository.findAllByInvoiceDateIn(dates)).thenReturn(List.of(item1, item2));
 
-        SoldItemService soldItemService = new SoldItemService(soldItemRepository,helloCashService,userRepository,categoryRepository);
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
         Result actual = soldItemService.getResults(dataForQuery);
 
         assertThat(actual.getSumOfAllItems()).isEqualTo(25);
