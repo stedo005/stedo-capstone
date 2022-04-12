@@ -63,12 +63,9 @@ const EvaluateCategory = () => {
 
             {t("Kategorie: ")}{currentCategory.categoryName}<br/><br/>
             von: <input type={"date"} value={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input
-            type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><br/><br/>
+            type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><> </>
             <button onClick={sendDate}>{t("Budget anzeigen")}</button>
             <br/><br/>
-            <div>
-                {t("Umsatz: ")}{result.toFixed(2)} €
-            </div>
             <div>
                 <label htmlFor={"faktor"}>{t("Kalkulationsfaktor: ")}</label>
                 <>{calculationFactor}</><br/>
@@ -80,7 +77,8 @@ const EvaluateCategory = () => {
                     step={0.1}
                     onChange={e => setCalculationFactor(parseFloat(e.target.value))}
                 />
-            </div>
+            </div><br/>
+            <div>{t("Umsatz: ")}{result.toFixed(2)} €</div>
             <div>
                 {t("Budget: ")}{budget.toFixed(2)} €
             </div>
