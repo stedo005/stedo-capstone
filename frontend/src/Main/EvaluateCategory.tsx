@@ -76,6 +76,7 @@ const EvaluateCategory = () => {
                     max={3}
                     step={0.1}
                     onChange={e => setCalculationFactor(parseFloat(e.target.value))}
+                    defaultValue={calculationFactor}
                 />
             </div><br/>
             <div>{t("Umsatz: ")}{result.toFixed(2)} €</div>
