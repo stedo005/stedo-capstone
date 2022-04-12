@@ -71,10 +71,13 @@ const EvaluateCategory = () => {
             </div>
             <div>
                 <label htmlFor={"faktor"}>{t("Kalkulationsfaktor: ")}</label>
+                <>{calculationFactor}</><br/>
                 <input
                     id={"faktor"}
-                    type={"number"}
-                    value={calculationFactor}
+                    type={"range"}
+                    min={2}
+                    max={3}
+                    step={0.1}
                     onChange={e => setCalculationFactor(parseFloat(e.target.value))}
                 />
             </div>
