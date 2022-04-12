@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link, Outlet, useNavigate} from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 
@@ -12,6 +12,10 @@ function App() {
         localStorage.removeItem("token")
         localStorage.removeItem("username")
     }
+
+    useEffect(() => {
+        navigate("../overview")
+    }, [])
 
     return (
         <div>
