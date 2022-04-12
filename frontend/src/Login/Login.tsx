@@ -24,8 +24,7 @@ const Login = () => {
         })
             .then(response => {
                 if (!response.ok) {
-                    setErrMsg(t("Passwort und / oder E-Mail sind falsch!"))
-                    throw new Error()
+                    throw new Error(t("Passwort und / oder E-Mail sind falsch!"))
                 }
                 return response.text()
             })
@@ -36,14 +35,14 @@ const Login = () => {
                 setPassword("")
                 navigate("../overview")
             })
-
+            .catch((e: Error) => setErrMsg(e.message))
     }
 
     return (
 
         <div>
             <input type={"text"} placeholder={t("Nutzername")}  value={username} onChange={event => setUsername(event.target.value)}/><br/>
-            <input type={"password"} placeholder={t("Passwort")}  value={password} onChange={event => setPassword(event.target.value)}/><br/>
+            <input type={"password"} placeholder={t("Passwort")}  value={password} onChange={event => setPassword(event.target.value)}/><br/><br/>
             <button onClick={login}>{t("Einloggen")}</button>
             <div>{errMsg}</div>
         </div>
