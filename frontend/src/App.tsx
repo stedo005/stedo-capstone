@@ -15,7 +15,7 @@ function App() {
 
     useEffect(() => {
         navigate("../overview")
-    }, [])
+    }, [navigate])
 
     return (
         <div>
