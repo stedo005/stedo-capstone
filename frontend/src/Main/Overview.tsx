@@ -1,10 +1,13 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {user} from "../Models/model";
+import {checkLogin} from "../Models/checkLogin";
+import {useNavigate} from "react-router-dom";
 
 const Overview = () => {
 
     const {t} = useTranslation()
+    const navigate = useNavigate()
 
     const [lastUpdate, setLastUpdate] = useState("")
 
@@ -16,7 +19,11 @@ const Overview = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(response =>
+                checkLogin(response)
+            )
             .then(getLastUpdate)
+            .catch(() => navigate("../login"))
     }
 
     const getLastUpdate = () => {
@@ -27,11 +34,13 @@ const Overview = () => {
             }
         })
             .then(response => {
+                checkLogin(response)
                 return response.json()
             })
             .then((responseBody: user) => {
                 setLastUpdate(responseBody.lastUpdate)
             })
+            .catch(() => navigate("../login"))
     }
 
     useEffect(() => {

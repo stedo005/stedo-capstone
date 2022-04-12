@@ -16,10 +16,10 @@ function App() {
     return (
         <div>
             <div>
-                <Link to={"login"}><button>{t("zum Login")}</button></Link>
+                <Link to={"login"}><button>{t("Login")}</button></Link>
                 <Link to={"logout"}><button onClick={logout}>{t("Logout")}</button></Link>
                 <Link to={"overview"}><button>{t("Übersicht")}</button></Link>
-                <button onClick={() => navigate("../categories")}>Kategorien</button>
+                <button onClick={() => navigate("../categories")}>{t("Kategorien")}</button>
             </div><br/>
             <Outlet />
         </div>
