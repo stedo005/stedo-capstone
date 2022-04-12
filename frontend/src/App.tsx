@@ -13,10 +13,6 @@ function App() {
         localStorage.removeItem("username")
     }
 
-/*    useEffect(() => {
-        navigate("../overview")
-    }, [])*/
-
     return (
         <div>
             <div>
