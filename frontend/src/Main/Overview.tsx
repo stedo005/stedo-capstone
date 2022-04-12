@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {user} from "../Models/model";
 import {checkLogin} from "../Models/checkLogin";
 import {useNavigate} from "react-router-dom";
@@ -26,7 +26,7 @@ const Overview = () => {
             .catch(() => navigate("../login"))
     }
 
-    const getLastUpdate = () => {
+    const getLastUpdate = useCallback(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/users/${localStorage.getItem("username")}`, {
             method: "GET",
             headers: {
@@ -41,11 +41,11 @@ const Overview = () => {
                 setLastUpdate(responseBody.lastUpdate)
             })
             .catch(() => navigate("../login"))
-    }
+    },[navigate])
 
     useEffect(() => {
         getLastUpdate()
-    }, [])
+    }, [getLastUpdate])
 
 
     return (

@@ -1,13 +1,15 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {result, savedCategories, soldItem} from "../Models/model";
+import {checkLogin} from "../Models/checkLogin";
 
 
 const EvaluateCategory = () => {
 
     const linkedId = useParams()
     const {t} = useTranslation()
+    const navigate = useNavigate()
 
     const [dateFrom, setDateFrom] = useState("2022-01-01")
     const [dateTo, setDateTo] = useState("2022-01-10")
@@ -27,9 +29,13 @@ const EvaluateCategory = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
-            .then(response => {return response.json()})
+            .then(response => {
+                checkLogin(response)
+                return response.json()
+            })
             .then((responseBody: savedCategories) => setCurrentCategory(responseBody))
-    }, [linkedId.categoryId])
+            .catch(() => navigate("../login"))
+    }, [linkedId.categoryId, navigate])
 
     const sendDate = () => {
 
@@ -46,12 +52,14 @@ const EvaluateCategory = () => {
             }
         })
             .then(response => {
+                checkLogin(response)
                 return response.json()
             })
             .then((responseBody: result) => {
                 setResult(responseBody.sumOfAllItems)
                 setSoldItems(responseBody.soldItems)
             })
+            .catch(() => navigate("../login"))
     }
 
     const getSumOfItems = (termToSearch: string) => {

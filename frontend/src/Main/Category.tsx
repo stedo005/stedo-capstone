@@ -1,7 +1,8 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {savedCategories} from "../Models/model";
+import {checkLogin} from "../Models/checkLogin";
 
 const Category = () => {
 
@@ -14,6 +15,21 @@ const Category = () => {
     const [itemsInCategory, setItemsInCategory] = useState([] as Array<string>)
     const [searchTherm, setSearchTherm] = useState("")
 
+    const getAllItemNames = useCallback(() => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(response => {
+                checkLogin(response)
+                return response.json()
+            })
+            .then((responseBody: Array<string>) => setAllItemNames(responseBody))
+            .catch(() => navigate("../login"))
+    },[navigate])
+
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
             method: "GET",
@@ -22,6 +38,7 @@ const Category = () => {
             }
         })
             .then(response => {
+                checkLogin(response)
                 return response.json()
             })
             .then((responseBody: savedCategories) => {
@@ -29,20 +46,8 @@ const Category = () => {
                 setItemsInCategory(responseBody.itemsInCategory)
             })
             .then(getAllItemNames)
-    }, [linkedId.categoryId])
-
-    const getAllItemNames = () => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        })
-            .then(response => {
-                return response.json()
-            })
-            .then((responseBody: Array<string>) => setAllItemNames(responseBody))
-    }
+            .catch(() => navigate("../login"))
+    }, [linkedId.categoryId, getAllItemNames, navigate])
 
     const saveItemsToCategory = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
@@ -57,7 +62,11 @@ const Category = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(response => {
+                checkLogin(response)
+            })
             .then(() => navigate("../categories"))
+            .catch(() => navigate("../login"))
     }
 
     const saveAllItemsToCategory = () => {
