@@ -47,13 +47,13 @@ export const data = {
         },
         {
             label: 'Dataset 2',
-            data: [0, 10, 15, 9, 12, 2, 0],
+            data: [1, 9, 13, 10, 5, 7, 2],
             borderColor: 'rgb(53, 162, 235)',
             backgroundColor: 'rgba(53, 162, 235, 0.5)',
         },
     ],
 };
 
-export function App() {
+export function Chart() {
     return <Line options={options} data={data} />;
 }
