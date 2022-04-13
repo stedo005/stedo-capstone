@@ -10,7 +10,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import {date} from "../Models/model";
+import {dataForItemChart} from "../Models/model";
 
 ChartJS.register(
     CategoryScale,
@@ -36,7 +36,7 @@ export const options = {
 };
 
 interface chartProps {
-    data: date
+    data: dataForItemChart
 }
 
 export function Chart() {
