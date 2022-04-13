@@ -9,7 +9,6 @@ import Overview from "./Main/Overview";
 import Categories from "./Main/Categories";
 import Category from './Main/Category';
 import EvaluateCategory from "./Main/EvaluateCategory";
-import {Chart} from "./Main/Chart";
 import ChartItem from "./Main/ChartItem";
 
 ReactDOM.render(
@@ -24,7 +23,6 @@ ReactDOM.render(
                         <Route path={"/categories"} element={<Categories />} />
                         <Route path={"/categories/:categoryId"} element={<Category />} />
                         <Route path={"/categories/evaluate/:categoryId"} element={<EvaluateCategory />} />
-                        <Route path={"/chart"} element={<Chart />} />
                         <Route path={"/chartItem"} element={<ChartItem />} />
                         <Route path={"/"} element={<Overview />} />
                     </Route>

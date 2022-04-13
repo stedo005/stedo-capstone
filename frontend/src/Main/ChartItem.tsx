@@ -3,6 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {checkLogin} from "../Models/checkLogin";
 import {dataForItemChart} from "../Models/model";
+import {Chart} from "./Chart";
 
 const ChartItem = () => {
 
@@ -15,6 +16,8 @@ const ChartItem = () => {
     const [allItems, setAllItems] = useState([] as string[])
     const [currentItem, setCurrentItem] = useState("")
     const [quantity, setQuantity] = useState([] as number[])
+    const [sales, setSales] = useState([] as number[])
+    const [labels, setLabels] = useState([] as string[])
 
     const getAllItemNames = useCallback(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
@@ -55,9 +58,14 @@ const ChartItem = () => {
             .then((responseBody: dataForItemChart[]) => {
                 setDataForChart(responseBody)
             })
-            .then(() => setQuantity([...dataForChart.map(e => e.quantity)]))
             .catch(() => navigate("../login"))
     }
+
+    useEffect(() => {
+        setQuantity([...dataForChart.map(e => e.quantity)])
+        setSales([...dataForChart.map(e => e.sales)])
+        setLabels([...dataForChart.map(e => e.date)])
+    },[dataForChart])
 
     return (
         <>
@@ -78,10 +86,11 @@ const ChartItem = () => {
                     :
                     t("Artikel werden geladen")
             }
+            {quantity.length}
             {
-                dataForChart.length > 0
+                quantity.length > 0
 
-                    ? quantity
+                    ? <Chart chartQuantity={quantity} chartSales={sales} chartLabels={labels} />
                     : "nix"
             }
         </>

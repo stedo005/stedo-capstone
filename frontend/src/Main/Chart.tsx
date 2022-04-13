@@ -10,7 +10,6 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import {dataForItemChart} from "../Models/model";
 
 ChartJS.register(
     CategoryScale,
@@ -22,39 +21,41 @@ ChartJS.register(
     Legend
 );
 
-export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top' as const,
-        },
-        title: {
-            display: true,
-            text: 'Chart.js Line Chart',
-        },
-    },
-};
-
-interface chartProps {
-    data: dataForItemChart
+interface dataForChartProps {
+    chartQuantity: number[]
+    chartSales: number[]
+    chartLabels: string[]
 }
 
-export function Chart() {
+export function Chart(props: dataForChartProps) {
 
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
+     const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+            title: {
+                display: true,
+                text: 'Auswertung',
+            },
+        },
+    }
+
+    const labels = props.chartLabels
 
     const data = {
         labels,
         datasets: [
             {
-                label: 'Dataset 1',
-                data: [0, 10, 15, 9, 12, 2, 0],
+                label: 'Anzahl',
+                data: props.chartQuantity,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
             {
-                label: 'Dataset 2',
-                data: [1, 9, 13, 10, 5, 7, 2],
+                label: 'Umsatz',
+                data: props.chartSales,
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
             },
