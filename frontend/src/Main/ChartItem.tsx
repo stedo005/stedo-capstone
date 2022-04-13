@@ -33,7 +33,7 @@ const ChartItem = () => {
     }, [getAllItemNames])
 
     const sendDate = () => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems/itemChart`, {
             method: "PUT",
             body: JSON.stringify({
                 "currentItem": currentItem,
@@ -56,7 +56,7 @@ const ChartItem = () => {
 
     return (
         <>
-            von: <input type={"date"} value={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input
+            von: <input type={"date"} defaultValue={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input
             type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><> </>
             <button onClick={sendDate}>{t("Zeige Chart")}</button>
             <br/><br/>
@@ -64,8 +64,8 @@ const ChartItem = () => {
                 allItems.length > 0
 
                     ?
-                    <select value={currentItem} onChange={e => setCurrentItem(e.target.value)}>
-                        <option selected={true}>Bitte wählen</option>
+                    <select onChange={e => setCurrentItem(e.target.value)}>
+                        <option value={currentItem}>Bitte wählen</option>
                         {
                             allItems.map(e => <option key={e} value={e}>{e}</option>)
                         }
