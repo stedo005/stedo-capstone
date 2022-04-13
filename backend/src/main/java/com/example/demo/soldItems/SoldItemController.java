@@ -22,4 +22,9 @@ public class SoldItemController {
         return soldItemService.getResults(dates);
     }
 
+    @PutMapping
+    public void getDataForItemChart(@RequestBody QueryItemChart query){
+
+    }
+
 }
