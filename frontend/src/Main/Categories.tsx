@@ -110,8 +110,9 @@ const Categories = () => {
                         <button>{t("bearbeiten")}</button>
                     </Link>
                     <Link to={`evaluate/${e.id}`}>
-                        <button>{t("auswerten")}</button>
+                        <button>{t("Budget planen")}</button>
                     </Link>
+                    <button onClick={() => navigate("../chart")}>{t("Chart Kategorie")}</button>
                     <p>{e.categoryName}</p>
                 </div>)}
             </div>
