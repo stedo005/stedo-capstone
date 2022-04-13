@@ -22,6 +22,7 @@ ReactDOM.render(
                         <Route path={"/categories"} element={<Categories />} />
                         <Route path={"/categories/:categoryId"} element={<Category />} />
                         <Route path={"/categories/evaluate/:categoryId"} element={<EvaluateCategory />} />
+                        <Route path={"/"} element={<Overview />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

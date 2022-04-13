@@ -1,11 +1,13 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {savedCategories} from "../Models/model";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {checkLogin} from "../Models/checkLogin";
 
 const Categories = () => {
 
     const {t} = useTranslation()
+    const navigate = useNavigate()
 
     const [categoryName, setCategoryName] = useState("")
     const [categories, setCategories] = useState([] as Array<savedCategories>)
@@ -27,9 +29,11 @@ const Categories = () => {
             }
         })
             .then(response => {
+                checkLogin(response)
                 return response.json()
             })
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
+            .catch(() => navigate("../login"))
     }
 
     const createCategory = () => {
@@ -46,6 +50,7 @@ const Categories = () => {
             }
         })
             .then(response => {
+                checkLogin(response)
                 if (response.status === 409) {
                     throw new Error(t("Diese Kategorie gibt es schon!"))
                 } else if (response.status === 400) {
@@ -55,6 +60,7 @@ const Categories = () => {
             .then(() => setCategoryName(""))
             .then(fetchCategories)
             .catch((e: Error) => {
+                navigate("../login")
                 setErrMsg(e.message)
             })
     }
@@ -68,10 +74,12 @@ const Categories = () => {
             }
         })
             .then(response => {
+                checkLogin(response)
                 return response.json()
             })
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
-    }, [])
+            .catch(() => navigate("../login"))
+    }, [navigate])
 
     const deleteCategory = (id: string) => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${id}`, {
@@ -81,7 +89,11 @@ const Categories = () => {
                 "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
+            .then(response => {
+                checkLogin(response)
+            })
             .then(fetchCategories)
+            .catch(() => navigate("../login"))
     }
 
     return (
