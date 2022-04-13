@@ -23,8 +23,8 @@ public class SoldItemController {
     }
 
     @PutMapping
-    public void getDataForItemChart(@RequestBody QueryItemChart query){
-
+    public List<DataForItemChart> getDataForItemChart(@RequestBody QueryItemChart query){
+        return soldItemService.getDataForItemChart(query);
     }
 
 }
