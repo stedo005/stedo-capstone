@@ -118,11 +118,10 @@ public class SoldItemService {
         List<SoldItem> soldItems = soldItemRepository.findAllByInvoiceDateIn(dates).stream()
                 .filter(soldItem -> query.getCurrentItem().equals(soldItem.getItemName()))
                 .toList();
-        for (int i = 0; i < dates.size(); i++) {
+        for (String date: dates) {
             DataForItemChart currentData = new DataForItemChart();
-            int finalI = i;
             List<SoldItem> currentList = soldItems.stream()
-                    .filter(soldItem -> dates.get(finalI).equals(soldItem.getInvoiceDate()))
+                    .filter(soldItem -> date.equals(soldItem.getInvoiceDate()))
                     .toList();
             currentData.setSales(currentList.stream()
                     .mapToDouble(value -> value.getTotalPrice())
@@ -130,7 +129,7 @@ public class SoldItemService {
             currentData.setQuantity(currentList.stream()
                     .mapToDouble(value -> value.getItemQuantity())
                     .sum());
-            currentData.setDate(dates.get(i));
+            currentData.setDate(date);
             dataForItemCharts.add(currentData);
         }
 

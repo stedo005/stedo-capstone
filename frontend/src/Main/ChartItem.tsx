@@ -2,12 +2,15 @@ import {useCallback, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {checkLogin} from "../Models/checkLogin";
+import {date} from "../Models/model";
+import {Chart} from "./Chart";
 
 const ChartItem = () => {
 
     const {t} = useTranslation()
     const navigate = useNavigate()
 
+    const [data, setData] = useState([] as date[])
     const [dateFrom, setDateFrom] = useState("2022-01-01")
     const [dateTo, setDateTo] = useState("2022-01-10")
     const [allItems, setAllItems] = useState([] as string[])
@@ -49,10 +52,13 @@ const ChartItem = () => {
                 checkLogin(response)
                 return response.json()
             })
+            .then((responseBody: date[]) => {
+                setData(responseBody)
+            })
             .catch(() => navigate("../login"))
     }
 
-    console.log(currentItem)
+    console.log(data.map(e => e.))
 
     return (
         <>
@@ -72,6 +78,12 @@ const ChartItem = () => {
                     </select>
                     :
                     t("Artikel werden geladen")
+            }
+            {
+                data.length > 0
+
+                    ? <Chart />
+                    : "nix"
             }
         </>
     )
