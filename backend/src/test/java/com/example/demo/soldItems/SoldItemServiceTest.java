@@ -14,8 +14,10 @@ import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -176,6 +178,55 @@ class SoldItemServiceTest {
         assertThat(actual.getSumOfAllItems()).isEqualTo(25);
         assertThat(actual.getSoldItems().size()).isEqualTo(2);
         assertThat(actual.getSoldItems().get(0).getItemPrice()).isEqualTo(10);
+
+    }
+
+    @Test
+    @DisplayName("should return a valid result")
+    void test5(){
+
+        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
+        HelloCashService helloCashService = mock(HelloCashService.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
+
+        QueryItemChart query = new QueryItemChart();
+        query.setCurrentItem("test");
+        query.setDateFrom("2022-01-01");
+        query.setDateTo("2022-01-03");
+
+        SoldItem item1 = new SoldItem();
+        SoldItem item2 = new SoldItem();
+
+        item1.setId("1");
+        item1.setInvoiceNumber("1");
+        item1.setItemName("test");
+        item1.setItemPrice(10.0);
+        item1.setItemQuantity(2.0);
+        item1.setInvoiceDate("2022-01-01");
+        item1.setInvoiceTime("5");
+
+        item2.setId("2");
+        item2.setInvoiceNumber("1");
+        item2.setItemPrice(15.0);
+        item2.setItemName("test");
+        item2.setItemQuantity(3.0);
+        item2.setInvoiceDate("2022-01-01");
+        item2.setInvoiceTime("3");
+
+        List<SoldItem> items = List.of(item1, item2);
+        List<String> listOfDates = List.of("2022-01-01, 2022-01-02");
+
+        when(soldItemRepository.findAllByInvoiceDateIn(listOfDates)).thenReturn(items);
+
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
+
+        List<DataForItemChart> actual = soldItemService.getDataForItemChart(query);
+
+        assertThat(actual.size()).isEqualTo(3);
+        assertThat(actual.get(0).getDate()).isEqualTo("2022-01-01");
+        assertThat(actual.get(2).getDate()).isEqualTo("2022-01-03");
+        //assertThat(actual.get(0).getQuantity()).isEqualTo(5);
 
     }
 
