@@ -27,7 +27,7 @@ interface dataForChartProps {
     chartLabels: string[]
 }
 
-export function Chart(props: dataForChartProps) {
+export function LineChart(props: dataForChartProps) {
 
      const options = {
         responsive: true,

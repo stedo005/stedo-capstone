@@ -44,7 +44,7 @@ function App() {
                     <button>{t("Übersicht")}</button>
                 </Link>
                 <button onClick={() => navigate("../categories")}>{t("Kategorien")}</button>
-                <button onClick={() => navigate("../chartItem")}>{t("Chart Artikel")}</button>
+                <button onClick={() => navigate("../chartItem")}>{t("LineChart Artikel")}</button>
                 <span> {localStorage.getItem("username") === null ? "" : "Du bist angemeldet als: " + localStorage.getItem("username")}</span>
             </div>
             <br/>

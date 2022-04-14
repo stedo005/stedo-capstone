@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {checkLogin} from "../Models/checkLogin";
 import {dataForItemChart} from "../Models/model";
-import {Chart} from "./Chart";
+import {LineChart} from "../Charts/LineChart";
 
 const ChartItem = () => {
 
@@ -71,7 +71,7 @@ const ChartItem = () => {
         <>
             von: <input type={"date"} defaultValue={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input
             type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><> </>
-            <button onClick={sendDate}>{t("Zeige Chart")}</button><br/><br/>
+            <button onClick={sendDate}>{t("Zeige LineChart")}</button><br/><br/>
             <br/><br/>
             {
                 allItems.length > 0
@@ -86,12 +86,11 @@ const ChartItem = () => {
                     :
                     t("Artikel werden geladen")
             }
-            {quantity.length}
             {
                 quantity.length > 0
 
-                    ? <Chart chartQuantity={quantity} chartSales={sales} chartLabels={labels} />
-                    : "nix"
+                    ? <LineChart chartQuantity={quantity} chartSales={sales} chartLabels={labels} />
+                    : ""
             }
         </>
     )
