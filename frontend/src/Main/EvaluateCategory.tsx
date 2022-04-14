@@ -62,7 +62,7 @@ const EvaluateCategory = () => {
                 setResult(responseBody.sumOfAllItems)
                 setSoldItems(responseBody.soldItems)
                 setChartLabels([...currentCategory.itemsInCategory])
-                setChartQuantity([1, 20])
+                setChartQuantity([...currentCategory.itemsInCategory.map(e => getSumOfItems(e))])
             })
             .catch(() => navigate("../login"))
     }
