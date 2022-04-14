@@ -3,6 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {result, savedCategories, soldItem} from "../Models/model";
 import {checkLogin} from "../Models/checkLogin";
+import {BarChart} from "../Charts/BarChart";
 
 
 const EvaluateCategory = () => {
@@ -106,6 +107,7 @@ const EvaluateCategory = () => {
                         <div>{t("Noch nichts zum anzeigen da.")}</div>
                 }
             </div>
+            {<BarChart />}
         </div>
     )
 }

@@ -10,6 +10,7 @@ import Categories from "./Main/Categories";
 import Category from './Main/Category';
 import EvaluateCategory from "./Main/EvaluateCategory";
 import ChartItem from "./Main/ChartItem";
+import {BarChart} from "./Charts/BarChart";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.render(
                         <Route path={"/categories/:categoryId"} element={<Category />} />
                         <Route path={"/categories/evaluate/:categoryId"} element={<EvaluateCategory />} />
                         <Route path={"/chartItem"} element={<ChartItem />} />
+                        <Route path={"/1"} element={<BarChart />} />
                         <Route path={"/"} element={<Overview />} />
                     </Route>
                 </Routes>
