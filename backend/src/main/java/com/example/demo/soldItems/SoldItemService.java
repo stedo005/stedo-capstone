@@ -111,5 +111,47 @@ public class SoldItemService {
 
     }
 
+    public List<DataForItemChart> getDataForItemChart (QueryItemChart query) {
+
+        List<DataForItemChart> dataForItemCharts = new ArrayList<>();
+        List<String> dates = getDateList(query);
+        List<SoldItem> soldItems = soldItemRepository.findAllByInvoiceDateIn(dates).stream()
+                .filter(soldItem -> query.getCurrentItem().equals(soldItem.getItemName()))
+                .toList();
+        for (String date: dates) {
+            DataForItemChart currentData = new DataForItemChart();
+            List<SoldItem> currentList = soldItems.stream()
+                    .filter(soldItem -> date.equals(soldItem.getInvoiceDate()))
+                    .toList();
+            currentData.setSales(currentList.stream()
+                    .mapToDouble(value -> value.getTotalPrice())
+                    .sum());
+            currentData.setQuantity(currentList.stream()
+                    .mapToDouble(value -> value.getItemQuantity())
+                    .sum());
+            currentData.setDate(date);
+            dataForItemCharts.add(currentData);
+        }
+
+        return dataForItemCharts;
+    }
+
+    private List<String> getDateList(QueryItemChart query){
+
+        LocalDate dateStart = LocalDate.parse(query.getDateFrom());
+        LocalDate dateStop = LocalDate.parse(query.getDateTo());
+
+        List<String> dates = new ArrayList<>();
+        dates.add(dateStart.toString());
+
+        while (!dateStart.equals(dateStop)) {
+            dates.add(dateStart.plusDays(1L).toString());
+            dateStart = (dateStart.plusDays(1L));
+        }
+
+        return dates;
+
+    }
+
 
 }

@@ -22,4 +22,9 @@ public class SoldItemController {
         return soldItemService.getResults(dates);
     }
 
+    @PutMapping("/itemChart")
+    public List<DataForItemChart> getDataForItemChart(@RequestBody QueryItemChart query){
+        return soldItemService.getDataForItemChart(query);
+    }
+
 }

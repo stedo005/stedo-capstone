@@ -24,3 +24,8 @@ export interface user {
     lastUpdate: string
 }
 
+export interface dataForItemChart {
+    date: string
+    quantity: number
+    sales: number
+}
