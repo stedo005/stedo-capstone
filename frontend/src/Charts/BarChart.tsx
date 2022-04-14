@@ -21,7 +21,7 @@ ChartJS.register(
 
 interface barChartProps {
     chartLabel?: string[]
-    chartQuantity?: []
+    chartQuantity?: number[]
 }
 
 export function BarChart(props: barChartProps) {
@@ -51,7 +51,7 @@ export function BarChart(props: barChartProps) {
         datasets: [
             {
                 label: 'Dataset 1',
-                data: labels!.map(() => 10),
+                data: props.chartQuantity,
                 backgroundColor: 'rgb(255, 99, 132)',
             },
         ],

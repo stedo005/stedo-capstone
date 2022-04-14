@@ -22,6 +22,7 @@ const EvaluateCategory = () => {
     let budget = 1 / calculationFactor * result
     let profit = result - budget
     const [chartLabels, setChartLabels] = useState([] as string[])
+    const [chartQuantity, setChartQuantity] = useState([] as number[])
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -61,6 +62,7 @@ const EvaluateCategory = () => {
                 setResult(responseBody.sumOfAllItems)
                 setSoldItems(responseBody.soldItems)
                 setChartLabels([...currentCategory.itemsInCategory])
+                setChartQuantity([1, 20])
             })
             .catch(() => navigate("../login"))
     }
@@ -114,7 +116,7 @@ const EvaluateCategory = () => {
             {
                 soldItems.length > 0
                     ?
-                    <BarChart chartLabel={chartLabels}/>
+                    <BarChart chartLabel={chartLabels} chartQuantity={chartQuantity} />
                     : ""
             }
         </div>
