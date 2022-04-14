@@ -86,12 +86,11 @@ const ChartItem = () => {
                     :
                     t("Artikel werden geladen")
             }
-            {quantity.length}
             {
                 quantity.length > 0
 
                     ? <LineChart chartQuantity={quantity} chartSales={sales} chartLabels={labels} />
-                    : "nix"
+                    : ""
             }
         </>
     )

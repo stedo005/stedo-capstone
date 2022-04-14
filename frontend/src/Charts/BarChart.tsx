@@ -8,7 +8,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import {Bar} from 'react-chartjs-2';
 
 ChartJS.register(
     CategoryScale,
@@ -19,37 +19,43 @@ ChartJS.register(
     Legend
 );
 
-export const options = {
-    plugins: {
-        title: {
-            display: true,
-            text: 'Chart.js Bar Chart - Stacked',
-        },
-    },
-    responsive: true,
-    scales: {
-        x: {
-            stacked: true,
-        },
-        y: {
-            stacked: true,
-        },
-    },
-};
+interface barChartProps {
+    chartLabel?: string[]
+    chartQuantity?: []
+}
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+export function BarChart(props: barChartProps) {
 
-export const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Dataset 1',
-            data: labels.map(() => 10),
-            backgroundColor: 'rgb(255, 99, 132)',
+    const options = {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Chart.js Bar Chart - Stacked',
+            },
         },
-    ],
-};
+        responsive: true,
+        scales: {
+            x: {
+                stacked: true,
+            },
+            y: {
+                stacked: true,
+            },
+        },
+    };
 
-export function BarChart() {
+    const labels = props.chartLabel;
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'Dataset 1',
+                data: labels!.map(() => 10),
+                backgroundColor: 'rgb(255, 99, 132)',
+            },
+        ],
+    };
+
     return <Bar options={options} data={data}/>;
 }

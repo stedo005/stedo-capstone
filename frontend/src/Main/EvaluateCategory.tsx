@@ -21,6 +21,7 @@ const EvaluateCategory = () => {
     const [calculationFactor, setCalculationFactor] = useState(2.5)
     let budget = 1 / calculationFactor * result
     let profit = result - budget
+    const [chartLabels, setChartLabels] = useState([] as string[])
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -59,6 +60,7 @@ const EvaluateCategory = () => {
             .then((responseBody: result) => {
                 setResult(responseBody.sumOfAllItems)
                 setSoldItems(responseBody.soldItems)
+                setChartLabels([...currentCategory.itemsInCategory])
             })
             .catch(() => navigate("../login"))
     }
@@ -77,7 +79,8 @@ const EvaluateCategory = () => {
             <br/><br/>
             <div>
                 <label htmlFor={"faktor"}>{t("Kalkulationsfaktor: ")}</label>
-                <>{calculationFactor}</><br/>
+                <>{calculationFactor}</>
+                <br/>
                 <input
                     id={"faktor"}
                     type={"range"}
@@ -87,7 +90,8 @@ const EvaluateCategory = () => {
                     onChange={e => setCalculationFactor(parseFloat(e.target.value))}
                     defaultValue={calculationFactor}
                 />
-            </div><br/>
+            </div>
+            <br/>
             <div>{t("Umsatz: ")}{result.toFixed(2)} €</div>
             <div>
                 {t("Budget: ")}{budget.toFixed(2)} €
@@ -107,7 +111,12 @@ const EvaluateCategory = () => {
                         <div>{t("Noch nichts zum anzeigen da.")}</div>
                 }
             </div>
-            {<BarChart />}
+            {
+                soldItems.length > 0
+                    ?
+                    <BarChart chartLabel={chartLabels}/>
+                    : ""
+            }
         </div>
     )
 }
