@@ -191,7 +191,7 @@ class SoldItemServiceTest {
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
         QueryItemChart query = new QueryItemChart();
-        query.setCurrentItem("test");
+        query.setCurrentItem("strauß");
         query.setDateFrom("2022-01-01");
         query.setDateTo("2022-01-03");
 
@@ -200,7 +200,7 @@ class SoldItemServiceTest {
 
         item1.setId("1");
         item1.setInvoiceNumber("1");
-        item1.setItemName("test");
+        item1.setItemName("strauß");
         item1.setItemPrice(10.0);
         item1.setItemQuantity(2.0);
         item1.setInvoiceDate("2022-01-01");
@@ -209,13 +209,15 @@ class SoldItemServiceTest {
         item2.setId("2");
         item2.setInvoiceNumber("1");
         item2.setItemPrice(15.0);
-        item2.setItemName("test");
+        item2.setItemName("strauß");
         item2.setItemQuantity(3.0);
         item2.setInvoiceDate("2022-01-01");
         item2.setInvoiceTime("3");
 
-        List<SoldItem> items = List.of(item1, item2);
-        List<String> listOfDates = List.of("2022-01-01, 2022-01-02");
+        List<SoldItem> items = new ArrayList<>();
+        items.add(item1);
+        items.add(item2);
+        List<String> listOfDates = List.of("2022-01-01", "2022-01-02", "2022-01-03");
 
         when(soldItemRepository.findAllByInvoiceDateIn(listOfDates)).thenReturn(items);
 
@@ -226,7 +228,8 @@ class SoldItemServiceTest {
         assertThat(actual.size()).isEqualTo(3);
         assertThat(actual.get(0).getDate()).isEqualTo("2022-01-01");
         assertThat(actual.get(2).getDate()).isEqualTo("2022-01-03");
-        //assertThat(actual.get(0).getQuantity()).isEqualTo(5);
+        assertThat(actual.get(0).getQuantity()).isEqualTo(5);
+        assertThat(actual.get(0).getSales()).isEqualTo(65);
 
     }
 
