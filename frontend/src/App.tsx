@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Link, Outlet, useNavigate} from 'react-router-dom';
+import {Outlet, useNavigate} from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 import {checkLogin} from "./Models/checkLogin";
 
@@ -34,18 +34,15 @@ function App() {
     return (
         <div>
             <div>
-                <Link to={"login"}>
-                    <button>{t("Login")}</button>
-                </Link>
-                <Link to={"logout"}>
-                    <button onClick={logout}>{t("Logout")}</button>
-                </Link>
-                <Link to={"overview"}>
-                    <button>{t("Übersicht")}</button>
-                </Link>
+                <button onClick={() => navigate("../overview")}>{t("Übersicht")}</button>
                 <button onClick={() => navigate("../categories")}>{t("Kategorien")}</button>
                 <button onClick={() => navigate("../chartItem")}>{t("LineChart Artikel")}</button>
-                <span> {localStorage.getItem("username") === null ? "" : "Du bist angemeldet als: " + localStorage.getItem("username")}</span>
+                <span> {localStorage.getItem("username") === null ? "" : "Du bist angemeldet als: " + localStorage.getItem("username")} </span>
+                <button onClick={() => navigate("../login")}>{t("Login")}</button>
+                <button onClick={() => {
+                    logout()
+                    navigate("../logout")
+                }}>{t("Logout")}</button>
             </div>
             <br/>
             <Outlet/>

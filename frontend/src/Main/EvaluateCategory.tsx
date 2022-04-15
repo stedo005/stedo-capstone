@@ -5,7 +5,6 @@ import {result, savedCategories, soldItem} from "../Models/model";
 import {checkLogin} from "../Models/checkLogin";
 import {BarChart} from "../Charts/BarChart";
 
-
 const EvaluateCategory = () => {
 
     const linkedId = useParams()
