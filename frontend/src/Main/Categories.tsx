@@ -98,27 +98,42 @@ const Categories = () => {
 
     return (
 
-        <div className={"container"}>
-            <button onClick={() => setHideNewCategory(false)}>{t("Katergorie anlegen")}</button>
-            {errMsg}
-            <div hidden={hideNewCategory}>
-                <input className={""} type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
-                       onChange={event => setCategoryName(event.target.value)}/>
-                <i className={"clickable bi bi-check-circle-fill m-1"} onClick={() => {
-                    createCategory()
-                    setHideNewCategory(true)
-                }}/>
-                <i className="clickable bi bi-x-circle-fill m-1" onClick={() => setHideNewCategory(true)}/>
+        <>
+            <div className={"justify-content-center row"}>
+                <div className={"row"}>
+                    <button onClick={() => setHideNewCategory(false)}>{t("Katergorie anlegen")}</button>
+                    {errMsg}
+                    <div hidden={hideNewCategory}>
+                        <input className={""} type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
+                               onChange={event => setCategoryName(event.target.value)}/>
+                        <i className={"clickable bi bi-check-circle-fill m-1"} onClick={() => {
+                            createCategory()
+                            setHideNewCategory(true)
+                        }}/>
+                        <i className="clickable bi bi-x-circle-fill m-1" onClick={() => setHideNewCategory(true)}/>
+                    </div>
+                </div>
+                <br/><br/>
+                <div className={"categories row justify-content-center mt-3"}>
+                    {categories.map(e =>
+                        <div className={"category m-3 row justify-content-center"}
+                             key={e.id}>
+                            <div className={"clickable category-text justify-content-center row align-items-center"}
+                                 onClick={() => navigate(`evaluate/${e.id}`)}>
+                                <div className={"text-center"}>
+                                    {e.categoryName}
+                                </div>
+                            </div>
+                            <div className={"col row justify-content-end"}>
+                                <i className="clickable bi bi-pencil-square m-1 col-1"
+                                   onClick={() => navigate(`${e.id}`)}/>
+                                <i className="clickable bi bi-trash-fill m-1 col-1"
+                                   onClick={() => deleteCategory(e.id)}/>
+                            </div>
+                        </div>)}
+                </div>
             </div>
-            <br/><br/>
-            <div className={"categories"}>{categories.map(
-                e => <div className={"clickable category m-1"} onClick={() => navigate(`evaluate/${e.id}`)} key={e.id}>
-                    <div>{e.categoryName}</div>
-                    <i className="clickable bi bi-pencil-square m-1" onClick={() => navigate(`${e.id}`)}/>
-                    <i className="clickable bi bi-trash-fill m-1" onClick={() => deleteCategory(e.id)}/>
-                </div>)}
-            </div>
-        </div>
+        </>
 
     )
 }
