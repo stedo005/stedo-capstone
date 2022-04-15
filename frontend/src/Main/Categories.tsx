@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {savedCategories} from "../Models/model";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {checkLogin} from "../Models/checkLogin";
 
 const Categories = () => {
