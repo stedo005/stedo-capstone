@@ -5,11 +5,11 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from './Login/Login';
 import Logout from './Login/Logout';
-import Overview from "./Main/Overview";
 import Categories from "./Main/Categories";
 import Category from './Main/Category';
 import EvaluateCategory from "./Main/EvaluateCategory";
 import ChartItem from "./Main/ChartItem";
+import "./index.css";
 
 ReactDOM.render(
     <React.StrictMode>

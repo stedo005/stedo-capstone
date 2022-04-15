@@ -61,7 +61,6 @@ const Categories = () => {
             .then(() => setCategoryName(""))
             .then(fetchCategories)
             .catch((e: Error) => {
-                navigate("../login")
                 setErrMsg(e.message)
             })
     }
@@ -99,29 +98,24 @@ const Categories = () => {
 
     return (
 
-        <div>
-            <button onClick={() => setHideNewCategory(false)}>{t("Katergorie anlegen")}</button> {errMsg}
+        <div className={"container"}>
+            <button onClick={() => setHideNewCategory(false)}>{t("Katergorie anlegen")}</button>
+            {errMsg}
             <div hidden={hideNewCategory}>
-                <input type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
+                <input className={""} type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
                        onChange={event => setCategoryName(event.target.value)}/>
-                <button onClick={() => {
+                <i className={"clickable bi bi-check-circle-fill m-1"} onClick={() => {
                     createCategory()
                     setHideNewCategory(true)
-                }}>{t("speichern")}
-                </button>
-                <button onClick={() => setHideNewCategory(true)}>{t("abbrechen")}</button>
+                }}/>
+                <i className="clickable bi bi-x-circle-fill m-1" onClick={() => setHideNewCategory(true)}/>
             </div>
             <br/><br/>
-            <div>{categories.map(
-                e => <div key={e.id}>
-                    <button onClick={() => deleteCategory(e.id)}>{t("löschen")}</button>
-                    <Link to={`${e.id}`}>
-                        <button>{t("bearbeiten")}</button>
-                    </Link>
-                    <Link to={`evaluate/${e.id}`}>
-                        <button>{t("Budget planen")}</button>
-                    </Link>
-                    <p>{e.categoryName}</p>
+            <div className={"categories"}>{categories.map(
+                e => <div className={"clickable category m-1"} onClick={() => navigate(`evaluate/${e.id}`)} key={e.id}>
+                    <div>{e.categoryName}</div>
+                    <i className="clickable bi bi-pencil-square m-1" onClick={() => navigate(`${e.id}`)}/>
+                    <i className="clickable bi bi-trash-fill m-1" onClick={() => deleteCategory(e.id)}/>
                 </div>)}
             </div>
         </div>
