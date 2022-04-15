@@ -11,6 +11,7 @@ const Categories = () => {
 
     const [categoryName, setCategoryName] = useState("")
     const [categories, setCategories] = useState([] as Array<savedCategories>)
+    const [hideNewCategory, setHideNewCategory] = useState(true)
     const itemsInCategory = [] as Array<string>
 
     const [errMsg, setErrMsg] = useState("")
@@ -99,14 +100,22 @@ const Categories = () => {
     return (
 
         <div>
-            <input type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
-                   onChange={event => setCategoryName(event.target.value)}/>
-            <button onClick={createCategory}>{t("neue Katergorie erstellen")}</button>
-            {errMsg}<br/><br/>
+            <button onClick={() => setHideNewCategory(false)}>{t("Katergorie anlegen")}</button> {errMsg}
+            <div hidden={hideNewCategory}>
+                <input type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
+                       onChange={event => setCategoryName(event.target.value)}/>
+                <button onClick={() => {
+                    createCategory()
+                    setHideNewCategory(true)
+                }}>{t("speichern")}
+                </button>
+                <button onClick={() => setHideNewCategory(true)}>{t("abbrechen")}</button>
+            </div>
+            <br/><br/>
             <div>{categories.map(
                 e => <div key={e.id}>
                     <button onClick={() => deleteCategory(e.id)}>{t("löschen")}</button>
-                    <Link to={e.id}>
+                    <Link to={`${e.id}`}>
                         <button>{t("bearbeiten")}</button>
                     </Link>
                     <Link to={`evaluate/${e.id}`}>

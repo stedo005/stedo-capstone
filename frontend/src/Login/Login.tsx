@@ -33,7 +33,7 @@ const Login = () => {
                 localStorage.setItem("username", username)
                 setUsername("")
                 setPassword("")
-                navigate("../overview")
+                navigate("../")
             })
             .catch((e: Error) => setErrMsg(e.message))
     }

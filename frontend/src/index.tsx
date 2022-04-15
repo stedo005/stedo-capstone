@@ -19,12 +19,10 @@ ReactDOM.render(
                     <Route path="/" element={<App />}>
                         <Route path={"/login"} element={<Login />}/>
                         <Route path={"/logout"} element={<Logout />}/>
-                        <Route path={"/overview"} element={<Overview />} />
-                        <Route path={"/categories"} element={<Categories />} />
-                        <Route path={"/categories/:categoryId"} element={<Category />} />
-                        <Route path={"/categories/evaluate/:categoryId"} element={<EvaluateCategory />} />
+                        <Route path={"/:categoryId"} element={<Category />} />
+                        <Route path={"/evaluate/:categoryId"} element={<EvaluateCategory />} />
                         <Route path={"/chartItem"} element={<ChartItem />} />
-                        <Route path={"/"} element={<Overview />} />
+                        <Route path={"/"} element={<Categories />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
