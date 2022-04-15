@@ -63,29 +63,29 @@ function App() {
                 setLastUpdate(responseBody.lastUpdate)
             })
             .catch(() => navigate("../login"))
-    },[navigate])
+    }, [navigate])
 
     useEffect(() => {
         getLastUpdate()
     }, [getLastUpdate])
 
     return (
-        <div>
-            <span>
-                <button onClick={() => navigate("../")}>{t("Home")}</button>
-                <span> {t("letztes Update: ")}{new Date(lastUpdate).toLocaleDateString()} </span>
-                <button onClick={refreshDatabase}>{t("Datenbank aktualisieren")}</button>
-            </span>
-            <span>
-                <span> {localStorage.getItem("username") === null ? "" : "Du bist angemeldet als: " + localStorage.getItem("username")} </span>
-                <button onClick={() => navigate("../login")}>{t("Login")}</button>
-                <button onClick={() => {
-                    logout()
-                    navigate("../logout")
-                }}>{t("Logout")}</button>
-                <button onClick={() => navigate("../chartItem")}>{t("LineChart Artikel")}</button>
-            </span>
-            <br/><br/><br/>
+        <div className={"background row justify-content-center"}>
+            <div className={"my-header"}>
+                <div className={"row justify-content-center my-3"}>
+                    <div className={"clickable btn-nav col-1 align-content-center"}
+                         onClick={() => navigate("../")}>{t("Home")}</div>
+                    <div className={"clickable btn-nav col-1"} onClick={refreshDatabase}>{t("Daten")} <i className="bi bi-arrow-repeat"/>
+                    </div>
+                    <div className={"clickable btn-nav col-1"} onClick={() => {
+                        logout()
+                        navigate("../logout")
+                    }}>{t("Logout")}</div>
+                </div>
+                <div className={"mb-3"} style={{fontSize: 18, color:"#c2dde4"}}>{t("letztes Update: ")}{new Date(lastUpdate).toLocaleDateString()}</div>
+            </div>
+            {/*localStorage.getItem("username") === null ? "" : "Du bist angemeldet als: " + localStorage.getItem("username")*/}
+            {/*<button onClick={() => navigate("../chartItem")}>{t("LineChart Artikel")}</button>*/}
             <Outlet/>
         </div>
     )

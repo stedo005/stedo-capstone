@@ -16,15 +16,14 @@ body{
 .c3{
     background-color: #5c5c64;
 }
-.categories{
+.maxWidth{
     max-width: 1200px;
 }
-
 .category{
     color: #c2dde4;
     background-color: #06565b;
     border-radius: 8px;
-    box-shadow: black 1px 2px;
+    box-shadow: #5c5c64 2px 2px;
     width: 250px;
     height: 160px;
 }
@@ -33,4 +32,49 @@ body{
 }
 .category:hover{
     opacity: 90%;
+}
+.btn-new-category{
+    box-shadow: #5c5c64 2px 2px;
+    color: #003a44;
+    background-color: #66a4ac;
+    border-radius: 8px;
+    width: 400px;
+}
+.btn-new-category:hover{
+    opacity: 90%;
+}
+.btn-nav{
+    color: #003a44;
+    margin: 5px;
+    padding: 5px;
+    background-color: #66a4ac;
+    border-radius: 8px;
+    width: 150px;
+}
+.btn-nav:hover{
+    opacity: 90%;
+}
+.my-header{
+    background-color: #003a44;
+    margin-bottom: 80px;
+}
+.background{
+    background: #c2dde4;
+    color: #003a44;
+    text-align: center;
+}
+.head-category{
+    border-radius: 5px;
+    min-width: 300px;
+    width: fit-content;
+    font-size: 30px;
+    border: #003a44 solid 2px;
+}
+.result{
+    border-radius: 5px;
+    min-width: 500px;
+    width: fit-content;
+    font-size: 30px;
+    color: #c2dde4;
+    background-color: #06565b;
 }

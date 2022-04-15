@@ -28,7 +28,7 @@ const Category = () => {
             })
             .then((responseBody: Array<string>) => setAllItemNames(responseBody))
             .catch(() => navigate("../login"))
-    },[navigate])
+    }, [navigate])
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -92,58 +92,62 @@ const Category = () => {
 
     return (
 
-        <div>
-            {t("Kategorie: ")}{category.categoryName}<br/><br/>
-            <div>{t("Artikel in Kategorie: ")}{itemsInCategory.length}</div>
-            <br/>
+        <div className={"maxWidth justify-content-center"} style={{color: "#06565b"}}>
+            <div className={"head-category mx-auto mb-5 p-3"}>
+                <div>{category.categoryName}</div>
+                <div>{itemsInCategory.length}{t(" Artikel")}</div>
+            </div>
             <div>
                 <input
+                    className={"background mb-4"}
                     type={"text"}
                     placeholder={t("Artikelsuche")}
                     value={searchTherm}
                     onChange={e => setSearchTherm(e.target.value)}
-                /><br/><br/>
-                <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
-                {
-                    allItemNames.length > 0
-                        ?
-                        <>
-                            <input type={"checkbox"}
-                                   id={"allChecked"}
-                                   onChange={() =>
-                                       allItemNames.length === itemsInCategory.length
-                                           ? removeAllItemsFromCategory()
-                                           : saveAllItemsToCategory()
-                                   }
-                                   checked={allItemNames.length === itemsInCategory.length}
-                            />
-                            <label htmlFor={"allChecked"}>{t(" alle auswählen")}</label>
-                        </>
+                />
+                <div className={""}>
+                    <div className={"clickable btn-nav mx-auto mb-4"} onClick={saveItemsToCategory}>{t("Speichern")}</div>
+                    {
+                        allItemNames.length > 0
+                            ?
+                            <>
+                                <input className={"mb-4"} type={"checkbox"}
+                                       id={"allChecked"}
+                                       onChange={() =>
+                                           allItemNames.length === itemsInCategory.length
+                                               ? removeAllItemsFromCategory()
+                                               : saveAllItemsToCategory()
+                                       }
+                                       checked={allItemNames.length === itemsInCategory.length}
+                                />
+                                <label htmlFor={"allChecked"}>{t(" alle auswählen")}</label>
+                            </>
 
-                        : <></>
-                }
+                            : <></>
+                    }
 
-                {
-                    allItemNames.length > 0
-                        ?
-                        allItemNames.filter(e => e.toLowerCase().includes(searchTherm.toLowerCase()))
-                            .map(n =>
-                                <div key={n}>
-                                    <input
-                                        className={"checkbox-item"}
-                                        id={n}
-                                        type={"checkbox"}
-                                        value={n}
-                                        checked={setCheckedDefault(n)}
-                                        onChange={e => {
-                                            setItemsToCategory(e.target.id, e.target.checked)
-                                        }}
-                                    />
-                                    <label htmlFor={n}> {n}</label>
-                                </div>)
-                        : <p>{t("Artikel werden geladen!")}</p>
-                }
-                <button onClick={saveItemsToCategory}>{t("Speichern")}</button>
+                    {
+                        allItemNames.length > 0
+                            ?
+                            allItemNames.filter(e => e.toLowerCase().includes(searchTherm.toLowerCase()))
+                                .map(n =>
+                                    <div className={""} key={n}>
+                                        <input
+                                            className={"col-1 checkbox-item"}
+                                            id={n}
+                                            type={"checkbox"}
+                                            value={n}
+                                            checked={setCheckedDefault(n)}
+                                            onChange={e => {
+                                                setItemsToCategory(e.target.id, e.target.checked)
+                                            }}
+                                        />
+                                        <label className={"col-11"} style={{textAlign: "left"}} htmlFor={n}>{n}</label>
+                                    </div>)
+                            : <p>{t("Artikel werden geladen!")}</p>
+                    }
+                    <div className={"clickable btn-nav mx-auto mb-4 mt-4"} onClick={saveItemsToCategory}>{t("Speichern")}</div>
+                </div>
             </div>
         </div>
 

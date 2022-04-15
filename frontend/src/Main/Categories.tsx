@@ -100,13 +100,15 @@ const Categories = () => {
 
         <>
             <div className={"justify-content-center row"}>
-                <div className={"row"}>
-                    <button onClick={() => setHideNewCategory(false)}>{t("Katergorie anlegen")}</button>
-                    {errMsg}
-                    <div hidden={hideNewCategory}>
-                        <input className={""} type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
+                <div className={"clickable btn-new-category row justify-content-center align-items-center"}>
+                    <div className={"p-2 text-center"} onClick={() => setHideNewCategory(false)}>
+                        {t("Kategorie anlegen")}
+                        {errMsg}
+                    </div>
+                    <div className={"text-center"} hidden={hideNewCategory}>
+                        <input className={"mt-2 mb-3"} style={{background: "#66a4ac"}} type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
                                onChange={event => setCategoryName(event.target.value)}/>
-                        <i className={"clickable bi bi-check-circle-fill m-1"} onClick={() => {
+                        <i className={"clickable bi bi-check-circle-fill m-3"} onClick={() => {
                             createCategory()
                             setHideNewCategory(true)
                         }}/>
@@ -114,7 +116,7 @@ const Categories = () => {
                     </div>
                 </div>
                 <br/><br/>
-                <div className={"categories row justify-content-center mt-3"}>
+                <div className={"maxWidth row justify-content-center mt-3"}>
                     {categories.map(e =>
                         <div className={"category m-3 row justify-content-center"}
                              key={e.id}>
