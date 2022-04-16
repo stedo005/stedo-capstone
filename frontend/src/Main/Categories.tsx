@@ -127,7 +127,7 @@ const Categories = () => {
                                 </div>
                             </div>
                             <div className={"col row justify-content-end"}>
-                                <i className="clickable bi bi-pencil-square m-1 col-1"
+                                <i className="clickable bi bi-pencil-square m-1 col-4"
                                    onClick={() => navigate(`${e.id}`)}/>
                                 <i className="clickable bi bi-trash-fill m-1 col-1"
                                    onClick={() => deleteCategory(e.id)}/>
