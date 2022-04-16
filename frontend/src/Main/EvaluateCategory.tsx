@@ -105,11 +105,11 @@ const EvaluateCategory = () => {
                         </div>
                     </div>
                 </div>
-                <div className={`bar-chart col my-5 mx-auto my-auto`}>
+                <div className={`bar-chart col-m my-5 mx-auto my-auto`}>
                     {
                         soldItems.length > 0
                             ?
-                            <div>
+                            <div className={""}>
                                 <PieChart chartLabel={chartLabels}
                                           chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]}/>
                             </div>
@@ -118,7 +118,7 @@ const EvaluateCategory = () => {
                 </div>
                 <div className={"col-12"}>
                     <div className={"clickable btn-nav mx-auto my-5"}
-                         onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}
+                         onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht")}
                     </div>
                     <div className={"mb-5 mx-auto"} hidden={hide}>
                         {

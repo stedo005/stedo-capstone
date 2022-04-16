@@ -10,7 +10,6 @@ import Category from './Main/Category';
 import EvaluateCategory from "./Main/EvaluateCategory";
 import ChartItem from "./Main/ChartItem";
 import "./index.css";
-import {PieChart} from "./Charts/PieChart";
 
 ReactDOM.render(
     <React.StrictMode>
