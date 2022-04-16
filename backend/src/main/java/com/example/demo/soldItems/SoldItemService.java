@@ -93,7 +93,7 @@ public class SoldItemService {
         List<DataForItemChart> dataForItemCharts = new ArrayList<>();
         List<String> dates = getDateList(query);
         List<SoldItem> soldItems = soldItemRepository.findAllByInvoiceDateIn(dates).stream()
-                .filter(soldItem -> query.getSearchTherm().equals(soldItem.getItemName()))
+                .filter(soldItem -> query.getSearchTerm().equals(soldItem.getItemName()))
                 .toList();
         for (String date: dates) {
             DataForItemChart currentData = new DataForItemChart();
@@ -137,7 +137,7 @@ public class SoldItemService {
 
     private List<SoldItem> getItemsByDateList(DataForQuery dataForQuery) {
 
-        List<String> itemsInCategory = categoryRepository.findById(dataForQuery.getSearchTherm())
+        List<String> itemsInCategory = categoryRepository.findById(dataForQuery.getSearchTerm())
                 .map(category -> category.getItemsInCategory())
                 .orElseThrow(() -> new IllegalArgumentException("Kategorie existiert nicht!"));
 

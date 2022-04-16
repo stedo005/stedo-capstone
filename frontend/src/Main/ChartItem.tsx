@@ -42,7 +42,7 @@ const ChartItem = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems/itemChart`, {
             method: "PUT",
             body: JSON.stringify({
-                "searchTherm": currentItem,
+                "searchTerm": currentItem,
                 "dateFrom": dateFrom,
                 "dateTo": dateTo
             }),

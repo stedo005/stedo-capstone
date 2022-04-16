@@ -146,7 +146,7 @@ class SoldItemServiceTest {
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
         DataForQuery dataForQuery = new DataForQuery();
-        dataForQuery.setSearchTherm("1");
+        dataForQuery.setSearchTerm("1");
         dataForQuery.setDateFrom("2022-01-01");
         dataForQuery.setDateTo("2022-01-02");
 
@@ -167,7 +167,7 @@ class SoldItemServiceTest {
         item2.setItemPrice(15);
         item2.setItemQuantity(1);
 
-        when(categoryRepository.findById(dataForQuery.getSearchTherm())).thenReturn(Optional.of(category));
+        when(categoryRepository.findById(dataForQuery.getSearchTerm())).thenReturn(Optional.of(category));
 
         when(soldItemRepository.findAllByInvoiceDateIn(dates)).thenReturn(List.of(item1, item2));
 
@@ -190,7 +190,7 @@ class SoldItemServiceTest {
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
         DataForQuery query = new DataForQuery();
-        query.setSearchTherm("strauß");
+        query.setSearchTerm("strauß");
         query.setDateFrom("2022-01-01");
         query.setDateTo("2022-01-03");
 
@@ -242,7 +242,7 @@ class SoldItemServiceTest {
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
         DataForQuery query = new DataForQuery();
-        query.setSearchTherm("kategorie");
+        query.setSearchTerm("kategorie");
         query.setDateFrom("2022-01-01");
         query.setDateTo("2022-01-03");
 
@@ -255,7 +255,7 @@ class SoldItemServiceTest {
 
         List<SoldItem> itemList = List.of(item1, item2, item3, item4);
 
-        when(categoryRepository.findById(query.getSearchTherm())).thenReturn(Optional.of(category));
+        when(categoryRepository.findById(query.getSearchTerm())).thenReturn(Optional.of(category));
         when(soldItemRepository.findAllByInvoiceDateIn(List.of("2022-01-01","2022-01-02","2022-01-03"))).thenReturn(itemList);
 
         SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
