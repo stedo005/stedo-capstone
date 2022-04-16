@@ -5,7 +5,6 @@ import {result, savedCategories, soldItem} from "../Models/model";
 import {checkLogin} from "../Models/checkLogin";
 import {BarChart} from "../Charts/BarChart";
 
-
 const EvaluateCategory = () => {
 
     const linkedId = useParams()
@@ -70,18 +69,20 @@ const EvaluateCategory = () => {
     }
 
     return (
-        <div>
-
-            {t("Kategorie: ")}{currentCategory.categoryName}<br/><br/>
-            von: <input type={"date"} value={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input
-            type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><> </>
-            <button onClick={sendDate}>{t("Budget anzeigen")}</button>
-            <br/><br/>
+        <div className={"justify-content-center"} style={{color: "#003a44"}}>
+            <div className={"head-category mx-auto mb-5 pt-4 pb-4"}>{currentCategory.categoryName}</div>
+            <div className={""}>
+                von: <input className={"background"} type={"date"} value={dateFrom}
+                            onChange={e => setDateFrom(e.target.value)}/> bis: <input className={"background"}
+                                                                                      type={"date"} value={dateTo}
+                                                                                      onChange={e => setDateTo(e.target.value)}/>
+            </div>
             <div>
-                <label htmlFor={"faktor"}>{t("Kalkulationsfaktor: ")}</label>
-                <>{calculationFactor}</>
+                <label className={"mt-5"} htmlFor={"faktor"}>{t("Kalkulationsfaktor: ")}</label>
+                <> {calculationFactor}</>
                 <br/>
                 <input
+                    className={"mb-5"}
                     id={"faktor"}
                     type={"range"}
                     min={2}
@@ -91,32 +92,38 @@ const EvaluateCategory = () => {
                     defaultValue={calculationFactor}
                 />
             </div>
-            <br/>
-            <div>{t("Umsatz: ")}{result.toFixed(2)} €</div>
-            <div>
-                {t("Budget: ")}{budget.toFixed(2)} €
-            </div>
-            <div>
-                {t("Rohertrag: ")}{profit.toFixed(2)} €
-            </div>
-            <br/>
-            <button onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}</button>
-            <br/><br/>
-            <div hidden={hide}>
-                {
-                    soldItems.length > 0
-                        ?
-                        <div>{currentCategory.itemsInCategory.map(e => <div key={e}>{e} {getSumOfItems(e)}</div>)}</div>
-                        :
-                        <div>{t("Noch nichts zum anzeigen da.")}</div>
-                }
+            <div className={"clickable btn-nav mx-auto"} onClick={sendDate}>{t("Budget anzeigen")}</div>
+            <div className={"result mx-auto my-5 px-5 py-4"}>
+                <div>{t("Umsatz: ")}{result.toFixed(2)} €</div>
+                <div>
+                    {t("Rohertrag: ")}{profit.toFixed(2)} €
+                </div>
+                <div>
+                    {t("Budget: ")}{budget.toFixed(2)} €
+                </div>
             </div>
             {
                 soldItems.length > 0
                     ?
-                    <BarChart chartLabel={chartLabels} chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]} />
+                    <div>
+                        <BarChart chartLabel={chartLabels}
+                                  chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]}/>
+                        <div className={"clickable btn-nav mx-auto my-5"}
+                             onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}
+                        </div>
+                    </div>
                     : ""
             }
+            <div className={"mb-5"} hidden={hide}>
+                {
+                    soldItems.length > 0
+                        ?
+                        <div>{currentCategory.itemsInCategory.map(e => <div
+                            key={e}>{e}: {getSumOfItems(e)}</div>)}</div>
+                        :
+                        <div>{t("Noch nichts zum anzeigen da.")}</div>
+                }
+            </div>
         </div>
     )
 }

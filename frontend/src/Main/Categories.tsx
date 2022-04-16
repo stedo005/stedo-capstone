@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {savedCategories} from "../Models/model";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {checkLogin} from "../Models/checkLogin";
 
 const Categories = () => {
@@ -11,6 +11,7 @@ const Categories = () => {
 
     const [categoryName, setCategoryName] = useState("")
     const [categories, setCategories] = useState([] as Array<savedCategories>)
+    const [hideNewCategory, setHideNewCategory] = useState(true)
     const itemsInCategory = [] as Array<string>
 
     const [errMsg, setErrMsg] = useState("")
@@ -60,7 +61,6 @@ const Categories = () => {
             .then(() => setCategoryName(""))
             .then(fetchCategories)
             .catch((e: Error) => {
-                navigate("../login")
                 setErrMsg(e.message)
             })
     }
@@ -98,24 +98,44 @@ const Categories = () => {
 
     return (
 
-        <div>
-            <input type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
-                   onChange={event => setCategoryName(event.target.value)}/>
-            <button onClick={createCategory}>{t("neue Katergorie erstellen")}</button>
-            {errMsg}<br/><br/>
-            <div>{categories.map(
-                e => <div key={e.id}>
-                    <button onClick={() => deleteCategory(e.id)}>{t("löschen")}</button>
-                    <Link to={e.id}>
-                        <button>{t("bearbeiten")}</button>
-                    </Link>
-                    <Link to={`evaluate/${e.id}`}>
-                        <button>{t("Budget planen")}</button>
-                    </Link>
-                    <p>{e.categoryName}</p>
-                </div>)}
+        <>
+            <div className={"justify-content-center row"}>
+                <div className={"clickable btn-new-category row justify-content-center align-items-center"}>
+                    <div className={"p-2 text-center"} onClick={() => setHideNewCategory(false)}>
+                        {t("Kategorie anlegen")}
+                        {errMsg}
+                    </div>
+                    <div className={"text-center"} hidden={hideNewCategory}>
+                        <input className={"mt-2 mb-3"} style={{background: "#66a4ac"}} type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
+                               onChange={event => setCategoryName(event.target.value)}/>
+                        <i className={"clickable bi bi-check-circle-fill m-3"} onClick={() => {
+                            createCategory()
+                            setHideNewCategory(true)
+                        }}/>
+                        <i className="clickable bi bi-x-circle-fill m-1" onClick={() => setHideNewCategory(true)}/>
+                    </div>
+                </div>
+                <br/><br/>
+                <div className={"maxWidth row justify-content-center mt-3"}>
+                    {categories.map(e =>
+                        <div className={"category m-3 row justify-content-center"}
+                             key={e.id}>
+                            <div className={"clickable category-text justify-content-center row align-items-center"}
+                                 onClick={() => navigate(`evaluate/${e.id}`)}>
+                                <div className={"text-center"}>
+                                    {e.categoryName}
+                                </div>
+                            </div>
+                            <div className={"col row justify-content-end"}>
+                                <i className="clickable bi bi-pencil-square m-1 col-1"
+                                   onClick={() => navigate(`${e.id}`)}/>
+                                <i className="clickable bi bi-trash-fill m-1 col-1"
+                                   onClick={() => deleteCategory(e.id)}/>
+                            </div>
+                        </div>)}
+                </div>
             </div>
-        </div>
+        </>
 
     )
 }

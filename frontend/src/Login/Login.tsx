@@ -33,18 +33,22 @@ const Login = () => {
                 localStorage.setItem("username", username)
                 setUsername("")
                 setPassword("")
-                navigate("../overview")
+                navigate("../")
             })
             .catch((e: Error) => setErrMsg(e.message))
     }
 
     return (
 
-        <div>
-            <input type={"text"} placeholder={t("Nutzername")}  value={username} onChange={event => setUsername(event.target.value)}/><br/>
-            <input type={"password"} placeholder={t("Passwort")}  value={password} onChange={event => setPassword(event.target.value)}/><br/><br/>
-            <button onClick={login}>{t("Einloggen")}</button>
-            <div>{errMsg}</div>
+        <div className={"row justify-content-center"}>
+            <div>
+                <input type={"text"} placeholder={t("Nutzername")} style={{background: "#66a4ac"}} value={username}
+                       onChange={event => setUsername(event.target.value)}/><br/>
+                <input type={"password"} placeholder={t("Passwort")} style={{background: "#66a4ac"}} value={password}
+                       onChange={event => setPassword(event.target.value)}/><br/><br/>
+            </div>
+            <div className={"clickable btn-nav"} onClick={login}>{t("Einloggen")}</div>
+            <div style={{color:"red"}}>{errMsg}</div>
         </div>
 
     )

@@ -1,0 +1,80 @@
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+body{
+    font-size: 22px;
+    background-color: #c2dde4;
+}
+.clickable:hover{
+    cursor: pointer;
+}
+.c1{
+    background-color: #ad9999;
+}
+.c2{
+    background-color: #dc7474;
+}
+.c3{
+    background-color: #5c5c64;
+}
+.maxWidth{
+    max-width: 1200px;
+}
+.category{
+    color: #c2dde4;
+    background-color: #06565b;
+    border-radius: 8px;
+    box-shadow: #5c5c64 2px 2px;
+    width: 250px;
+    height: 160px;
+}
+.category-text{
+    height: 60%;
+}
+.category:hover{
+    opacity: 90%;
+}
+.btn-new-category{
+    box-shadow: #5c5c64 2px 2px;
+    color: #003a44;
+    background-color: #66a4ac;
+    border-radius: 8px;
+    width: 400px;
+}
+.btn-new-category:hover{
+    opacity: 90%;
+}
+.btn-nav{
+    color: #003a44;
+    margin: 5px;
+    padding: 5px;
+    background-color: #66a4ac;
+    border-radius: 8px;
+    width: 150px;
+}
+.btn-nav:hover{
+    opacity: 90%;
+}
+.my-header{
+    background-color: #003a44;
+    margin-bottom: 80px;
+}
+.background{
+    background: #c2dde4;
+    color: #003a44;
+    text-align: center;
+}
+.head-category{
+    border-radius: 5px;
+    min-width: 300px;
+    width: fit-content;
+    font-size: 30px;
+    border: #003a44 solid 2px;
+}
+.result{
+    border-radius: 5px;
+    min-width: 500px;
+    width: fit-content;
+    font-size: 30px;
+    color: #c2dde4;
+    background-color: #06565b;
+}
