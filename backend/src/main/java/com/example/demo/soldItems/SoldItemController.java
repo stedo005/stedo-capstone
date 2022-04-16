@@ -27,4 +27,13 @@ public class SoldItemController {
         return soldItemService.getDataForItemChart(query);
     }
 
+    @GetMapping("/query")
+    public List<DataLineChartCategory> getDataLineChartCategory(@RequestParam(name = "searchTerm") String searchTerm, @RequestParam(name = "dateFrom") String dateFrom, @RequestParam(name = "dateTo") String dateTo) {
+        DataForQuery dataForQuery = new DataForQuery();
+        dataForQuery.setSearchTerm(searchTerm);
+        dataForQuery.setDateFrom(dateFrom);
+        dataForQuery.setDateTo(dateTo);
+        return soldItemService.getDataLineChartCategory(dataForQuery);
+    }
+
 }
