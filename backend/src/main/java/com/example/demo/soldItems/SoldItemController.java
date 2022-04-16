@@ -18,8 +18,8 @@ public class SoldItemController {
     }
 
     @PutMapping
-    public Result getResults(@RequestBody DataForQuery dates) {
-        return soldItemService.getResults(dates);
+    public Result getResults(@RequestBody DataForQuery query) {
+        return soldItemService.getResults(query);
     }
 
     @PutMapping("/itemChart")

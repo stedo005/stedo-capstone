@@ -43,7 +43,7 @@ const EvaluateCategory = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems`, {
             method: "PUT",
             body: JSON.stringify({
-                "categoryId": linkedId.categoryId,
+                "searchTherm": linkedId.categoryId,
                 "dateFrom": dateFrom,
                 "dateTo": dateTo
             }),
