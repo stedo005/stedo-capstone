@@ -93,38 +93,44 @@ const EvaluateCategory = () => {
                 />
             </div>
             <div className={"clickable btn-nav mx-auto"} onClick={sendDate}>{t("Budget anzeigen")}</div>
-            <div className={"result mx-auto my-5 px-5 py-4"}>
-                <div>{t("Umsatz: ")}{result.toFixed(2)} €</div>
-                <div>
-                    {t("Rohertrag: ")}{profit.toFixed(2)} €
-                </div>
-                <div>
-                    {t("Budget: ")}{budget.toFixed(2)} €
-                </div>
-            </div>
-            <div className={"bar-chart"}>
-                {
-                    soldItems.length > 0
-                        ?
+            <div className={"row"}>
+                <div className={"col row align-items-center"}>
+                    <div className={"result mx-auto my-5 px-5 py-4"}>
+                        <div>{t("Umsatz: ")}{result.toFixed(2)} €</div>
                         <div>
-                            <PieChart chartLabel={chartLabels}
-                                      chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]}/>
-                            <div className={"clickable btn-nav mx-auto my-5"}
-                                 onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}
-                            </div>
+                            {t("Rohertrag: ")}{profit.toFixed(2)} €
                         </div>
-                        : ""
-                }
-            </div>
-            <div className={"mb-5"} hidden={hide}>
-                {
-                    soldItems.length > 0
-                        ?
-                        <div>{currentCategory.itemsInCategory.map(e => <div
-                            key={e}>{e}: {getSumOfItems(e)}</div>)}</div>
-                        :
-                        <div>{t("Noch nichts zum anzeigen da.")}</div>
-                }
+                        <div>
+                            {t("Budget: ")}{budget.toFixed(2)} €
+                        </div>
+                    </div>
+                </div>
+                <div className={"bar-chart col my-5 mx-auto"}>
+                    {
+                        soldItems.length > 0
+                            ?
+                            <div>
+                                <PieChart chartLabel={chartLabels}
+                                          chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]}/>
+                            </div>
+                            : ""
+                    }
+                </div>
+                <div className={"col-12"}>
+                    <div className={"clickable btn-nav mx-auto my-5"}
+                         onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}
+                    </div>
+                    <div className={"mb-5 mx-auto"} hidden={hide}>
+                        {
+                            soldItems.length > 0
+                                ?
+                                <div>{currentCategory.itemsInCategory.map(e => <div
+                                    key={e}>{e}: {getSumOfItems(e)}</div>)}</div>
+                                :
+                                <div>{t("Noch nichts zum anzeigen da.")}</div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     )
