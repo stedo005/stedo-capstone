@@ -105,7 +105,7 @@ const EvaluateCategory = () => {
                         </div>
                     </div>
                 </div>
-                <div className={"bar-chart col my-5 mx-auto"}>
+                <div className={`bar-chart col my-5 mx-auto my-auto`}>
                     {
                         soldItems.length > 0
                             ?
@@ -113,7 +113,7 @@ const EvaluateCategory = () => {
                                 <PieChart chartLabel={chartLabels}
                                           chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]}/>
                             </div>
-                            : ""
+                            : <div>{t("Noch keine Daten zum anzeigen.")}</div>
                     }
                 </div>
                 <div className={"col-12"}>
