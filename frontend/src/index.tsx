@@ -10,6 +10,7 @@ import Category from './Main/Category';
 import EvaluateCategory from "./Main/EvaluateCategory";
 import ChartItem from "./Main/ChartItem";
 import "./index.css";
+import {PieChart} from "./Charts/PieChart";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -22,6 +23,7 @@ ReactDOM.render(
                         <Route path={"/:categoryId"} element={<Category />} />
                         <Route path={"/evaluate/:categoryId"} element={<EvaluateCategory />} />
                         <Route path={"/chartItem"} element={<ChartItem />} />
+                        <Route path={"/pie"} element={<PieChart />} />
                         <Route path={"/"} element={<Categories />} />
                     </Route>
                 </Routes>

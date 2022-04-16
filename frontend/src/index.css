@@ -78,3 +78,6 @@ body{
     color: #c2dde4;
     background-color: #06565b;
 }
+.bar-chart{
+    max-width: 500px;
+}

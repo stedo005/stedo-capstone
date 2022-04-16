@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
 import {result, savedCategories, soldItem} from "../Models/model";
 import {checkLogin} from "../Models/checkLogin";
-import {BarChart} from "../Charts/BarChart";
+import {PieChart} from "../Charts/PieChart";
 
 const EvaluateCategory = () => {
 
@@ -102,18 +102,20 @@ const EvaluateCategory = () => {
                     {t("Budget: ")}{budget.toFixed(2)} €
                 </div>
             </div>
-            {
-                soldItems.length > 0
-                    ?
-                    <div>
-                        <BarChart chartLabel={chartLabels}
-                                  chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]}/>
-                        <div className={"clickable btn-nav mx-auto my-5"}
-                             onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}
+            <div className={"bar-chart"}>
+                {
+                    soldItems.length > 0
+                        ?
+                        <div>
+                            <PieChart chartLabel={chartLabels}
+                                      chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]}/>
+                            <div className={"clickable btn-nav mx-auto my-5"}
+                                 onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht an/aus")}
+                            </div>
                         </div>
-                    </div>
-                    : ""
-            }
+                        : ""
+                }
+            </div>
             <div className={"mb-5"} hidden={hide}>
                 {
                     soldItems.length > 0
