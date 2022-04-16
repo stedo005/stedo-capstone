@@ -17,7 +17,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -147,7 +146,7 @@ class SoldItemServiceTest {
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
         DataForQuery dataForQuery = new DataForQuery();
-        dataForQuery.setCategoryId("1");
+        dataForQuery.setSearchTherm("1");
         dataForQuery.setDateFrom("2022-01-01");
         dataForQuery.setDateTo("2022-01-02");
 
@@ -168,7 +167,7 @@ class SoldItemServiceTest {
         item2.setItemPrice(15);
         item2.setItemQuantity(1);
 
-        when(categoryRepository.findById(dataForQuery.getCategoryId())).thenReturn(Optional.of(category));
+        when(categoryRepository.findById(dataForQuery.getSearchTherm())).thenReturn(Optional.of(category));
 
         when(soldItemRepository.findAllByInvoiceDateIn(dates)).thenReturn(List.of(item1, item2));
 
@@ -190,8 +189,8 @@ class SoldItemServiceTest {
         UserRepository userRepository = mock(UserRepository.class);
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
-        QueryItemChart query = new QueryItemChart();
-        query.setCurrentItem("strauß");
+        DataForQuery query = new DataForQuery();
+        query.setSearchTherm("strauß");
         query.setDateFrom("2022-01-01");
         query.setDateTo("2022-01-03");
 
@@ -230,6 +229,19 @@ class SoldItemServiceTest {
         assertThat(actual.get(2).getDate()).isEqualTo("2022-01-03");
         assertThat(actual.get(0).getQuantity()).isEqualTo(5);
         assertThat(actual.get(0).getSales()).isEqualTo(65);
+
+    }
+
+    @Test
+    @DisplayName("haha")
+    void test6() {
+
+        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
+        HelloCashService helloCashService = mock(HelloCashService.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
+
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
 
     }
 

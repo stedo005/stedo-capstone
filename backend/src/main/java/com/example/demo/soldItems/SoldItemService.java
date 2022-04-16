@@ -88,35 +88,26 @@ public class SoldItemService {
 
     }
 
-    private List<SoldItem> getItemsByQueryData(DataForQuery dates) {
+    private List<SoldItem> getItemsByQueryData(DataForQuery dataForQuery) {
 
-        List<String> itemsInCategory = categoryRepository.findById(dates.getCategoryId())
+        List<String> itemsInCategory = categoryRepository.findById(dataForQuery.getSearchTherm())
                 .map(category -> category.getItemsInCategory())
                 .orElseThrow(() -> new IllegalArgumentException("Kategorie existiert nicht!"));
 
-        LocalDate dateStart = LocalDate.parse(dates.getDateFrom());
-        LocalDate dateStop = LocalDate.parse(dates.getDateTo());
+        List<String> dates = getDateList(dataForQuery);
 
-        List<String> dateRangeToGet = new ArrayList<>();
-
-        dateRangeToGet.add(dateStart.toString());
-        while (!dateStart.equals(dateStop)) {
-            dateRangeToGet.add(dateStart.plusDays(1L).toString());
-            dateStart = (dateStart.plusDays(1L));
-        }
-
-        return soldItemRepository.findAllByInvoiceDateIn(dateRangeToGet).stream()
+        return soldItemRepository.findAllByInvoiceDateIn(dates).stream()
                 .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
                 .toList();
 
     }
 
-    public List<DataForItemChart> getDataForItemChart (QueryItemChart query) {
+    public List<DataForItemChart> getDataForItemChart (DataForQuery query) {
 
         List<DataForItemChart> dataForItemCharts = new ArrayList<>();
         List<String> dates = getDateList(query);
         List<SoldItem> soldItems = soldItemRepository.findAllByInvoiceDateIn(dates).stream()
-                .filter(soldItem -> query.getCurrentItem().equals(soldItem.getItemName()))
+                .filter(soldItem -> query.getSearchTherm().equals(soldItem.getItemName()))
                 .toList();
         for (String date: dates) {
             DataForItemChart currentData = new DataForItemChart();
@@ -136,7 +127,13 @@ public class SoldItemService {
         return dataForItemCharts;
     }
 
-    private List<String> getDateList(QueryItemChart query){
+    public List<DataLineChartCategory> getDataLineChartCategory(DataForQuery dataForQuery) {
+
+
+        return null;
+    }
+
+    private List<String> getDateList(DataForQuery query){
 
         LocalDate dateStart = LocalDate.parse(query.getDateFrom());
         LocalDate dateStop = LocalDate.parse(query.getDateTo());

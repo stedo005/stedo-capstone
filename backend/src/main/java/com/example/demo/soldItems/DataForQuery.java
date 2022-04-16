@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DataForQuery {
 
-    private String categoryId;
+    private String searchTherm;
     private String dateFrom;
     private String dateTo;
 
