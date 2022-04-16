@@ -82,23 +82,9 @@ public class SoldItemService {
     public Result getResults(DataForQuery dates) {
 
         Result result = new Result();
-        result.setSoldItems(getItemsByQueryData(dates));
+        result.setSoldItems(getItemsByDateList(dates));
 
         return result;
-
-    }
-
-    private List<SoldItem> getItemsByQueryData(DataForQuery dataForQuery) {
-
-        List<String> itemsInCategory = categoryRepository.findById(dataForQuery.getSearchTherm())
-                .map(category -> category.getItemsInCategory())
-                .orElseThrow(() -> new IllegalArgumentException("Kategorie existiert nicht!"));
-
-        List<String> dates = getDateList(dataForQuery);
-
-        return soldItemRepository.findAllByInvoiceDateIn(dates).stream()
-                .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
-                .toList();
 
     }
 
@@ -129,8 +115,37 @@ public class SoldItemService {
 
     public List<DataLineChartCategory> getDataLineChartCategory(DataForQuery dataForQuery) {
 
+        List<DataLineChartCategory> dataLineChartCategory = new ArrayList<>();
 
-        return null;
+        List<String> dateList = getDateList(dataForQuery);
+        List<SoldItem> allItemsInDateList = getItemsByDateList(dataForQuery);
+
+        for(String date: dateList) {
+            DataLineChartCategory currentData = new DataLineChartCategory();
+            List<SoldItem> currentItems = allItemsInDateList.stream()
+                    .filter(soldItem -> date.equals(soldItem.getInvoiceDate()))
+                    .toList();
+            currentData.setSales(currentItems.stream()
+                    .mapToDouble(value -> value.getTotalPrice())
+                    .sum());
+            currentData.setDate(date);
+        }
+
+        return dataLineChartCategory;
+    }
+
+    private List<SoldItem> getItemsByDateList(DataForQuery dataForQuery) {
+
+        List<String> itemsInCategory = categoryRepository.findById(dataForQuery.getSearchTherm())
+                .map(category -> category.getItemsInCategory())
+                .orElseThrow(() -> new IllegalArgumentException("Kategorie existiert nicht!"));
+
+        List<String> dates = getDateList(dataForQuery);
+
+        return soldItemRepository.findAllByInvoiceDateIn(dates).stream()
+                .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
+                .toList();
+
     }
 
     private List<String> getDateList(DataForQuery query){
