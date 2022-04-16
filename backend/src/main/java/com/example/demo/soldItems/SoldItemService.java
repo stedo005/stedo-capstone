@@ -129,6 +129,7 @@ public class SoldItemService {
                     .mapToDouble(value -> value.getTotalPrice())
                     .sum());
             currentData.setDate(date);
+            dataLineChartCategory.add(currentData);
         }
 
         return dataLineChartCategory;

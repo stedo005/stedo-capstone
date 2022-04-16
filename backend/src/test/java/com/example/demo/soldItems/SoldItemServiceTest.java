@@ -241,7 +241,30 @@ class SoldItemServiceTest {
         UserRepository userRepository = mock(UserRepository.class);
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
+        DataForQuery query = new DataForQuery();
+        query.setSearchTherm("kategorie");
+        query.setDateFrom("2022-01-01");
+        query.setDateTo("2022-01-03");
+
+        Category category = new Category("1","kategorie", List.of("strauß","blume"));
+
+        SoldItem item1 = new SoldItem("","2022-01-01","","","strauß",10.00,1);
+        SoldItem item2 = new SoldItem("","2022-01-01","","","strauß",10.00,1);
+        SoldItem item3 = new SoldItem("","2022-01-02","","","blume",15.00,1);
+        SoldItem item4 = new SoldItem("","2022-01-02","","","blume",15.00,1);
+
+        List<SoldItem> itemList = List.of(item1, item2, item3, item4);
+
+        when(categoryRepository.findById(query.getSearchTherm())).thenReturn(Optional.of(category));
+        when(soldItemRepository.findAllByInvoiceDateIn(List.of("2022-01-01","2022-01-02","2022-01-03"))).thenReturn(itemList);
+
         SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
+
+        List<DataLineChartCategory> actual = soldItemService.getDataLineChartCategory(query);
+
+        assertThat(actual.size()).isEqualTo(3);
+        assertThat(actual.get(0).getSales()).isEqualTo(20);
+        assertThat(actual.get(2).getSales()).isEqualTo(0);
 
     }
 
