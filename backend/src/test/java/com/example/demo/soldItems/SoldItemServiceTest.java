@@ -233,7 +233,7 @@ class SoldItemServiceTest {
     }
 
     @Test
-    @DisplayName("haha")
+    @DisplayName("create a EvaluateCategoryDTO")
     void test6() {
 
         SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
@@ -249,7 +249,7 @@ class SoldItemServiceTest {
         Category category = new Category("1","kategorie", List.of("strauß","blume"));
 
         SoldItem item1 = new SoldItem("","2022-01-01","","","strauß",10.00,1);
-        SoldItem item2 = new SoldItem("","2022-01-01","","","strauß",10.00,1);
+        SoldItem item2 = new SoldItem("","2022-01-01","","","strauß",10.00,2);
         SoldItem item3 = new SoldItem("","2022-01-02","","","blume",15.00,1);
         SoldItem item4 = new SoldItem("","2022-01-02","","","blume",15.00,1);
 
@@ -260,11 +260,11 @@ class SoldItemServiceTest {
 
         SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
 
-        List<DataLineChartCategory> actual = soldItemService.getDataLineChartCategory(query);
+        EvaluateCategoryDTO actual = soldItemService.getDataLineChartCategory(query);
 
-        assertThat(actual.size()).isEqualTo(3);
-        assertThat(actual.get(0).getSales()).isEqualTo(20);
-        assertThat(actual.get(2).getSales()).isEqualTo(0);
+        assertThat(actual.getSumOfAllItems()).isEqualTo(60);
+        assertThat(actual.getChartData().get(0).getDate()).isEqualTo("2022-01-01");
+        assertThat(actual.getChartData().get(1).getSales()).isEqualTo(30);
 
     }
 

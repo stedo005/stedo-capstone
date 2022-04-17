@@ -113,12 +113,17 @@ public class SoldItemService {
         return dataForItemCharts;
     }
 
-    public List<DataLineChartCategory> getDataLineChartCategory(DataForQuery dataForQuery) {
+    public EvaluateCategoryDTO getDataLineChartCategory(DataForQuery dataForQuery) {
 
+        EvaluateCategoryDTO evaluateCategoryDTO = new EvaluateCategoryDTO();
         List<DataLineChartCategory> dataLineChartCategory = new ArrayList<>();
 
         List<String> dateList = getDateList(dataForQuery);
         List<SoldItem> allItemsInDateList = getItemsByDateList(dataForQuery);
+        evaluateCategoryDTO.setSumOfAllItems(
+                allItemsInDateList.stream()
+                        .mapToDouble(value -> value.getTotalPrice())
+                        .sum());
 
         for(String date: dateList) {
             DataLineChartCategory currentData = new DataLineChartCategory();
@@ -132,8 +137,12 @@ public class SoldItemService {
             dataLineChartCategory.add(currentData);
         }
 
-        return dataLineChartCategory;
+        evaluateCategoryDTO.setChartData(dataLineChartCategory);
+
+        return evaluateCategoryDTO;
     }
+
+
 
     private List<SoldItem> getItemsByDateList(DataForQuery dataForQuery) {
 
