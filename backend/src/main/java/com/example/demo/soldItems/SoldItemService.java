@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -142,7 +141,22 @@ public class SoldItemService {
         return evaluateCategoryDTO;
     }
 
+    private Map<String, Double> getQuantityPerItem(DataForQuery dataForQuery) {
 
+        List<SoldItem> soldItemList = getItemsByDateList(dataForQuery);
+        Map<String, Double> quantity = new HashMap<>();
+
+        for(SoldItem item: soldItemList) {
+            double itemQuantity = soldItemList.stream()
+                    .filter(soldItem -> soldItem.getItemName().equals(item))
+                    .mapToDouble(value -> value.getItemQuantity())
+                    .sum();
+            quantity.put(item.getItemName(), itemQuantity);
+        }
+
+        return quantity;
+
+    }
 
     private List<SoldItem> getItemsByDateList(DataForQuery dataForQuery) {
 

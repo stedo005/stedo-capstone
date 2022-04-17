@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -12,6 +13,7 @@ import java.util.List;
 public class EvaluateCategoryDTO {
 
     private List<DataLineChartCategory> chartData;
+    private Map<String, Double> quantityPerItem;
     private double sumOfAllItems;
 
 }
