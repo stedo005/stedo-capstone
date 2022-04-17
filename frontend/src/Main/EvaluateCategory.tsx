@@ -34,13 +34,14 @@ const EvaluateCategory = () => {
     const [soldItems, setSoldItems] = useState([] as soldItem[])
     const [hide, setHide] = useState(true)
     const [calculationFactor, setCalculationFactor] = useState(2.5)
-    let budget = 1 / calculationFactor * result
-    let profit = result - budget
     const [chartLabels, setChartLabels] = useState([] as string[])
 
-    const [data, setData] = useState({} as dataEvaluateCategory)
-    const [quantities, setQuantities] = useState([] as quantities[])
-    const [sales, setSales] = useState([] as sales [])
+    const [sumAll, setSumAll] = useState(0)
+    const [labelsPieChart, setLabelsPieChart] = useState([] as string[])
+    const [quantitiesPieChart, setQuantitiesPieChart] = useState([] as number[])
+
+    let budget = 1 / calculationFactor * sumAll
+    let profit = sumAll - budget
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -98,9 +99,9 @@ const EvaluateCategory = () => {
                 return response.json()
             })
             .then((responseBody: dataEvaluateCategory) => {
-                setData(responseBody)
-                setQuantities(responseBody.quantities)
-                setSales(responseBody.sales)
+                setSumAll(responseBody.sumOfAllItems)
+                setLabelsPieChart([...responseBody.quantities.map(e => e.item)])
+                setQuantitiesPieChart([...responseBody.quantities.map(e => e.quantity)])
             })
             .catch(() => navigate("../login"))
     }
@@ -133,11 +134,11 @@ const EvaluateCategory = () => {
                     defaultValue={calculationFactor}
                 />
             </div>
-            <div className={"clickable btn-nav mx-auto"} onClick={sendDate}>{t("Budget anzeigen")}</div>
+            <div className={"clickable btn-nav mx-auto"} onClick={send}>{t("Budget anzeigen")}</div>
             <div className={"row"}>
                 <div className={"col row align-items-center"}>
                     <div className={"result mx-auto my-5 px-5 py-4"}>
-                        <div>{t("Umsatz: ")}{result.toFixed(2)} €</div>
+                        <div>{t("Umsatz: ")}{sumAll.toFixed(2)} €</div>
                         <div>
                             {t("Rohertrag: ")}{profit.toFixed(2)} €
                         </div>
@@ -148,11 +149,11 @@ const EvaluateCategory = () => {
                 </div>
                 <div className={`bar-chart col-m my-5 mx-auto my-auto`}>
                     {
-                        soldItems.length > 0
+                        labelsPieChart.length > 0
                             ?
                             <div className={""}>
-                                <PieChart chartLabel={chartLabels}
-                                          chartQuantity={[...currentCategory.itemsInCategory.map(e => getSumOfItems(e))]}/>
+                                <PieChart chartLabel={labelsPieChart}
+                                          chartQuantity={quantitiesPieChart}/>
                             </div>
                             : <div>{t("Noch keine Daten zum anzeigen.")}</div>
                     }
@@ -163,10 +164,10 @@ const EvaluateCategory = () => {
                     </div>
                     <div className={"mb-5 mx-auto"} hidden={hide}>
                         {
-                            soldItems.length > 0
+                            labelsPieChart.length > 0
                                 ?
-                                <div>{currentCategory.itemsInCategory.map(e => <div
-                                    key={e}>{e}: {getSumOfItems(e)}</div>)}</div>
+                                <div>{labelsPieChart.map(e => <div
+                                    key={e}>{e} :</div>)}</div>
                                 :
                                 <div>{t("Noch nichts zum anzeigen da.")}</div>
                         }
@@ -174,9 +175,8 @@ const EvaluateCategory = () => {
                 </div>
             </div>
         <button onClick={send}>test</button>
-        <div>{quantities.length}</div>
-        <div>{data.sumOfAllItems}</div>
-        <div>{sales.map(e => e.sales)+", "}</div>
+            <div>{labelsPieChart}</div>
+            <div>{quantitiesPieChart}</div>
         </div>
     )
 }
