@@ -29,3 +29,14 @@ export interface dataForItemChart {
     quantity: number
     sales: number
 }
+
+export interface dataEvaluateCategory{
+    chartData: Array<chartData>
+    quantityPerItem: Object
+    sumOfAllItems: number
+}
+
+interface chartData {
+    date: string
+    sales: number
+}

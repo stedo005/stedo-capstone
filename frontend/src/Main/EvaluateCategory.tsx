@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
-import {result, savedCategories, soldItem} from "../Models/model";
+import {dataEvaluateCategory, result, savedCategories, soldItem} from "../Models/model";
 import {checkLogin} from "../Models/checkLogin";
 import {PieChart} from "../Charts/PieChart";
 
@@ -21,6 +21,8 @@ const EvaluateCategory = () => {
     let budget = 1 / calculationFactor * result
     let profit = result - budget
     const [chartLabels, setChartLabels] = useState([] as string[])
+
+    const [data, setData] = useState({} as dataEvaluateCategory)
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -77,6 +79,7 @@ const EvaluateCategory = () => {
                 checkLogin(response)
                 return response.json()
             })
+            .then((responseBody: dataEvaluateCategory) => setData(responseBody))
             .catch(() => navigate("../login"))
     }
 
@@ -149,6 +152,8 @@ const EvaluateCategory = () => {
                 </div>
             </div>
         <button onClick={send}>test</button>
+        <div>{data.sumOfAllItems}</div>
+        <div>{data.chartData.map(e => e.sales)+", "}</div>
         </div>
     )
 }
