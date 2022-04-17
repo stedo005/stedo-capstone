@@ -1,11 +1,27 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useEffect, useState} from "react";
-import {dataEvaluateCategory, result, savedCategories, soldItem} from "../Models/model";
+import {result, savedCategories, soldItem} from "../Models/model";
 import {checkLogin} from "../Models/checkLogin";
 import {PieChart} from "../Charts/PieChart";
 
 const EvaluateCategory = () => {
+
+    interface dataEvaluateCategory{
+        sales: Array<sales>
+        quantities: Array<quantities>
+        sumOfAllItems: number
+    }
+
+    interface sales {
+        date: string
+        sales: number
+    }
+
+    interface quantities{
+        item: string
+        quantity: number
+    }
 
     const linkedId = useParams()
     const {t} = useTranslation()
@@ -23,6 +39,8 @@ const EvaluateCategory = () => {
     const [chartLabels, setChartLabels] = useState([] as string[])
 
     const [data, setData] = useState({} as dataEvaluateCategory)
+    const [quantities, setQuantities] = useState([] as quantities[])
+    const [sales, setSales] = useState([] as sales [])
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${linkedId.categoryId}`, {
@@ -79,7 +97,11 @@ const EvaluateCategory = () => {
                 checkLogin(response)
                 return response.json()
             })
-            .then((responseBody: dataEvaluateCategory) => setData(responseBody))
+            .then((responseBody: dataEvaluateCategory) => {
+                setData(responseBody)
+                setQuantities(responseBody.quantities)
+                setSales(responseBody.sales)
+            })
             .catch(() => navigate("../login"))
     }
 
@@ -152,7 +174,9 @@ const EvaluateCategory = () => {
                 </div>
             </div>
         <button onClick={send}>test</button>
+        <div>{quantities.length}</div>
         <div>{data.sumOfAllItems}</div>
+        <div>{sales.map(e => e.sales)+", "}</div>
         </div>
     )
 }

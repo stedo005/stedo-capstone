@@ -29,19 +29,3 @@ export interface dataForItemChart {
     quantity: number
     sales: number
 }
-
-export interface dataEvaluateCategory{
-    chartData: Array<dates>
-    quantityPerItem: quant
-    sumOfAllItems: number
-}
-
-interface dates {
-    date: string
-    sales: number
-}
-
-interface quant{
-    item: string
-    quantity: number
-}
