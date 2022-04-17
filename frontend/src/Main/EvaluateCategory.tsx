@@ -64,6 +64,22 @@ const EvaluateCategory = () => {
             .catch(() => navigate("../login"))
     }
 
+    const send = () => {
+
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems/query?searchTerm=${linkedId.categoryId}&dateFrom=${dateFrom}&dateTo=${dateTo}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            }
+        })
+            .then(response => {
+                checkLogin(response)
+                return response.json()
+            })
+            .catch(() => navigate("../login"))
+    }
+
     const getSumOfItems = (termToSearch: string) => {
         return soldItems.filter(e => e.itemName === termToSearch).length
     }
@@ -132,6 +148,7 @@ const EvaluateCategory = () => {
                     </div>
                 </div>
             </div>
+        <button onClick={send}>test</button>
         </div>
     )
 }
