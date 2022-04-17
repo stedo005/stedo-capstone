@@ -31,12 +31,17 @@ export interface dataForItemChart {
 }
 
 export interface dataEvaluateCategory{
-    chartData: Array<chartData>
-    quantityPerItem: Object
+    chartData: Array<dates>
+    quantityPerItem: quant
     sumOfAllItems: number
 }
 
-interface chartData {
+interface dates {
     date: string
     sales: number
+}
+
+interface quant{
+    item: string
+    quantity: number
 }

@@ -153,7 +153,6 @@ const EvaluateCategory = () => {
             </div>
         <button onClick={send}>test</button>
         <div>{data.sumOfAllItems}</div>
-        <div>{data.chartData.map(e => e.sales)+", "}</div>
         </div>
     )
 }

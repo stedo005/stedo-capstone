@@ -1,5 +1,6 @@
 package com.example.demo.soldItems;
 
+import com.example.demo.soldItems.evaluateCategory.EvaluateCategoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

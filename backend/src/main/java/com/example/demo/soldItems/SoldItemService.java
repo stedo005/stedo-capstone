@@ -4,6 +4,9 @@ import com.example.demo.categories.CategoryRepository;
 import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
+import com.example.demo.soldItems.evaluateCategory.DateSales;
+import com.example.demo.soldItems.evaluateCategory.EvaluateCategoryDTO;
+import com.example.demo.soldItems.evaluateCategory.ItemQuantity;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -115,7 +118,7 @@ public class SoldItemService {
     public EvaluateCategoryDTO getDataLineChartCategory(DataForQuery dataForQuery) {
 
         EvaluateCategoryDTO evaluateCategoryDTO = new EvaluateCategoryDTO();
-        List<DataLineChartCategory> dataLineChartCategory = new ArrayList<>();
+        List<DateSales> dateSales = new ArrayList<>();
 
         List<String> dateList = getDateList(dataForQuery);
         List<SoldItem> allItemsInDateList = getItemsByDateList(dataForQuery);
@@ -124,10 +127,10 @@ public class SoldItemService {
                         .mapToDouble(value -> value.getTotalPrice())
                         .sum());
 
-        evaluateCategoryDTO.setQuantityPerItem(getQuantityPerItem(dataForQuery));
+        evaluateCategoryDTO.setQuantities(getQuantityPerItem(dataForQuery));
 
         for(String date: dateList) {
-            DataLineChartCategory currentData = new DataLineChartCategory();
+            DateSales currentData = new DateSales();
             List<SoldItem> currentItems = allItemsInDateList.stream()
                     .filter(soldItem -> date.equals(soldItem.getInvoiceDate()))
                     .toList();
@@ -135,28 +138,32 @@ public class SoldItemService {
                     .mapToDouble(value -> value.getTotalPrice())
                     .sum());
             currentData.setDate(date);
-            dataLineChartCategory.add(currentData);
+            dateSales.add(currentData);
         }
 
-        evaluateCategoryDTO.setChartData(dataLineChartCategory);
+        evaluateCategoryDTO.setSales(dateSales);
 
         return evaluateCategoryDTO;
     }
 
-    private Map<String, Double> getQuantityPerItem(DataForQuery dataForQuery) {
+    private List<ItemQuantity> getQuantityPerItem(DataForQuery dataForQuery) {
 
         List<SoldItem> soldItemList = getItemsByDateList(dataForQuery);
-        Map<String, Double> quantity = new HashMap<>();
+        List<ItemQuantity> quantities = new ArrayList<>();
 
         for(SoldItem item: soldItemList) {
-            double itemQuantity = soldItemList.stream()
+            ItemQuantity quantity = new ItemQuantity();
+            quantity.setQuantity(soldItemList.stream()
                     .filter(soldItem -> soldItem.getItemName().equals(item.getItemName()))
                     .mapToDouble(value -> value.getItemQuantity())
-                    .sum();
-            quantity.put(item.getItemName(), itemQuantity);
+                    .sum());
+            quantity.setItem(item.getItemName());
+            quantities.add(quantity);
         }
 
-        return quantity;
+        return quantities.stream()
+                .distinct()
+                .toList();
 
     }
 

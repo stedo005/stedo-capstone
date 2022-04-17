@@ -6,6 +6,7 @@ import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
+import com.example.demo.soldItems.evaluateCategory.EvaluateCategoryDTO;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -263,11 +264,12 @@ class SoldItemServiceTest {
         EvaluateCategoryDTO actual = soldItemService.getDataLineChartCategory(query);
 
         assertThat(actual.getSumOfAllItems()).isEqualTo(60);
-        assertThat(actual.getChartData().get(0).getDate()).isEqualTo("2022-01-01");
-        assertThat(actual.getChartData().get(1).getSales()).isEqualTo(30);
-        assertThat(actual.getQuantityPerItem().size()).isEqualTo(2);
-        assertThat(actual.getQuantityPerItem().containsKey("strauß")).isTrue();
-        assertThat(actual.getQuantityPerItem().get("strauß")).isEqualTo(3);
+        assertThat(actual.getSales().get(0).getDate()).isEqualTo("2022-01-01");
+        assertThat(actual.getSales().get(1).getSales()).isEqualTo(30);
+        assertThat(actual.getQuantities().get(0).getQuantity()).isEqualTo(3);
+        assertThat(actual.getQuantities().get(1).getQuantity()).isEqualTo(2);
+        assertThat(actual.getQuantities().get(0).getItem()).isEqualTo("strauß");
+        assertThat(actual.getQuantities().get(1).getItem()).isEqualTo("blume");
 
     }
 
