@@ -265,6 +265,9 @@ class SoldItemServiceTest {
         assertThat(actual.getSumOfAllItems()).isEqualTo(60);
         assertThat(actual.getChartData().get(0).getDate()).isEqualTo("2022-01-01");
         assertThat(actual.getChartData().get(1).getSales()).isEqualTo(30);
+        assertThat(actual.getQuantityPerItem().size()).isEqualTo(2);
+        assertThat(actual.getQuantityPerItem().containsKey("strauß")).isTrue();
+        assertThat(actual.getQuantityPerItem().get("strauß")).isEqualTo(3);
 
     }
 

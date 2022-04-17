@@ -124,6 +124,8 @@ public class SoldItemService {
                         .mapToDouble(value -> value.getTotalPrice())
                         .sum());
 
+        evaluateCategoryDTO.setQuantityPerItem(getQuantityPerItem(dataForQuery));
+
         for(String date: dateList) {
             DataLineChartCategory currentData = new DataLineChartCategory();
             List<SoldItem> currentItems = allItemsInDateList.stream()
@@ -148,7 +150,7 @@ public class SoldItemService {
 
         for(SoldItem item: soldItemList) {
             double itemQuantity = soldItemList.stream()
-                    .filter(soldItem -> soldItem.getItemName().equals(item))
+                    .filter(soldItem -> soldItem.getItemName().equals(item.getItemName()))
                     .mapToDouble(value -> value.getItemQuantity())
                     .sum();
             quantity.put(item.getItemName(), itemQuantity);
