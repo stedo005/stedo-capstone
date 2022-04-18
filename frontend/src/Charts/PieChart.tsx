@@ -5,8 +5,8 @@ import { Pie } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface pieChartProps{
-    chartLabel?: string[]
-    chartQuantity?: number[]
+    chartLabel: string[]
+    chartQuantity: number[]
 }
 
 export function PieChart(props: pieChartProps) {
@@ -19,7 +19,7 @@ const options = {
         },
         title: {
             display: true,
-            text: 'Auswertung',
+            text: 'Artikelzahlen',
         },
     },
 }

@@ -3,6 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useState} from "react";
 import {checkLogin} from "../Models/checkLogin";
 import {PieChart} from "../Charts/PieChart";
+import {LineChartEvaluateCategory} from "../Charts/LineChartEvaluateCategory";
 
 const EvaluateCategory = () => {
 
@@ -32,6 +33,7 @@ const EvaluateCategory = () => {
     const [calculationFactor, setCalculationFactor] = useState(2.5)
 
     const [itemQuantities, setItemQuantities] = useState([] as quantities[])
+    const [itemSales, setItemSales] = useState([] as sales[])
     const [sumAll, setSumAll] = useState(0)
 
     let budget = 1 / calculationFactor * sumAll
@@ -52,6 +54,7 @@ const EvaluateCategory = () => {
             })
             .then((responseBody: dataEvaluateCategory) => {
                 setItemQuantities(responseBody.quantities)
+                setItemSales(responseBody.sales)
                 setSumAll(responseBody.sumOfAllItems)
             })
             .catch(() => navigate("../login"))
@@ -94,7 +97,7 @@ const EvaluateCategory = () => {
                         </div>
                     </div>
                 </div>
-                <div className={`bar-chart col-m my-5 mx-auto my-auto`}>
+                <div className={`bar-chart col-m my-5 mx-auto my-auto px-4 py-3`}>
                     {
                         itemQuantities.length > 0
                             ?
@@ -105,9 +108,13 @@ const EvaluateCategory = () => {
                             : <div>{t("Noch keine Daten zum anzeigen.")}</div>
                     }
                 </div>
+                <div className={"col-12 my-5 mx-auto my-auto px-5 py-3"}>
+                    <LineChartEvaluateCategory chartSales={[...itemSales.map(e => e.sales)]}
+                                               chartLabels={[...itemSales.map(e => e.date)]}/>
+                </div>
                 <div className={"col-12"}>
                     <div className={"clickable btn-nav mx-auto my-5"}
-                         onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelansicht")}
+                         onClick={() => hide ? setHide(false) : setHide(true)}>{t("Artikelliste zeigen")}
                     </div>
                     <div className={"mb-5 mx-auto"} hidden={hide}>
                         {
