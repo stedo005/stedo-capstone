@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {checkLogin} from "../Models/checkLogin";
 import {dataForItemChart} from "../Models/model";
-import {LineChart} from "../Charts/LineChart";
+import {LineChartItem} from "../Charts/LineChartItem";
 
 const ChartItem = () => {
 
@@ -42,7 +42,7 @@ const ChartItem = () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems/itemChart`, {
             method: "PUT",
             body: JSON.stringify({
-                "currentItem": currentItem,
+                "searchTerm": currentItem,
                 "dateFrom": dateFrom,
                 "dateTo": dateTo
             }),
@@ -71,7 +71,7 @@ const ChartItem = () => {
         <>
             von: <input type={"date"} defaultValue={dateFrom} onChange={e => setDateFrom(e.target.value)}/> bis: <input
             type={"date"} value={dateTo} onChange={e => setDateTo(e.target.value)}/><> </>
-            <button onClick={sendDate}>{t("Zeige LineChart")}</button><br/><br/>
+            <button onClick={sendDate}>{t("Zeige LineChartItem")}</button><br/><br/>
             <br/><br/>
             {
                 allItems.length > 0
@@ -89,7 +89,7 @@ const ChartItem = () => {
             {
                 quantity.length > 0
 
-                    ? <LineChart chartQuantity={quantity} chartSales={sales} chartLabels={labels} />
+                    ? <LineChartItem chartQuantity={quantity} chartSales={sales} chartLabels={labels} />
                     : ""
             }
         </>

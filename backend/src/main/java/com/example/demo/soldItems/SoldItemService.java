@@ -4,6 +4,9 @@ import com.example.demo.categories.CategoryRepository;
 import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
+import com.example.demo.soldItems.evaluateCategory.DateSales;
+import com.example.demo.soldItems.evaluateCategory.EvaluateCategoryDTO;
+import com.example.demo.soldItems.evaluateCategory.ItemQuantity;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -79,44 +81,12 @@ public class SoldItemService {
 
     }
 
-    public Result getResults(DataForQuery dates) {
-
-        Result result = new Result();
-        result.setSoldItems(getItemsByQueryData(dates));
-
-        return result;
-
-    }
-
-    private List<SoldItem> getItemsByQueryData(DataForQuery dates) {
-
-        List<String> itemsInCategory = categoryRepository.findById(dates.getCategoryId())
-                .map(category -> category.getItemsInCategory())
-                .orElseThrow(() -> new IllegalArgumentException("Kategorie existiert nicht!"));
-
-        LocalDate dateStart = LocalDate.parse(dates.getDateFrom());
-        LocalDate dateStop = LocalDate.parse(dates.getDateTo());
-
-        List<String> dateRangeToGet = new ArrayList<>();
-
-        dateRangeToGet.add(dateStart.toString());
-        while (!dateStart.equals(dateStop)) {
-            dateRangeToGet.add(dateStart.plusDays(1L).toString());
-            dateStart = (dateStart.plusDays(1L));
-        }
-
-        return soldItemRepository.findAllByInvoiceDateIn(dateRangeToGet).stream()
-                .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
-                .toList();
-
-    }
-
-    public List<DataForItemChart> getDataForItemChart (QueryItemChart query) {
+    public List<DataForItemChart> getDataForItemChart (DataForQuery query) {
 
         List<DataForItemChart> dataForItemCharts = new ArrayList<>();
         List<String> dates = getDateList(query);
         List<SoldItem> soldItems = soldItemRepository.findAllByInvoiceDateIn(dates).stream()
-                .filter(soldItem -> query.getCurrentItem().equals(soldItem.getItemName()))
+                .filter(soldItem -> query.getSearchTerm().equals(soldItem.getItemName()))
                 .toList();
         for (String date: dates) {
             DataForItemChart currentData = new DataForItemChart();
@@ -136,7 +106,73 @@ public class SoldItemService {
         return dataForItemCharts;
     }
 
-    private List<String> getDateList(QueryItemChart query){
+    public EvaluateCategoryDTO getDataLineChartCategory(DataForQuery dataForQuery) {
+
+        EvaluateCategoryDTO evaluateCategoryDTO = new EvaluateCategoryDTO();
+        List<DateSales> dateSales = new ArrayList<>();
+
+        List<String> dateList = getDateList(dataForQuery);
+        List<SoldItem> allItemsInDateList = getItemsByDateList(dataForQuery);
+        evaluateCategoryDTO.setSumOfAllItems(
+                allItemsInDateList.stream()
+                        .mapToDouble(value -> value.getTotalPrice())
+                        .sum());
+
+        evaluateCategoryDTO.setQuantities(getQuantityPerItem(dataForQuery));
+
+        for(String date: dateList) {
+            DateSales currentData = new DateSales();
+            List<SoldItem> currentItems = allItemsInDateList.stream()
+                    .filter(soldItem -> date.equals(soldItem.getInvoiceDate()))
+                    .toList();
+            currentData.setSales(currentItems.stream()
+                    .mapToDouble(value -> value.getTotalPrice())
+                    .sum());
+            currentData.setDate(date);
+            dateSales.add(currentData);
+        }
+
+        evaluateCategoryDTO.setSales(dateSales);
+
+        return evaluateCategoryDTO;
+    }
+
+    private List<ItemQuantity> getQuantityPerItem(DataForQuery dataForQuery) {
+
+        List<SoldItem> soldItemList = getItemsByDateList(dataForQuery);
+        List<ItemQuantity> quantities = new ArrayList<>();
+
+        for(SoldItem item: soldItemList) {
+            ItemQuantity quantity = new ItemQuantity();
+            quantity.setQuantity(soldItemList.stream()
+                    .filter(soldItem -> soldItem.getItemName().equals(item.getItemName()))
+                    .mapToDouble(value -> value.getItemQuantity())
+                    .sum());
+            quantity.setItem(item.getItemName());
+            quantities.add(quantity);
+        }
+
+        return quantities.stream()
+                .distinct()
+                .toList();
+
+    }
+
+    private List<SoldItem> getItemsByDateList(DataForQuery dataForQuery) {
+
+        List<String> itemsInCategory = categoryRepository.findById(dataForQuery.getSearchTerm())
+                .map(category -> category.getItemsInCategory())
+                .orElseThrow(() -> new IllegalArgumentException("Kategorie existiert nicht!"));
+
+        List<String> dates = getDateList(dataForQuery);
+
+        return soldItemRepository.findAllByInvoiceDateIn(dates).stream()
+                .filter(soldItem -> itemsInCategory.contains(soldItem.getItemName()))
+                .toList();
+
+    }
+
+    private List<String> getDateList(DataForQuery query){
 
         LocalDate dateStart = LocalDate.parse(query.getDateFrom());
         LocalDate dateStop = LocalDate.parse(query.getDateTo());

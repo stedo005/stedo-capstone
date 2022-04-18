@@ -85,7 +85,7 @@ function App() {
                 <div className={"mb-3"} style={{fontSize: 18, color:"#c2dde4"}}>{t("letztes Update: ")}{new Date(lastUpdate).toLocaleDateString()}</div>
             </div>
             {/*localStorage.getItem("username") === null ? "" : "Du bist angemeldet als: " + localStorage.getItem("username")*/}
-            {/*<button onClick={() => navigate("../chartItem")}>{t("LineChart Artikel")}</button>*/}
+            {/*<button onClick={() => navigate("../chartItem")}>{t("LineChartItem Artikel")}</button>*/}
             <Outlet/>
         </div>
     )

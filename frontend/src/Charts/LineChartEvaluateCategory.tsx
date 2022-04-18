@@ -22,14 +22,13 @@ ChartJS.register(
 );
 
 interface dataForChartProps {
-    chartQuantity: number[]
     chartSales: number[]
     chartLabels: string[]
 }
 
-export function LineChart(props: dataForChartProps) {
+export function LineChartEvaluateCategory(props: dataForChartProps) {
 
-     const options = {
+    const options = {
         responsive: true,
         plugins: {
             legend: {
@@ -37,7 +36,7 @@ export function LineChart(props: dataForChartProps) {
             },
             title: {
                 display: true,
-                text: 'Auswertung',
+                text: 'Gesamtumsatz pro Tag',
             },
         },
     }
@@ -48,13 +47,7 @@ export function LineChart(props: dataForChartProps) {
         labels,
         datasets: [
             {
-                label: 'Anzahl',
-                data: props.chartQuantity,
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            },
-            {
-                label: 'Umsatz',
+                label: 'Umsatz pro Tag',
                 data: props.chartSales,
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',

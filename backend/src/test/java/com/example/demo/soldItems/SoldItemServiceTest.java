@@ -6,6 +6,7 @@ import com.example.demo.helloCash.HelloCashService;
 import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.example.demo.helloCash.dataModel.HelloCashInvoice;
 import com.example.demo.helloCash.dataModel.HelloCashItem;
+import com.example.demo.soldItems.evaluateCategory.EvaluateCategoryDTO;
 import com.example.demo.user.UserData;
 import com.example.demo.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -140,49 +140,6 @@ class SoldItemServiceTest {
 
     @Test
     @DisplayName("should return a valid result")
-    void test4() {
-        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
-        HelloCashService helloCashService = mock(HelloCashService.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        CategoryRepository categoryRepository = mock(CategoryRepository.class);
-
-        DataForQuery dataForQuery = new DataForQuery();
-        dataForQuery.setCategoryId("1");
-        dataForQuery.setDateFrom("2022-01-01");
-        dataForQuery.setDateTo("2022-01-02");
-
-        List<String> dates = List.of("2022-01-01", "2022-01-02");
-        List<String> artikelList = List.of("artikel1", "artikel2");
-
-        Category category = new Category();
-        category.setId("1");
-        category.setItemsInCategory(artikelList);
-
-        SoldItem item1 = new SoldItem();
-        SoldItem item2 = new SoldItem();
-
-        item1.setItemName("artikel1");
-        item1.setItemPrice(10);
-        item1.setItemQuantity(1);
-        item2.setItemName("artikel2");
-        item2.setItemPrice(15);
-        item2.setItemQuantity(1);
-
-        when(categoryRepository.findById(dataForQuery.getCategoryId())).thenReturn(Optional.of(category));
-
-        when(soldItemRepository.findAllByInvoiceDateIn(dates)).thenReturn(List.of(item1, item2));
-
-        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
-        Result actual = soldItemService.getResults(dataForQuery);
-
-        assertThat(actual.getSumOfAllItems()).isEqualTo(25);
-        assertThat(actual.getSoldItems().size()).isEqualTo(2);
-        assertThat(actual.getSoldItems().get(0).getItemPrice()).isEqualTo(10);
-
-    }
-
-    @Test
-    @DisplayName("should return a valid result")
     void test5(){
 
         SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
@@ -190,8 +147,8 @@ class SoldItemServiceTest {
         UserRepository userRepository = mock(UserRepository.class);
         CategoryRepository categoryRepository = mock(CategoryRepository.class);
 
-        QueryItemChart query = new QueryItemChart();
-        query.setCurrentItem("strauß");
+        DataForQuery query = new DataForQuery();
+        query.setSearchTerm("strauß");
         query.setDateFrom("2022-01-01");
         query.setDateTo("2022-01-03");
 
@@ -230,6 +187,46 @@ class SoldItemServiceTest {
         assertThat(actual.get(2).getDate()).isEqualTo("2022-01-03");
         assertThat(actual.get(0).getQuantity()).isEqualTo(5);
         assertThat(actual.get(0).getSales()).isEqualTo(65);
+
+    }
+
+    @Test
+    @DisplayName("create a EvaluateCategoryDTO")
+    void test6() {
+
+        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
+        HelloCashService helloCashService = mock(HelloCashService.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        CategoryRepository categoryRepository = mock(CategoryRepository.class);
+
+        DataForQuery query = new DataForQuery();
+        query.setSearchTerm("kategorie");
+        query.setDateFrom("2022-01-01");
+        query.setDateTo("2022-01-03");
+
+        Category category = new Category("1","kategorie", List.of("strauß","blume"));
+
+        SoldItem item1 = new SoldItem("","2022-01-01","","","strauß",10.00,1);
+        SoldItem item2 = new SoldItem("","2022-01-01","","","strauß",10.00,2);
+        SoldItem item3 = new SoldItem("","2022-01-02","","","blume",15.00,1);
+        SoldItem item4 = new SoldItem("","2022-01-02","","","blume",15.00,1);
+
+        List<SoldItem> itemList = List.of(item1, item2, item3, item4);
+
+        when(categoryRepository.findById(query.getSearchTerm())).thenReturn(Optional.of(category));
+        when(soldItemRepository.findAllByInvoiceDateIn(List.of("2022-01-01","2022-01-02","2022-01-03"))).thenReturn(itemList);
+
+        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
+
+        EvaluateCategoryDTO actual = soldItemService.getDataLineChartCategory(query);
+
+        assertThat(actual.getSumOfAllItems()).isEqualTo(60);
+        assertThat(actual.getSales().get(0).getDate()).isEqualTo("2022-01-01");
+        assertThat(actual.getSales().get(1).getSales()).isEqualTo(30);
+        assertThat(actual.getQuantities().get(0).getQuantity()).isEqualTo(3);
+        assertThat(actual.getQuantities().get(1).getQuantity()).isEqualTo(2);
+        assertThat(actual.getQuantities().get(0).getItem()).isEqualTo("strauß");
+        assertThat(actual.getQuantities().get(1).getItem()).isEqualTo("blume");
 
     }
 
