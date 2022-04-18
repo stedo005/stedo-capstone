@@ -28,7 +28,7 @@ const EvaluateCategory = () => {
     const navigate = useNavigate()
 
     const [dateFrom, setDateFrom] = useState("2022-01-01")
-    const [dateTo, setDateTo] = useState("2022-01-10")
+    const [dateTo, setDateTo] = useState("2022-01-31")
     const [hide, setHide] = useState(true)
     const [calculationFactor, setCalculationFactor] = useState(2.5)
 
@@ -64,10 +64,16 @@ const EvaluateCategory = () => {
         <div className={"justify-content-center"} style={{color: "#003a44"}}>
             <div className={"head-category mx-auto mb-5 pt-4 pb-4"}>{localStorage.getItem("currentCategory")}</div>
             <div className={""}>
-                von: <input className={"background"} type={"date"} value={dateFrom}
-                            onChange={e => setDateFrom(e.target.value)}/> bis: <input className={"background"}
-                                                                                      type={"date"} value={dateTo}
-                                                                                      onChange={e => setDateTo(e.target.value)}/>
+                <div className={"py-3"}>{t("Auswertungszeitraum:")}</div>
+                <input className={"background"}
+                       type={"date"}
+                       value={dateFrom}
+                       onChange={e => setDateFrom(e.target.value)}
+                />
+                <input className={"background"}
+                       type={"date"} value={dateTo}
+                       onChange={e => setDateTo(e.target.value)}
+                />
             </div>
             <div>
                 <label className={"mt-5"} htmlFor={"faktor"}>{t("Kalkulationsfaktor: ")}</label>
