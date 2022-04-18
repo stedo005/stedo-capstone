@@ -18,17 +18,12 @@ public class SoldItemController {
         return soldItemService.getAllItemNames();
     }
 
-    @PutMapping
-    public Result getResults(@RequestBody DataForQuery query) {
-        return soldItemService.getResults(query);
-    }
-
     @PutMapping("/itemChart")
     public List<DataForItemChart> getDataForItemChart(@RequestBody DataForQuery query){
         return soldItemService.getDataForItemChart(query);
     }
 
-    @GetMapping("/query")
+    @GetMapping("/evaluateCategory")
     public EvaluateCategoryDTO getDataLineChartCategory(@RequestParam(name = "searchTerm") String searchTerm, @RequestParam(name = "dateFrom") String dateFrom, @RequestParam(name = "dateTo") String dateTo) {
         DataForQuery dataForQuery = new DataForQuery();
         dataForQuery.setSearchTerm(searchTerm);

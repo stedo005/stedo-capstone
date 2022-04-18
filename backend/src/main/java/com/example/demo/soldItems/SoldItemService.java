@@ -81,15 +81,6 @@ public class SoldItemService {
 
     }
 
-    public Result getResults(DataForQuery dates) {
-
-        Result result = new Result();
-        result.setSoldItems(getItemsByDateList(dates));
-
-        return result;
-
-    }
-
     public List<DataForItemChart> getDataForItemChart (DataForQuery query) {
 
         List<DataForItemChart> dataForItemCharts = new ArrayList<>();

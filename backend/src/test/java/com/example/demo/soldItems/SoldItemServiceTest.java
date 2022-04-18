@@ -140,49 +140,6 @@ class SoldItemServiceTest {
 
     @Test
     @DisplayName("should return a valid result")
-    void test4() {
-        SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);
-        HelloCashService helloCashService = mock(HelloCashService.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        CategoryRepository categoryRepository = mock(CategoryRepository.class);
-
-        DataForQuery dataForQuery = new DataForQuery();
-        dataForQuery.setSearchTerm("1");
-        dataForQuery.setDateFrom("2022-01-01");
-        dataForQuery.setDateTo("2022-01-02");
-
-        List<String> dates = List.of("2022-01-01", "2022-01-02");
-        List<String> artikelList = List.of("artikel1", "artikel2");
-
-        Category category = new Category();
-        category.setId("1");
-        category.setItemsInCategory(artikelList);
-
-        SoldItem item1 = new SoldItem();
-        SoldItem item2 = new SoldItem();
-
-        item1.setItemName("artikel1");
-        item1.setItemPrice(10);
-        item1.setItemQuantity(1);
-        item2.setItemName("artikel2");
-        item2.setItemPrice(15);
-        item2.setItemQuantity(1);
-
-        when(categoryRepository.findById(dataForQuery.getSearchTerm())).thenReturn(Optional.of(category));
-
-        when(soldItemRepository.findAllByInvoiceDateIn(dates)).thenReturn(List.of(item1, item2));
-
-        SoldItemService soldItemService = new SoldItemService(soldItemRepository, helloCashService, userRepository, categoryRepository);
-        Result actual = soldItemService.getResults(dataForQuery);
-
-        assertThat(actual.getSumOfAllItems()).isEqualTo(25);
-        assertThat(actual.getSoldItems().size()).isEqualTo(2);
-        assertThat(actual.getSoldItems().get(0).getItemPrice()).isEqualTo(10);
-
-    }
-
-    @Test
-    @DisplayName("should return a valid result")
     void test5(){
 
         SoldItemRepository soldItemRepository = mock(SoldItemRepository.class);

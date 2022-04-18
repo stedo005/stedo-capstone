@@ -39,7 +39,7 @@ const EvaluateCategory = () => {
 
     const send = () => {
 
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems/query?searchTerm=${linkedId.categoryId}&dateFrom=${dateFrom}&dateTo=${dateTo}`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/soldItems/evaluateCategory?searchTerm=${linkedId.categoryId}&dateFrom=${dateFrom}&dateTo=${dateTo}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
