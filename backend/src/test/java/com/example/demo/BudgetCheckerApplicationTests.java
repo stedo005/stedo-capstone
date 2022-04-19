@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.categories.Category;
 import com.example.demo.security.LoginData;
 import com.example.demo.user.UserData;
 import com.mongodb.BasicDBObjectBuilder;
@@ -61,7 +62,7 @@ class BudgetCheckerApplicationTests {
                 "    \"invoices\": [\n" +
                 "        {\n" +
                 "            \"invoice_id\": \"74235333\",\n" +
-                "            \"invoice_timestamp\": \"2022-03-30 14:44:58\",\n" +
+                "            \"invoice_timestamp\": \"" + dtf.format(now.minusDays(3L)) + " 14:44:58\",\n" +
                 "            \"invoice_number\": \"22002851\",\n" +
                 "            \"invoice_cashier\": \"Mitarbeiter\",\n" +
                 "            \"invoice_cashier_id\": \"103836\",\n" +
@@ -111,7 +112,7 @@ class BudgetCheckerApplicationTests {
                 "        },\n" +
                 "        {\n" +
                 "            \"invoice_id\": \"74234529\",\n" +
-                "            \"invoice_timestamp\": \"2022-03-30 14:35:42\",\n" +
+                "            \"invoice_timestamp\": \"" + dtf.format(now.minusDays(2L)) + " 14:35:42\",\n" +
                 "            \"invoice_number\": \"22002850\",\n" +
                 "            \"invoice_cashier\": \"Mitarbeiter\",\n" +
                 "            \"invoice_cashier_id\": \"103836\",\n" +
@@ -230,6 +231,16 @@ class BudgetCheckerApplicationTests {
         assertThat(allItemNames.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(Objects.requireNonNull(allItemNames.getBody()).length).isEqualTo(2);
         assertThat(Objects.requireNonNull(allItemNames.getBody())[0]).isEqualTo("Blumenstrauß");
+
+        Category category = new Category(null, "Blumen", List.of("Blumenstrauß"));
+        ResponseEntity<Category> createCategory = endpointsMyApi.exchange("/api/category", HttpMethod.POST, new HttpEntity<>(category, httpHeaders), Category.class);
+        assertThat(createCategory.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        //assertThat(createCategory.getBody().getCategoryName()).isEqualTo("Blumenstrauß");
+
+
+
+        //ResponseEntity<String[]> evaluateCategory = endpointsMyApi.exchange("/api/evaluateCategory", HttpMethod.GET, new HttpEntity<>(httpHeaders), String[].class);
+
 
     }
 
