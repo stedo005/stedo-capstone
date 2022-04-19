@@ -11,10 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -39,7 +40,6 @@ class BudgetCheckerApplicationTests {
     void test () {
 
         String encodePwd = passwordEncoder().encode("12345");
-
         DBObject user = BasicDBObjectBuilder.start()
                 .add("id", "1")
                 .add("username", "Steve")
@@ -59,7 +59,13 @@ class BudgetCheckerApplicationTests {
         assertThat(login.getStatusCode()).isEqualTo(HttpStatus.OK);
         String token = login.getBody();
 
+        HttpHeaders httpHeaders = new HttpHeaders();
+        assert token != null;
+        httpHeaders.setBearerAuth(token);
 
+        ResponseEntity<UserData> getUser = restTemplate.exchange("/api/users/Steve", HttpMethod.GET, new HttpEntity<>(httpHeaders), UserData.class);
+        assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getUser.getBody()).getUsername()).isEqualTo("Steve");
 
     }
 
