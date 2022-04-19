@@ -1,7 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.helloCash.HelloCashService;
-import com.example.demo.helloCash.dataModel.HelloCashData;
 import com.example.demo.security.LoginData;
 import com.example.demo.user.UserData;
 import com.mongodb.BasicDBObjectBuilder;
@@ -18,8 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -34,6 +34,9 @@ class BudgetCheckerApplicationTests {
     @Autowired
     MongoTemplate mongoTemplate;
 
+    @MockBean
+    private RestTemplate mockTemplate;
+
     public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
 
     @Test
@@ -45,8 +48,11 @@ class BudgetCheckerApplicationTests {
     @DisplayName("Integration Test")
     void test () {
 
-        String dateFrom = "2022-01-01";
-        String dateTo = "2022-02-02";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+
+        String dateFrom = dtf.format(now.minusDays(3L));
+        String dateTo = dtf.format(now.minusDays(1L));
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth("username", "password");
         HttpEntity<Void> request = new HttpEntity<>(headers);
@@ -159,42 +165,37 @@ class BudgetCheckerApplicationTests {
                 "    \"offset\": 20\n" +
                 "}";
 
-        RestTemplate restTemplate = mock(RestTemplate.class);
-        when(restTemplate.exchange(
-                "https://api.hellocash.business/api/v1/invoices?limit=1&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
+        when(mockTemplate.exchange(
+                "https://api.hellocash.business/api/v1/invoices?limit=1&offset=&search=&dateFrom="
+                        + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
                 HttpMethod.GET,
                 request,
                 String.class
         ))
                 .thenReturn(ResponseEntity.ok(body));
 
-        when(restTemplate.exchange(
-                "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=&search=&dateFrom=" + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
+        when(mockTemplate.exchange(
+                "https://api.hellocash.business/api/v1/invoices?limit=1000&offset=&search=&dateFrom="
+                        + dateFrom + "&dateTo=" + dateTo + "&mode=&showDetails=true",
                 HttpMethod.GET,
                 request,
                 String.class
         ))
                 .thenReturn(ResponseEntity.ok(body));
-
-        HelloCashService helloCashService = new HelloCashService(restTemplate, "username", "password");
-        Stream<HelloCashData> invoicesFromHelloCashApi = helloCashService.getInvoicesFromHelloCashApi(dateFrom, dateTo);
-
-        //HelloCashService cashService = mock(HelloCashService.class);
-        //when(cashService.getInvoicesFromHelloCashApi(dateFrom, dateTo)).thenReturn(invoicesFromHelloCashApi);
 
         String encodePwd = passwordEncoder().encode("12345");
         DBObject user = BasicDBObjectBuilder.start()
                 .add("id", "1")
                 .add("username", "Steve")
                 .add("password", encodePwd)
-                .add("lastUpdate", "2021-01-01")
+                .add("lastUpdate", dateFrom)
                 .get();
 
         DBObject user1 = BasicDBObjectBuilder.start()
                 .add("id", "2")
                 .add("username", "Bernd")
                 .add("password", encodePwd)
-                .add("lastUpdate", "2022-04-19")
+                .add("lastUpdate", dtf.format(now))
                 .get();
 
         mongoTemplate.save(user, "users");
@@ -218,15 +219,17 @@ class BudgetCheckerApplicationTests {
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(Objects.requireNonNull(getUser.getBody()).getUsername()).isEqualTo("Steve");
 
-        HelloCashService cashService = mock(HelloCashService.class);
-        when(cashService.getInvoicesFromHelloCashApi(dateFrom, dateTo)).thenReturn(invoicesFromHelloCashApi);
-
         ResponseEntity<String> getData = endpointsMyApi.exchange("/api/getData/Bernd", HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
-        assertThat(getData.getBody()).isNotEmpty();
         assertThat(getData.getStatusCode()).isEqualTo(HttpStatus.valueOf(304));
+        //assertThat(getData.hasBody()).isTrue();
 
-        //ResponseEntity<String> getData1 = endpointsMyApi.exchange("/api/getData/Steve", HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
-        //assertThat(getData1.getStatusCode()).isEqualTo(HttpStatus.valueOf(304));
+        ResponseEntity<String> getData1 = endpointsMyApi.exchange("/api/getData/Steve", HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
+        assertThat(getData1.getStatusCode()).isEqualTo(HttpStatus.valueOf(201));
+
+        ResponseEntity<String[]> allItemNames = endpointsMyApi.exchange("/api/soldItems", HttpMethod.GET, new HttpEntity<>(httpHeaders), String[].class);
+        assertThat(allItemNames.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(allItemNames.getBody()).length).isEqualTo(2);
+        assertThat(Objects.requireNonNull(allItemNames.getBody())[0]).isEqualTo("Blumenstrauß");
 
     }
 
