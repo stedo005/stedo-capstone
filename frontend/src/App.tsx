@@ -35,7 +35,7 @@ function App() {
 
     const refreshDatabase = () => {
 
-        fetch(`${process.env.REACT_APP_BASE_URL}/getData/${localStorage.getItem("username")}`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/api/getData/${localStorage.getItem("username")}`, {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token")
