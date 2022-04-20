@@ -235,7 +235,7 @@ class BudgetCheckerApplicationTests {
         Category category = new Category(null, "Blumen", List.of("Blumenstrauß"));
         ResponseEntity<Category> createCategory = endpointsMyApi.exchange("/api/category", HttpMethod.POST, new HttpEntity<>(category, httpHeaders), Category.class);
         assertThat(createCategory.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        //assertThat(createCategory.getBody().getCategoryName()).isEqualTo("Blumenstrauß");
+        assertThat(Objects.requireNonNull(createCategory.getBody()).getCategoryName()).isEqualTo("Blumen");
 
 
 

@@ -21,7 +21,7 @@ public class CategoryService {
             return ResponseEntity.status(409).body(category);
         } else {
             categoryRepository.save(category);
-            return ResponseEntity.status(201).build();
+            return ResponseEntity.status(201).body(category);
         }
 
     }
