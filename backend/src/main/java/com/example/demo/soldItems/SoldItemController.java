@@ -2,6 +2,7 @@ package com.example.demo.soldItems;
 
 import com.example.demo.soldItems.evaluateCategory.EvaluateCategoryDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +25,12 @@ public class SoldItemController {
     }
 
     @GetMapping("/evaluateCategory")
-    public EvaluateCategoryDTO getDataLineChartCategory(@RequestParam(name = "searchTerm") String searchTerm, @RequestParam(name = "dateFrom") String dateFrom, @RequestParam(name = "dateTo") String dateTo) {
+    public ResponseEntity<EvaluateCategoryDTO> getDataLineChartCategory(@RequestParam(name = "searchTerm") String searchTerm, @RequestParam(name = "dateFrom") String dateFrom, @RequestParam(name = "dateTo") String dateTo) {
         DataForQuery dataForQuery = new DataForQuery();
         dataForQuery.setSearchTerm(searchTerm);
         dataForQuery.setDateFrom(dateFrom);
         dataForQuery.setDateTo(dateTo);
-        return soldItemService.getDataLineChartCategory(dataForQuery);
+        return ResponseEntity.ok(soldItemService.getDataLineChartCategory(dataForQuery));
     }
 
 }

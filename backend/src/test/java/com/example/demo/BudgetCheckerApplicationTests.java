@@ -261,8 +261,21 @@ class BudgetCheckerApplicationTests {
         assertThat(getItemsInCategory1.getBody().getItemsInCategory().get(1)).isEqualTo("Pflanze");
 
 
-        ResponseEntity<EvaluateCategoryDTO[]> getEvaluatedData = endpointsMyApi.exchange("/api/soldItems/evaluateCategory?searchTerm=" + categoryId + "&dateFrom=" + dateFrom + "&dateTo=" + dateTo, HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), EvaluateCategoryDTO[].class);
+        ResponseEntity<EvaluateCategoryDTO> getEvaluatedData = endpointsMyApi.exchange("/api/soldItems/evaluateCategory?searchTerm=" + categoryId + "&dateFrom=" + dateFrom + "&dateTo=" + dateTo, HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), EvaluateCategoryDTO.class);
+        assertThat(getEvaluatedData.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getEvaluatedData.getBody()).getSumOfAllItems()).isEqualTo(38);
+        assertThat(Objects.requireNonNull(getEvaluatedData.getBody()).getQuantities().get(0).getItem()).isEqualTo("Pflanze");
+        assertThat(Objects.requireNonNull(getEvaluatedData.getBody()).getQuantities().get(0).getQuantity()).isEqualTo(3);
+        assertThat(getEvaluatedData.getBody().getSales().size()).isEqualTo(3);
+        assertThat(getEvaluatedData.getBody().getSales().get(1).getDate()).isEqualTo(dtf.format(now.minusDays(2L)));
+        assertThat(getEvaluatedData.getBody().getSales().get(1).getSales()).isEqualTo(29);
 
+        ResponseEntity<Void> deleteCategory = endpointsMyApi.exchange("/api/category/" + categoryId, HttpMethod.DELETE, new HttpEntity<>(bearerAuthHeader), Void.class);
+        assertThat(deleteCategory.getStatusCode()).isEqualTo(HttpStatus.valueOf(204));
+
+        ResponseEntity<Category[]> getCategoriesAfterDelete = endpointsMyApi.exchange("/api/category", HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), Category[].class);
+        assertThat(getCategoriesAfterDelete.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getCategoriesAfterDelete.getBody()).length).isEqualTo(0);
 
     }
 

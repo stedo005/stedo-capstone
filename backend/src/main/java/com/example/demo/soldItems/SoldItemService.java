@@ -53,10 +53,10 @@ public class SoldItemService {
                         soldItemRepository.saveAll(soldItems);
                     });
 
-            return ResponseEntity.status(201).body("Database refreshed");
+            return ResponseEntity.status(201).build();
 
         }
-        return ResponseEntity.status(304).body("nothing to refresh");
+        return ResponseEntity.status(304).build();
     }
 
     public List<String> getAllItemNames() {
