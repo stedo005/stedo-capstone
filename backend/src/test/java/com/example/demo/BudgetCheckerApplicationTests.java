@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.categories.Category;
 import com.example.demo.security.LoginData;
+import com.example.demo.soldItems.evaluateCategory.EvaluateCategoryDTO;
 import com.example.demo.user.UserData;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
@@ -212,34 +213,55 @@ class BudgetCheckerApplicationTests {
         assertThat(login.getStatusCode()).isEqualTo(HttpStatus.OK);
         String token = login.getBody();
 
-        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpHeaders bearerAuthHeader = new HttpHeaders();
         assert token != null;
-        httpHeaders.setBearerAuth(token);
+        bearerAuthHeader.setBearerAuth(token);
 
-        ResponseEntity<UserData> getUser = endpointsMyApi.exchange("/api/users/Steve", HttpMethod.GET, new HttpEntity<>(httpHeaders), UserData.class);
+        ResponseEntity<UserData> getUser = endpointsMyApi.exchange("/api/users/Steve", HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), UserData.class);
         assertThat(getUser.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(Objects.requireNonNull(getUser.getBody()).getUsername()).isEqualTo("Steve");
 
-        ResponseEntity<String> getData = endpointsMyApi.exchange("/api/getData/Bernd", HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
+        ResponseEntity<String> getData = endpointsMyApi.exchange("/api/getData/Bernd", HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), String.class);
         assertThat(getData.getStatusCode()).isEqualTo(HttpStatus.valueOf(304));
-        //assertThat(getData.hasBody()).isTrue();
 
-        ResponseEntity<String> getData1 = endpointsMyApi.exchange("/api/getData/Steve", HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
+        ResponseEntity<String> getData1 = endpointsMyApi.exchange("/api/getData/Steve", HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), String.class);
         assertThat(getData1.getStatusCode()).isEqualTo(HttpStatus.valueOf(201));
 
-        ResponseEntity<String[]> allItemNames = endpointsMyApi.exchange("/api/soldItems", HttpMethod.GET, new HttpEntity<>(httpHeaders), String[].class);
+        ResponseEntity<String[]> allItemNames = endpointsMyApi.exchange("/api/soldItems", HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), String[].class);
         assertThat(allItemNames.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(Objects.requireNonNull(allItemNames.getBody()).length).isEqualTo(2);
         assertThat(Objects.requireNonNull(allItemNames.getBody())[0]).isEqualTo("Blumenstrauß");
 
         Category category = new Category(null, "Blumen", List.of("Blumenstrauß"));
-        ResponseEntity<Category> createCategory = endpointsMyApi.exchange("/api/category", HttpMethod.POST, new HttpEntity<>(category, httpHeaders), Category.class);
+        ResponseEntity<Category> createCategory = endpointsMyApi.exchange("/api/category", HttpMethod.POST, new HttpEntity<>(category, bearerAuthHeader), Category.class);
         assertThat(createCategory.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(Objects.requireNonNull(createCategory.getBody()).getCategoryName()).isEqualTo("Blumen");
+        assertThat(Objects.requireNonNull(createCategory.getBody()).getItemsInCategory().get(0)).isEqualTo("Blumenstrauß");
+
+        String categoryId = createCategory.getBody().getId();
+
+        Category changedCategory = new Category(categoryId, "Blumen", List.of("Blumenstrauß", "Ampeln"));
+        ResponseEntity<Category> addItemsToCategory = endpointsMyApi.exchange("/api/category", HttpMethod.PUT, new HttpEntity<>(changedCategory, bearerAuthHeader), Category.class);
+
+        ResponseEntity<Category[]> getCategories = endpointsMyApi.exchange("/api/category", HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), Category[].class);
+        assertThat(getCategories.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getCategories.getBody()).length).isEqualTo(1);
+        assertThat(getCategories.getBody()[0].getItemsInCategory().get(1)).isEqualTo("Ampeln");
+
+        ResponseEntity<Category> getItemsInCategory = endpointsMyApi.exchange("/api/category/" + categoryId, HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), Category.class);
+        assertThat(getItemsInCategory.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getItemsInCategory.getBody()).getItemsInCategory().size()).isEqualTo(2);
+
+        Category changeCategoryAgain = new Category(categoryId, "Blumen", List.of("Blumenstrauß", "Pflanze"));
+        ResponseEntity<Category> changeItemsInCategory = endpointsMyApi.exchange("/api/category", HttpMethod.PUT, new HttpEntity<>(changeCategoryAgain, bearerAuthHeader), Category.class);
+
+        ResponseEntity<Category> getItemsInCategory1 = endpointsMyApi.exchange("/api/category/" + categoryId, HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), Category.class);
+        assertThat(getItemsInCategory1.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(Objects.requireNonNull(getItemsInCategory1.getBody()).getItemsInCategory().size()).isEqualTo(2);
+        assertThat(getItemsInCategory1.getBody().getItemsInCategory().get(1)).isEqualTo("Pflanze");
 
 
-
-        //ResponseEntity<String[]> evaluateCategory = endpointsMyApi.exchange("/api/evaluateCategory", HttpMethod.GET, new HttpEntity<>(httpHeaders), String[].class);
+        ResponseEntity<EvaluateCategoryDTO[]> getEvaluatedData = endpointsMyApi.exchange("/api/soldItems/evaluateCategory?searchTerm=" + categoryId + "&dateFrom=" + dateFrom + "&dateTo=" + dateTo, HttpMethod.GET, new HttpEntity<>(bearerAuthHeader), EvaluateCategoryDTO[].class);
 
 
     }
