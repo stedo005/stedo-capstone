@@ -71,7 +71,7 @@ function App() {
     }, [getLastUpdate])
 
     return (
-        <div className={"background"}>
+        <div className={"container-fluid background"}>
             <div className={"row pb-3 my-header"}>
                 <div className={"col-sm-3 col-12"}>
                     <img className={"logo mt-4"} src={logo}/>

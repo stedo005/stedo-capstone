@@ -92,7 +92,7 @@ const Category = () => {
 
     return (
 
-        <div className={"maxWidth justify-content-center"} style={{color: "#06565b"}}>
+        <div className={"justify-content-center"} style={{color: "#06565b"}}>
             <div className={"head-category mx-auto mb-5 p-3"}>
                 <div>{category.categoryName}</div>
                 <div>{itemsInCategory.length}{t(" Artikel")}</div>
@@ -119,8 +119,7 @@ const Category = () => {
                                                : saveAllItemsToCategory()
                                        }
                                        checked={allItemNames.length === itemsInCategory.length}
-                                />
-                                <label htmlFor={"allChecked"}>{t(" alle auswählen")}</label>
+                                /> <label htmlFor={"allChecked"}>{t(" alle auswählen")}</label>
                             </>
 
                             : <></>
