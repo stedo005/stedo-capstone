@@ -139,7 +139,7 @@ const EvaluateCategory = () => {
                 </div>
                 <div className={"col-12 my-5 mx-auto my-auto px-5 py-3"}>
                     <LineChartEvaluateCategory chartSales={[...itemSales.map(e => e.sales)]}
-                                               chartLabels={[...itemSales.map(e => e.date)]}/>
+                                               chartLabels={[...itemSales.map(e => myDate(e.date))]}/>
                 </div>
                 <div className={"col-12"}>
                     <div className={"clickable btn-nav mx-auto my-5"}
