@@ -50,6 +50,7 @@ body{
     background-color: #66a4ac;
     border-radius: 8px;
     width: 150px;
+    height: fit-content;
 }
 .btn-nav:hover{
     opacity: 90%;
@@ -80,4 +81,7 @@ body{
 }
 .bar-chart{
     max-width: 500px;
+}
+.logo{
+    width: 100px;
 }
