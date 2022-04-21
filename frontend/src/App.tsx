@@ -74,7 +74,7 @@ function App() {
         <div className={"container-fluid background"}>
             <div className={"row pb-3 my-header"}>
                 <div className={"col-sm-3 col-12"}>
-                    <img className={"logo mt-4"} src={logo}/>
+                    <img className={"logo mt-4"} src={logo} alt={"Logo"}/>
                 </div>
                 <div className={"row col-sm-6 col-12 justify-content-center mx-auto my-auto pt-3"}>
                     <div className={"clickable btn-nav col-12 align-content-center"}
