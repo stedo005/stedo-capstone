@@ -92,9 +92,11 @@ const EvaluateCategory = () => {
             </div>
             <div className={"clickable btn-nav mx-auto"} onClick={send}>{t("Budget anzeigen")}</div>
             <div className={"row"}>
-                <div className={"col row align-items-center"}>
-                    <div className={"result mx-auto my-5 px-5 py-4"}>
-                        <div>{t("Umsatz: ")}{sumAll.toFixed(2)} €</div>
+                <div className={"col-md-6 row mx-auto justify-content-center align-items-center"}>
+                    <div className={"result col-12 my-5 py-4"}>
+                        <div>
+                            {t("Umsatz: ")}{sumAll.toFixed(2)} €
+                        </div>
                         <div>
                             {t("Rohertrag: ")}{profit.toFixed(2)} €
                         </div>
@@ -103,7 +105,7 @@ const EvaluateCategory = () => {
                         </div>
                     </div>
                 </div>
-                <div className={`bar-chart col-m my-5 mx-auto my-auto px-4 py-3`}>
+                <div className={`bar-chart col-md-6 my-5 mx-auto my-auto px-4 py-3`}>
                     {
                         itemQuantities.length > 0
                             ?

@@ -16,9 +16,6 @@ body{
 .c3{
     background-color: #5c5c64;
 }
-.maxWidth{
-    max-width: 1200px;
-}
 .category{
     color: #c2dde4;
     background-color: #06565b;
@@ -50,6 +47,7 @@ body{
     background-color: #66a4ac;
     border-radius: 8px;
     width: 150px;
+    height: fit-content;
 }
 .btn-nav:hover{
     opacity: 90%;
@@ -72,12 +70,15 @@ body{
 }
 .result{
     border-radius: 5px;
-    min-width: 500px;
-    width: fit-content;
+    min-width: 400px;
+    max-width: fit-content;
     font-size: 30px;
     color: #c2dde4;
     background-color: #06565b;
 }
 .bar-chart{
     max-width: 500px;
+}
+.logo{
+    width: 100px;
 }
