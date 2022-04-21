@@ -92,8 +92,8 @@ const EvaluateCategory = () => {
             </div>
             <div className={"clickable btn-nav mx-auto"} onClick={send}>{t("Budget anzeigen")}</div>
             <div className={"row"}>
-                <div className={"col-md-6 row justify-content-center align-items-center"}>
-                    <div className={"result my-5 px-5 py-4"}>
+                <div className={"col-md-6 row mx-auto justify-content-center align-items-center"}>
+                    <div className={"result col-12 my-5 py-4"}>
                         <div>
                             {t("Umsatz: ")}{sumAll.toFixed(2)} €
                         </div>

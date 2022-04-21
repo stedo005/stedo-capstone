@@ -71,7 +71,7 @@ body{
 .result{
     border-radius: 5px;
     min-width: 400px;
-    width: fit-content;
+    max-width: fit-content;
     font-size: 30px;
     color: #c2dde4;
     background-color: #06565b;
