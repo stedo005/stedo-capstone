@@ -96,13 +96,21 @@ const Categories = () => {
             .catch(() => navigate("../login"))
     }
 
+    const confirmDelete = (id: string) => {
+
+        if (window.confirm(t("Wirklich löschen?"))) {
+            deleteCategory(id)
+        }
+
+    }
+
     return (
 
         <>
             <div className={"justify-content-center row"}>
                 <div className={"clickable btn-new-category row justify-content-center align-items-center"}>
                     <div className={"p-2 text-center"} onClick={() => setHideNewCategory(false)}>
-                        {t("Kategorie anlegen")}
+                        {t("neue Kategorie anlegen")}
                         {errMsg}
                     </div>
                     <div className={"text-center"} hidden={hideNewCategory}>
@@ -133,7 +141,7 @@ const Categories = () => {
                                 <i className="clickable bi bi-pencil-square m-1 col-4"
                                    onClick={() => navigate(`${e.id}`)}/>
                                 <i className="clickable bi bi-trash-fill m-1 col-1"
-                                   onClick={() => deleteCategory(e.id)}/>
+                                   onClick={() => confirmDelete(e.id)}/>
                             </div>
                         </div>)}
                 </div>
