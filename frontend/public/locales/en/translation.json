@@ -26,5 +26,8 @@
   "Passwort und / oder E-Mail sind falsch!": "Bad credentials!",
   "Nutzername": "username",
   "Passwort": "password",
-  "Anmelden": "Login"
+  "Anmelden": "Login",
+  "Gesamtumsatz pro Tag": "all sales per day",
+  "Umsatz pro Tag in €": "sale per day in €",
+  "Artikelzahlen": "sum of sold items"
 }

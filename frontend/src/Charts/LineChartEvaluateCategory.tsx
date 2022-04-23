@@ -50,7 +50,7 @@ export function LineChartEvaluateCategory(props: dataForChartProps) {
         labels,
         datasets: [
             {
-                label: 'Umsatz pro Tag in €',
+                label: t('Umsatz pro Tag in €'),
                 data: props.chartSales,
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
