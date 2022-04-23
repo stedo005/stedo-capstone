@@ -10,6 +10,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import {useTranslation} from "react-i18next";
 
 ChartJS.register(
     CategoryScale,
@@ -28,6 +29,8 @@ interface dataForChartProps {
 
 export function LineChartEvaluateCategory(props: dataForChartProps) {
 
+    const {t}= useTranslation()
+
     const options = {
         responsive: true,
         plugins: {
@@ -36,7 +39,7 @@ export function LineChartEvaluateCategory(props: dataForChartProps) {
             },
             title: {
                 display: true,
-                text: 'Gesamtumsatz pro Tag',
+                text: t('Gesamtumsatz pro Tag'),
             },
         },
     }
