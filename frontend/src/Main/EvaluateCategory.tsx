@@ -27,8 +27,8 @@ const EvaluateCategory = () => {
     const {t} = useTranslation()
     const navigate = useNavigate()
 
-    const [dateFrom, setDateFrom] = useState("2022-01-01")
-    const [dateTo, setDateTo] = useState("2022-01-31")
+    const [dateFrom, setDateFrom] = useState("2020-01-05")
+    const [dateTo, setDateTo] = useState("2020-01-31")
     const [hide, setHide] = useState(true)
     const [calculationFactor, setCalculationFactor] = useState(2.5)
 
@@ -154,7 +154,7 @@ const EvaluateCategory = () => {
                                     key={e.item}>{e.item} : {e.quantity}</div>)}
                                 </div>
                                 :
-                                <div>{t("Noch nichts zum anzeigen da.")}</div>
+                                <div>{t("Noch keine Daten zum anzeigen.")}</div>
                         }
                     </div>
                 </div>

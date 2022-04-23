@@ -7,7 +7,7 @@ const Logout = () => {
     return (
 
         <div>
-            {t("Logout erfolgreich. Bis zum nächsten mal.")}
+            {t("Abmelden erfolgreich. Bis zum nächsten mal.")}
         </div>
 
     )

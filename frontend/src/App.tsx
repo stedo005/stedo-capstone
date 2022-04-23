@@ -85,7 +85,7 @@ function App() {
                     <div className={"clickable btn-nav col-12"} onClick={() => {
                         logout()
                         navigate("../logout")
-                    }}>{t("Logout")}</div>
+                    }}>{t("Abmelden")}</div>
                 </div>
                 <div className={"mb-3 mt-3 col-sm-3"}
                      style={{

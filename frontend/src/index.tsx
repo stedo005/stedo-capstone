@@ -10,6 +10,7 @@ import Category from './Main/Category';
 import EvaluateCategory from "./Main/EvaluateCategory";
 import ChartItem from "./Main/ChartItem";
 import "./index.css";
+import "./i18n";
 
 ReactDOM.render(
     <React.StrictMode>

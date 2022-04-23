@@ -47,7 +47,7 @@ const Login = () => {
                 <input type={"password"} placeholder={t("Passwort")} style={{background: "#66a4ac"}} value={password}
                        onChange={event => setPassword(event.target.value)}/><br/><br/>
             </div>
-            <div className={"clickable btn-nav"} onClick={login}>{t("Einloggen")}</div>
+            <div className={"clickable btn-nav"} onClick={login}>{t("Anmelden")}</div>
             <div style={{color:"red"}}>{errMsg}</div>
         </div>
 

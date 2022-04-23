@@ -1,6 +1,7 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import {useTranslation} from "react-i18next";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -11,6 +12,8 @@ interface pieChartProps{
 
 export function PieChart(props: pieChartProps) {
 
+    const {t} = useTranslation()
+
 const options = {
     responsive: true,
     plugins: {
@@ -19,7 +22,7 @@ const options = {
         },
         title: {
             display: true,
-            text: 'Artikelzahlen',
+            text: t('Artikelzahlen'),
         },
     },
 }
