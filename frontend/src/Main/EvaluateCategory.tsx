@@ -28,7 +28,7 @@ const EvaluateCategory = () => {
     const navigate = useNavigate()
 
     const [dateFrom, setDateFrom] = useState("2020-01-05")
-    const [dateTo, setDateTo] = useState("2020-01-31")
+    const [dateTo, setDateTo] = useState(localStorage.getItem("lastUpdate") ?? "")
     const [hide, setHide] = useState(true)
     const [calculationFactor, setCalculationFactor] = useState(2.5)
 

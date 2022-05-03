@@ -62,6 +62,7 @@ function App() {
             })
             .then((responseBody: user) => {
                 setLastUpdate(responseBody.lastUpdate)
+                localStorage.setItem("lastUpdate", lastUpdate)
             })
             .catch(() => navigate("../login"))
     }, [navigate])
