@@ -131,7 +131,7 @@ const Categories = () => {
                             <div className={"clickable category-text justify-content-center row align-items-center"}
                                  onClick={() => {
                                      localStorage.setItem("currentCategory", e.categoryName)
-                                     navigate(`evaluate/${e.id}`)
+                                     navigate(`budget/${e.id}`)
                                  }}>
                                 <div className={"text-center"}>
                                     {e.categoryName}

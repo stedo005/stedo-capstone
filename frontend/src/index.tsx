@@ -21,7 +21,7 @@ ReactDOM.render(
                         <Route path={"/login"} element={<Login />}/>
                         <Route path={"/logout"} element={<Logout />}/>
                         <Route path={"/:categoryId"} element={<Category />} />
-                        <Route path={"/evaluate/:categoryId"} element={<Budgetplanner />} />
+                        <Route path={"/budget/:categoryId"} element={<Budgetplanner />} />
                         <Route path={"/chartItem"} element={<ChartItem />} />
                         <Route path={"/"} element={<Categories />} />
                     </Route>
