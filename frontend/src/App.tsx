@@ -83,7 +83,7 @@ function App() {
                          onClick={() => navigate("../")}>{t("Budget")}
                     </div>
                     <div className={"clickable btn-nav col-12 align-content-center"}
-                         onClick={() => navigate("../")}>{t("Kategorien")}
+                         onClick={() => navigate("../categories")}>{t("Kategorien")}
                     </div>
                     <div className={"clickable btn-nav col-12"} onClick={refreshDatabase}>{t("Daten")} <i
                         className="bi bi-arrow-repeat"/>
