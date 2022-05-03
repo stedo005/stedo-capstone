@@ -65,7 +65,7 @@ const Category = () => {
             .then(response => {
                 checkLogin(response)
             })
-            .then(() => navigate("../"))
+            .then(() => navigate("../categories"))
             .catch(() => navigate("../login"))
     }
 
