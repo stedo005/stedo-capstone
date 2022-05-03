@@ -36,7 +36,7 @@ const EvaluateCategory = () => {
     const navigate = useNavigate()
 
     const [dateTo, setDateTo] = useState(localStorage.getItem("lastUpdate") ?? "")
-    const [dateFrom, setDateFrom] = useState(minusDays(dateTo, 1))
+    const [dateFrom, setDateFrom] = useState(minusDays(dateTo, 7))
     const [hide, setHide] = useState(true)
     const [calculationFactor, setCalculationFactor] = useState(2.5)
 
