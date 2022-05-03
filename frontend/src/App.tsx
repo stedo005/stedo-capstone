@@ -15,6 +15,7 @@ function App() {
     const logout = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("username")
+        localStorage.removeItem("lastUpdate")
     }
 
     useEffect(() => {
@@ -62,9 +63,10 @@ function App() {
             })
             .then((responseBody: user) => {
                 setLastUpdate(responseBody.lastUpdate)
+                localStorage.setItem("lastUpdate", lastUpdate)
             })
             .catch(() => navigate("../login"))
-    }, [navigate])
+    }, [navigate, lastUpdate])
 
     useEffect(() => {
         getLastUpdate()

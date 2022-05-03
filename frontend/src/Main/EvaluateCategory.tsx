@@ -23,12 +23,20 @@ const EvaluateCategory = () => {
         quantity: number
     }
 
+    const minusDays = (date: string, daysToSubtract: number) => {
+        let dateToReduce = new Date(date)
+        let days = daysToSubtract * 86400000
+        let milliseconds = dateToReduce.getTime()
+        let formattedDate = new Date(milliseconds - days)
+        return formattedDate.toISOString().slice(0, 10)
+    }
+
     const linkedId = useParams()
     const {t} = useTranslation()
     const navigate = useNavigate()
 
-    const [dateFrom, setDateFrom] = useState("2020-01-05")
-    const [dateTo, setDateTo] = useState("2020-01-31")
+    const [dateTo, setDateTo] = useState(localStorage.getItem("lastUpdate") ?? "")
+    const [dateFrom, setDateFrom] = useState(minusDays(dateTo, 7))
     const [hide, setHide] = useState(true)
     const [calculationFactor, setCalculationFactor] = useState(2.5)
 
