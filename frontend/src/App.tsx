@@ -66,7 +66,7 @@ function App() {
                 localStorage.setItem("lastUpdate", lastUpdate)
             })
             .catch(() => navigate("../login"))
-    }, [navigate])
+    }, [navigate, lastUpdate])
 
     useEffect(() => {
         getLastUpdate()

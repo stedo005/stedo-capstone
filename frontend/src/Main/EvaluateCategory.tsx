@@ -23,10 +23,11 @@ const EvaluateCategory = () => {
         quantity: number
     }
 
-    const minusDays = (date: string, days: number) => {
+    const minusDays = (date: string, daysToSubtract: number) => {
         let dateToReduce = new Date(date)
-        let milliseconds = dateToReduce.getTime();
-        let formattedDate = new Date(milliseconds - 604800000)
+        let days = daysToSubtract * 86400000
+        let milliseconds = dateToReduce.getTime()
+        let formattedDate = new Date(milliseconds - days)
         return formattedDate.toISOString().slice(0, 10)
     }
 
