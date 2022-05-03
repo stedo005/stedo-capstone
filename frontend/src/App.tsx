@@ -15,6 +15,7 @@ function App() {
     const logout = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("username")
+        localStorage.removeItem("lastUpdate")
     }
 
     useEffect(() => {
