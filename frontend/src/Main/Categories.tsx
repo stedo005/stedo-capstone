@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {savedCategories} from "../Models/model";
 import {useNavigate} from "react-router-dom";
 import {checkLogin} from "../Models/checkLogin";
@@ -21,7 +21,7 @@ const Categories = () => {
         return () => clearTimeout(timeoutId);
     }, [errMsg]);
 
-    const fetchCategories = () => {
+    const fetchCategories = useCallback( () => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
             method: "GET",
             headers: {
@@ -35,7 +35,7 @@ const Categories = () => {
             })
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
             .catch(() => navigate("../login"))
-    }
+    },[navigate])
 
     const createCategory = () => {
 
@@ -66,20 +66,8 @@ const Categories = () => {
     }
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        })
-            .then(response => {
-                checkLogin(response)
-                return response.json()
-            })
-            .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
-            .catch(() => navigate("../login"))
-    }, [navigate])
+        fetchCategories()
+    }, [fetchCategories])
 
     const deleteCategory = (id: string) => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${id}`, {
