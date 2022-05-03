@@ -5,7 +5,7 @@ import {checkLogin} from "../Models/checkLogin";
 import {PieChart} from "../Charts/PieChart";
 import {LineChartEvaluateCategory} from "../Charts/LineChartEvaluateCategory";
 
-const EvaluateCategory = () => {
+const Budgetplanner = () => {
 
     interface dataEvaluateCategory{
         sales: Array<sales>
@@ -171,4 +171,4 @@ const EvaluateCategory = () => {
     )
 }
 
-export default EvaluateCategory
+export default Budgetplanner

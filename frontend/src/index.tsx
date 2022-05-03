@@ -7,7 +7,7 @@ import Login from './Login/Login';
 import Logout from './Login/Logout';
 import Categories from "./Main/Categories";
 import Category from './Main/Category';
-import EvaluateCategory from "./Main/EvaluateCategory";
+import Budgetplanner from "./Main/Budgetplanner";
 import ChartItem from "./Main/ChartItem";
 import "./index.css";
 import "./i18n";
@@ -21,7 +21,7 @@ ReactDOM.render(
                         <Route path={"/login"} element={<Login />}/>
                         <Route path={"/logout"} element={<Logout />}/>
                         <Route path={"/:categoryId"} element={<Category />} />
-                        <Route path={"/evaluate/:categoryId"} element={<EvaluateCategory />} />
+                        <Route path={"/evaluate/:categoryId"} element={<Budgetplanner />} />
                         <Route path={"/chartItem"} element={<ChartItem />} />
                         <Route path={"/"} element={<Categories />} />
                     </Route>
