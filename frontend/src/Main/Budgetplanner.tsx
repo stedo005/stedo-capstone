@@ -66,7 +66,7 @@ const Budgetplanner = () => {
         <div className={"justify-content-center"} style={{color: "#003a44"}}>
             <div className={"head-category mx-auto mb-5 pt-4 pb-4"}>{localStorage.getItem("currentCategory")}</div>
             <div className={""}>
-                <div className={"py-3"}>{t("Auswertungszeitraum:")}</div>
+                <div className={"py-3"}>{t("Auswertungszeitraum")}</div>
                 <input className={"background"}
                        type={"date"}
                        value={dateFrom}
