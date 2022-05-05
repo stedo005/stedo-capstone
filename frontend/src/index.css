@@ -22,13 +22,7 @@ body{
     border-radius: 8px;
     box-shadow: #5c5c64 2px 2px;
     width: 250px;
-    height: 160px;
-}
-.category-text{
-    height: 60%;
-}
-.category:hover{
-    opacity: 90%;
+    height: 100px;
 }
 .btn-new-category{
     box-shadow: #5c5c64 2px 2px;

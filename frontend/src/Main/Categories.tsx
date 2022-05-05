@@ -116,19 +116,13 @@ const Categories = () => {
                     {categories.map(e =>
                         <div className={"category m-3 row justify-content-center"}
                              key={e.id}>
-                            <div className={"clickable category-text justify-content-center row align-items-center"}
-                                 onClick={() => {
-                                     localStorage.setItem("currentCategory", e.categoryName)
-                                     navigate(`../budget/${e.id}`)
-                                 }}>
-                                <div className={"text-center"}>
+                            <div className={"category-text justify-content-center row align-items-center"}>
+                                <div className={"text-center col-12"}>
                                     {e.categoryName}
                                 </div>
-                            </div>
-                            <div className={"col row justify-content-end"}>
-                                <i className="clickable bi bi-pencil-square m-1 col-4"
+                                <i className="clickable bi bi-pencil-square m-1 col-6"
                                    onClick={() => navigate(`../${e.id}`)}/>
-                                <i className="clickable bi bi-trash-fill m-1 col-1"
+                                <i className="clickable bi bi-trash-fill m-1 col"
                                    onClick={() => confirmDelete(e.id)}/>
                             </div>
                         </div>)}
