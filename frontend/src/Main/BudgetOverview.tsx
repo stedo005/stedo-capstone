@@ -1,4 +1,3 @@
-import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useState} from "react";
 import {savedCategories} from "../Models/model";
@@ -7,7 +6,6 @@ import {checkLogin} from "../Models/checkLogin";
 
 const BudgetOverview = () => {
 
-    const {t} = useTranslation()
     const navigate = useNavigate()
 
     const [categories, setCategories] = useState([] as Array<savedCategories>)
@@ -35,7 +33,13 @@ const BudgetOverview = () => {
     return (
         <>
             <div>
-                {categories.map(e => <div>{e.categoryName}</div>)}
+                {categories.map(e => <div
+                    key={e.id}
+                    className={"clickable m-3"}
+                    onClick={() => {
+                        localStorage.setItem("currentCategory", e.categoryName)
+                        navigate(`../budget/${e.id}`)
+                    }}>{e.categoryName}</div>)}
             </div>
         </>
     )
