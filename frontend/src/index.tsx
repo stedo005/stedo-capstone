@@ -12,6 +12,7 @@ import ChartItem from "./Main/ChartItem";
 import "./index.css";
 import "./i18n";
 import BudgetOverview from './Main/BudgetOverview';
+import CompareOverview from "./Main/CompareOverview";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.render(
                         <Route path={"/budget/:categoryId"} element={<Budgetplanner />} />
                         <Route path={"/chartItem"} element={<ChartItem />} />
                         <Route path={"/categories"} element={<Categories />} />
+                        <Route path={"/compare-overview"} element={<CompareOverview />} />
                         <Route path={"/"} element={<BudgetOverview />} />
                     </Route>
                 </Routes>
