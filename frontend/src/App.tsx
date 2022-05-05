@@ -80,14 +80,19 @@ function App() {
                 </div>
                 <div className={"row col-sm-6 col-12 justify-content-center mx-auto my-auto pt-3"}>
                     <div className={"clickable btn-nav col-12 align-content-center"}
-                         onClick={() => navigate("../")}>{t("Kategorien")}</div>
+                         onClick={() => navigate("../")}>{t("Budget")}
+                    </div>
+                    <div className={"clickable btn-nav col-12 align-content-center"}
+                         onClick={() => navigate("../categories")}>{t("Kategorien")}
+                    </div>
                     <div className={"clickable btn-nav col-12"} onClick={refreshDatabase}>{t("Daten")} <i
                         className="bi bi-arrow-repeat"/>
                     </div>
                     <div className={"clickable btn-nav col-12"} onClick={() => {
                         logout()
                         navigate("../logout")
-                    }}>{t("Abmelden")}</div>
+                    }}>{t("Abmelden")}
+                    </div>
                 </div>
                 <div className={"mb-3 mt-3 col-sm-3"}
                      style={{

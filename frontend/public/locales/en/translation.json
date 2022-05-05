@@ -3,7 +3,7 @@
   "Kategorien": "Categories",
   "Daten": "Data",
   "Abmelden": "Logout",
-  "Daten vom: ": "Data from :",
+  "Daten vom: ": "Data from: ",
   "Diese Kategorie gibt es schon!": "Category already exist!",
   "Keine Eingabe erfolgt!": "No input!",
   "Wirklich löschen?": "Delete?",
@@ -14,7 +14,7 @@
   "Speichern": "save",
   " alle auswählen": " select all",
   "Artikel werden geladen!": "Items loading!",
-  "Auswertungszeitraum:": "Daterange to evaluate:",
+  "Auswertungszeitraum": "Daterange to evaluate",
   "Kalkulationsfaktor: ": "calculation-factor: ",
   "Budget anzeigen": "show budget",
   "Umsatz: ": "sales: ",
@@ -29,5 +29,7 @@
   "Anmelden": "Login",
   "Gesamtumsatz pro Tag": "all sales per day",
   "Umsatz pro Tag in €": "sale per day in €",
-  "Artikelzahlen": "sum of sold items"
+  "Artikelzahlen": "sum of sold items",
+  "Budget": "budget",
+  "Budgetplanung": "budgetplanner"
 }

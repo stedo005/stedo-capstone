@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {savedCategories} from "../Models/model";
 import {useNavigate} from "react-router-dom";
 import {checkLogin} from "../Models/checkLogin";
@@ -21,7 +21,7 @@ const Categories = () => {
         return () => clearTimeout(timeoutId);
     }, [errMsg]);
 
-    const fetchCategories = () => {
+    const fetchCategories = useCallback(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
             method: "GET",
             headers: {
@@ -35,7 +35,7 @@ const Categories = () => {
             })
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
             .catch(() => navigate("../login"))
-    }
+    }, [navigate])
 
     const createCategory = () => {
 
@@ -66,20 +66,8 @@ const Categories = () => {
     }
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            }
-        })
-            .then(response => {
-                checkLogin(response)
-                return response.json()
-            })
-            .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
-            .catch(() => navigate("../login"))
-    }, [navigate])
+        fetchCategories()
+    }, [fetchCategories])
 
     const deleteCategory = (id: string) => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category/${id}`, {
@@ -114,7 +102,8 @@ const Categories = () => {
                         {errMsg}
                     </div>
                     <div className={"text-center"} hidden={hideNewCategory}>
-                        <input className={"mt-2 mb-3"} style={{background: "#66a4ac"}} type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
+                        <input className={"mt-2 mb-3"} style={{background: "#66a4ac"}} type={"text"}
+                               placeholder={t("Name der Kategorie")} value={categoryName}
                                onChange={event => setCategoryName(event.target.value)}/>
                         <i className={"clickable bi bi-check-circle-fill m-3"} onClick={() => {
                             createCategory()
@@ -126,24 +115,16 @@ const Categories = () => {
                 <br/><br/>
                 <div className={"maxWidth row justify-content-center mt-3"}>
                     {categories.map(e =>
-                        <div className={"category m-3 row justify-content-center"}
-                             key={e.id}>
-                            <div className={"clickable category-text justify-content-center row align-items-center"}
-                                 onClick={() => {
-                                     localStorage.setItem("currentCategory", e.categoryName)
-                                     navigate(`evaluate/${e.id}`)
-                                 }}>
-                                <div className={"text-center"}>
-                                    {e.categoryName}
-                                </div>
+                        <div className={"category m-3 p-1 row align-items-center"}
+                            key={e.id}>
+                            <i className="clickable btn-del bi bi-trash-fill col-4 py-4"
+                               onClick={() => confirmDelete(e.id)}/>
+                            <div className={"clickable category-text col row m-0 align-content-center justify-content-center"}
+                                 onClick={() => navigate(`../${e.id}`)}>
+                                {e.categoryName}
                             </div>
-                            <div className={"col row justify-content-end"}>
-                                <i className="clickable bi bi-pencil-square m-1 col-4"
-                                   onClick={() => navigate(`${e.id}`)}/>
-                                <i className="clickable bi bi-trash-fill m-1 col-1"
-                                   onClick={() => confirmDelete(e.id)}/>
-                            </div>
-                        </div>)}
+                        </div>
+                    )}
                 </div>
             </div>
         </>

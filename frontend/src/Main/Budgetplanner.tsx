@@ -4,8 +4,10 @@ import {useState} from "react";
 import {checkLogin} from "../Models/checkLogin";
 import {PieChart} from "../Charts/PieChart";
 import {LineChartEvaluateCategory} from "../Charts/LineChartEvaluateCategory";
+import {toGermanDate} from "../Helper/ToGermanDate";
+import {minusDays} from "../Helper/MinusDays";
 
-const EvaluateCategory = () => {
+const Budgetplanner = () => {
 
     interface dataEvaluateCategory{
         sales: Array<sales>
@@ -23,14 +25,6 @@ const EvaluateCategory = () => {
         quantity: number
     }
 
-    const minusDays = (date: string, daysToSubtract: number) => {
-        let dateToReduce = new Date(date)
-        let days = daysToSubtract * 86400000
-        let milliseconds = dateToReduce.getTime()
-        let formattedDate = new Date(milliseconds - days)
-        return formattedDate.toISOString().slice(0, 10)
-    }
-
     const linkedId = useParams()
     const {t} = useTranslation()
     const navigate = useNavigate()
@@ -46,27 +40,6 @@ const EvaluateCategory = () => {
 
     let budget = 1 / calculationFactor * sumAll
     let profit = sumAll - budget
-
-    const myDate = (date: string) => {
-        let dateToFormat = new Date(date)
-        let weekday
-        if (dateToFormat.getDay() === 0) {
-            weekday = "So"
-        } else if (dateToFormat.getDay() === 1){
-            weekday = "Mo"
-        } else if (dateToFormat.getDay() === 2){
-            weekday = "Di"
-        } else if (dateToFormat.getDay() === 3){
-            weekday = "Mi"
-        } else if (dateToFormat.getDay() === 4){
-            weekday = "Do"
-        } else if (dateToFormat.getDay() === 5){
-            weekday = "Fr"
-        } else {
-            weekday = "Sa"
-        }
-        return  weekday + " " + dateToFormat.toLocaleDateString()
-    }
 
     const send = () => {
 
@@ -93,7 +66,7 @@ const EvaluateCategory = () => {
         <div className={"justify-content-center"} style={{color: "#003a44"}}>
             <div className={"head-category mx-auto mb-5 pt-4 pb-4"}>{localStorage.getItem("currentCategory")}</div>
             <div className={""}>
-                <div className={"py-3"}>{t("Auswertungszeitraum:")}</div>
+                <div className={"py-3"}>{t("Auswertungszeitraum")}</div>
                 <input className={"background"}
                        type={"date"}
                        value={dateFrom}
@@ -147,7 +120,7 @@ const EvaluateCategory = () => {
                 </div>
                 <div className={"col-12 my-5 mx-auto my-auto px-5 py-3"}>
                     <LineChartEvaluateCategory chartSales={[...itemSales.map(e => e.sales)]}
-                                               chartLabels={[...itemSales.map(e => myDate(e.date))]}/>
+                                               chartLabels={[...itemSales.map(e => toGermanDate(e.date))]}/>
                 </div>
                 <div className={"col-12"}>
                     <div className={"clickable btn-nav mx-auto my-5"}
@@ -171,4 +144,4 @@ const EvaluateCategory = () => {
     )
 }
 
-export default EvaluateCategory
+export default Budgetplanner
