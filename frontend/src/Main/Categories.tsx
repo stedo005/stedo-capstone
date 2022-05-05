@@ -21,7 +21,7 @@ const Categories = () => {
         return () => clearTimeout(timeoutId);
     }, [errMsg]);
 
-    const fetchCategories = useCallback( () => {
+    const fetchCategories = useCallback(() => {
         fetch(`${process.env.REACT_APP_BASE_URL}/api/category`, {
             method: "GET",
             headers: {
@@ -35,7 +35,7 @@ const Categories = () => {
             })
             .then((responseBody: Array<savedCategories>) => setCategories(responseBody))
             .catch(() => navigate("../login"))
-    },[navigate])
+    }, [navigate])
 
     const createCategory = () => {
 
@@ -102,7 +102,8 @@ const Categories = () => {
                         {errMsg}
                     </div>
                     <div className={"text-center"} hidden={hideNewCategory}>
-                        <input className={"mt-2 mb-3"} style={{background: "#66a4ac"}} type={"text"} placeholder={t("Name der Kategorie")} value={categoryName}
+                        <input className={"mt-2 mb-3"} style={{background: "#66a4ac"}} type={"text"}
+                               placeholder={t("Name der Kategorie")} value={categoryName}
                                onChange={event => setCategoryName(event.target.value)}/>
                         <i className={"clickable bi bi-check-circle-fill m-3"} onClick={() => {
                             createCategory()
@@ -114,18 +115,16 @@ const Categories = () => {
                 <br/><br/>
                 <div className={"maxWidth row justify-content-center mt-3"}>
                     {categories.map(e =>
-                        <div className={"category m-3 row justify-content-center"}
-                             key={e.id}>
-                            <div className={"category-text justify-content-center row align-items-center"}>
-                                <div className={"text-center col-12"}>
-                                    {e.categoryName}
-                                </div>
-                                <i className="clickable bi bi-pencil-square m-1 col-6"
-                                   onClick={() => navigate(`../${e.id}`)}/>
-                                <i className="clickable bi bi-trash-fill m-1 col"
-                                   onClick={() => confirmDelete(e.id)}/>
+                        <div className={"category m-3 p-1 row align-items-center"}
+                            key={e.id}>
+                            <i className="clickable btn-del bi bi-trash-fill col-4 py-4"
+                               onClick={() => confirmDelete(e.id)}/>
+                            <div className={"clickable category-text col row m-0 align-content-center justify-content-center"}
+                                 onClick={() => navigate(`../${e.id}`)}>
+                                {e.categoryName}
                             </div>
-                        </div>)}
+                        </div>
+                    )}
                 </div>
             </div>
         </>
